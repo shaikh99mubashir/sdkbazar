@@ -5,10 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const HomeScreen = ({navigation}: any) => {
   return (
     <View>
-      <Text style={{fontFamily:'Poppins-SemiBold'}} >HomeScreen</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Splash')}>
-        <Text>Go TO Splash</Text>
-      </TouchableOpacity>
+      <Text style={{fontFamily: 'Poppins-SemiBold'}}>HomeScreen</Text>
       <Icon name="ios-calendar-sharp" size={22} />
     </View>
   );

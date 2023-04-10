@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import RoutingConfig from './RoutingConfig'
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import RoutingConfig from './RoutingConfig';
 
 const App = () => {
   return (
     <>
-    <RoutingConfig/>
+      <RoutingConfig />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
