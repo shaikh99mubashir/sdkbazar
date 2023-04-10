@@ -14,17 +14,8 @@ export type Props = {
 };
 
 const Header = (Props: any) => {
-  let {
-    navigation,
-    user,
-    Drawer,
-    backBtn,
-    Notification,
-    title,
-    noSignUp,
-    noLogo,
-    myStyle,
-  } = Props;
+  let {navigation, Drawer, backBtn, Notification, title, noLogo, myStyle} =
+    Props;
 
   return (
     <View
@@ -34,6 +25,7 @@ const Header = (Props: any) => {
         justifyContent: 'space-between',
         width: '100%',
         alignItems: 'center',
+        marginTop: 10,
       }}>
       {Drawer ? (
         <TouchableOpacity
@@ -95,7 +87,7 @@ const Header = (Props: any) => {
           activeOpacity={0.8}
           onPress={() => navigation.navigate('Notification')}>
           <Image
-            source={require('../../Images/NotificationIcon.png')}
+            source={require('../../Images/Notification.png')}
             resizeMode="contain"
             style={[styles.icon]}
           />
@@ -113,15 +105,15 @@ export default Header;
 
 const styles = StyleSheet.create({
   button: {
-    height: Dimensions.get('window').height / 12,
-    width: Dimensions.get('window').width / 5,
+    height: Dimensions.get('screen').height / 12,
+    width: Dimensions.get('screen').width / 5,
   },
   icon: {
-    height: Dimensions.get('window').height / 16,
-    width: Dimensions.get('window').width / 16,
+    height: Dimensions.get('screen').height / 16,
+    width: Dimensions.get('screen').width / 16,
   },
   logo: {
-    height: Dimensions.get('window').height / 12,
-    width: Dimensions.get('window').width / 2,
+    height: Dimensions.get('screen').height / 16,
+    width: Dimensions.get('screen').width / 2,
   },
 });

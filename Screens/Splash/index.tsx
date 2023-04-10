@@ -26,7 +26,7 @@ export default Splash;
 
 const styles = StyleSheet.create({
   logo: {
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width / 1.2,
+    height: Dimensions.get('screen').height,
+    width: Dimensions.get('screen').width / 1.2,
   },
 });

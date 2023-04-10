@@ -11,6 +11,7 @@ import LoginWithMobile from '../Screens/LoginWithMobile';
 import OtpScreen from '../Screens/OtpScreen';
 import ForgotPassword from '../Screens/ForgotPassword';
 import NewPassword from '../Screens/NewPassword';
+import Notification from '../Screens/Notification';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -24,6 +25,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="OtpScreen" component={OtpScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="NewPassword" component={NewPassword} />
+        <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="HomeScreen" component={DrawerNavigation} />
       </Stack.Navigator>
     </NavigationContainer>
