@@ -12,6 +12,7 @@ import OtpScreen from '../Screens/OtpScreen';
 import ForgotPassword from '../Screens/ForgotPassword';
 import NewPassword from '../Screens/NewPassword';
 import Notification from '../Screens/Notification';
+import Food from '../Screens/Food';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -27,6 +28,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="NewPassword" component={NewPassword} />
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="HomeScreen" component={DrawerNavigation} />
+        <Stack.Screen name="Food" component={Food} />
       </Stack.Navigator>
     </NavigationContainer>
   );

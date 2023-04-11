@@ -93,7 +93,9 @@ const HomeScreen = ({navigation}: any) => {
           Categories
         </Text>
         <View style={{flexDirection: 'row', justifyContent: 'center', gap: 10}}>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Food')}
+            activeOpacity={0.8}>
             <Image
               source={require('../../Images/Food.png')}
               style={{width: 110, height: 110, borderRadius: 5}}
