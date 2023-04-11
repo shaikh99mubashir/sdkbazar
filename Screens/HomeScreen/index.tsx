@@ -98,21 +98,54 @@ const HomeScreen = ({navigation}: any) => {
               source={require('../../Images/Food.png')}
               style={{width: 110, height: 110, borderRadius: 5}}
             />
-            <Text style={{textAlign: 'center'}}>Food</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'Poppins-Regular',
+                fontSize: 18,
+                color: Color.heading,
+              }}>
+              Food
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.8}>
             <Image
               source={require('../../Images/Jobs.png')}
               style={{width: 110, height: 110, borderRadius: 5}}
             />
-            <Text style={{textAlign: 'center'}}>Jobs</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'Poppins-Regular',
+                fontSize: 18,
+                color: Color.heading,
+              }}>
+              Jobs
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.8}>
             <Image
               source={require('../../Images/Marriage.png')}
               style={{width: 110, height: 110, borderRadius: 5}}
             />
-            <Text style={{textAlign: 'center'}}>Marriage Bureau</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'Poppins-Regular',
+                fontSize: 18,
+                color: Color.heading,
+              }}>
+              Marriage{'\n'}
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontFamily: 'Poppins-Regular',
+                  fontSize: 18,
+                  color: Color.heading,
+                }}>
+                Bureau
+              </Text>
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
