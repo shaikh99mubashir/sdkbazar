@@ -13,7 +13,6 @@ import ForgotPassword from '../Screens/ForgotPassword';
 import NewPassword from '../Screens/NewPassword';
 import Notification from '../Screens/Notification';
 import Food from '../Screens/Food';
-import jobsHome from '../Screens/Jobs/JobsHome';
 import JobsHome from '../Screens/Jobs/JobsHome';
 import AvailablePersonDetails from '../Screens/Jobs/AvailablePersonDetails';
 import JobsFilter from '../Screens/Jobs/JobsFilter';
