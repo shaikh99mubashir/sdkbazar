@@ -1,0 +1,32 @@
+import { Image, Text, TouchableOpacity } from "react-native"
+import Colors from "../Config/Theme"
+
+interface Prop {
+    text : any,
+    textStyle?: object,
+    buttonContainerStyle?: object
+    onPress ?: any
+    source ?: any
+    navigation?:any
+    imageStyle?:any
+}
+
+function CustomButton (Props : Prop) {
+
+    let {text,textStyle,buttonContainerStyle,onPress,source,navigation,imageStyle} = Props
+
+    return (
+        <TouchableOpacity onPress={onPress} style={{borderWidth:1,borderColor:Colors.secondary,backgroundColor:Colors.secondary,width:"90%",padding:10,borderRadius:5,...buttonContainerStyle}} >
+                {
+                    source && <Image style={{width:45,height:45,marginLeft:20,...imageStyle}} source={source} />
+                }
+                <Text style={{color:Colors.white,textAlign:"center",fontSize:18,...textStyle}} >
+                    {text}
+                </Text>
+        </TouchableOpacity>
+    )
+
+
+} 
+
+export default CustomButton

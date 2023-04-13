@@ -1,0 +1,28 @@
+  const submitModal = useCallback(() => {
+    return (
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={submit}
+          onRequestClose={() => {
+            setSubmit(false)
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+                <MaterialIcons name="clipboard-text-search" color={Colors.white} size={80} />
+              <Text style={[styles.modalText,{marginTop:10}]}>Procedding</Text>
+              <Text style={styles.textStyle}>We are reveiewing your payment request</Text>
+              <Text style={styles.textStyle}>We will get back to you as soon as possible</Text>
+            <CustomButton
+            text={'Go Back To Home'}
+            buttonContainerStyle={{width: '100%', marginTop: 20,padding:15}}
+            textStyle={{color: Colors.white}}
+            onPress={() => navigation.navigate("HomeScreens")}
+          />
+            </View>
+          </View>
+        </Modal>
+      </View>
+    );
+  }, [submit]);
