@@ -115,8 +115,7 @@ const Header = (Props: any) => {
       ) : close ? (
         <TouchableOpacity
           style={{flex: 1, alignItems: 'flex-end', ...myStyle}}
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate('JobsFilter')}>
+          activeOpacity={0.8}>
           <Image
             source={require('../../Images/close.png')}
             resizeMode="contain"

@@ -188,6 +188,7 @@ const AvailablePersonDetails = ({navigation}: any) => {
           </View>
           <View>
             <TouchableOpacity
+              onPress={() => navigation.navigate('EntrepreneurProfile', item)}
               style={{
                 backgroundColor: Color.mainColor,
                 paddingHorizontal: 15,
