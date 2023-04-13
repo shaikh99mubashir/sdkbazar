@@ -5,4 +5,5 @@ export default {
   white: '#FFFFFF',
   textColor: '#808080',
   heading: '#4D4D4D',
+  buttonBg: '#00A651',
 };

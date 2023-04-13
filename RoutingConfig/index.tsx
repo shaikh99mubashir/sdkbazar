@@ -13,6 +13,10 @@ import ForgotPassword from '../Screens/ForgotPassword';
 import NewPassword from '../Screens/NewPassword';
 import Notification from '../Screens/Notification';
 import Food from '../Screens/Food';
+import jobsHome from '../Screens/Jobs/JobsHome';
+import JobsHome from '../Screens/Jobs/JobsHome';
+import AvailablePersonDetails from '../Screens/Jobs/AvailablePersonDetails';
+import JobsFilter from '../Screens/Jobs/JobsFilter';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -29,6 +33,12 @@ const RoutingConfig = () => {
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="HomeScreen" component={DrawerNavigation} />
         <Stack.Screen name="Food" component={Food} />
+        <Stack.Screen name="JobsHome" component={JobsHome} />
+        <Stack.Screen name="JobsFilter" component={JobsFilter} />
+        <Stack.Screen
+          name="AvailablePersonDetails"
+          component={AvailablePersonDetails}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -14,8 +14,17 @@ export type Props = {
 };
 
 const Header = (Props: any) => {
-  let {navigation, Drawer, backBtn, Notification, title, noLogo, myStyle} =
-    Props;
+  let {
+    navigation,
+    Drawer,
+    backBtn,
+    Notification,
+    title,
+    noLogo,
+    myStyle,
+    filter,
+    close,
+  } = Props;
 
   return (
     <View
@@ -90,6 +99,28 @@ const Header = (Props: any) => {
             source={require('../../Images/Notification.png')}
             resizeMode="contain"
             style={[styles.icon]}
+          />
+        </TouchableOpacity>
+      ) : filter ? (
+        <TouchableOpacity
+          style={{flex: 1, alignItems: 'flex-end', ...myStyle}}
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('JobsFilter')}>
+          <Image
+            source={require('../../Images/filter.png')}
+            resizeMode="contain"
+            style={[styles.icon, {marginRight: 8}]}
+          />
+        </TouchableOpacity>
+      ) : close ? (
+        <TouchableOpacity
+          style={{flex: 1, alignItems: 'flex-end', ...myStyle}}
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('JobsFilter')}>
+          <Image
+            source={require('../../Images/close.png')}
+            resizeMode="contain"
+            style={[styles.icon, {marginRight: 8}]}
           />
         </TouchableOpacity>
       ) : (

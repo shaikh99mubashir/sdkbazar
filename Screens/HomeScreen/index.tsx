@@ -110,7 +110,9 @@ const HomeScreen = ({navigation}: any) => {
               Food
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('JobsHome')}>
             <Image
               source={require('../../Images/Jobs.png')}
               style={{width: 110, height: 110, borderRadius: 5}}
