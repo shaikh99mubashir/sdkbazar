@@ -127,7 +127,7 @@ const HomeScreen = ({navigation}: any) => {
               Jobs
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('MrriageBureauHome')}>
             <Image
               source={require('../../Images/Marriage.png')}
               style={{width: 110, height: 110, borderRadius: 5}}

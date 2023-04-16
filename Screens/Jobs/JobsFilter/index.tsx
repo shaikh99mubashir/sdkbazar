@@ -9,7 +9,7 @@ import React, {useState} from 'react';
 import Header from '../../../Components/Header';
 import {Color} from '../../../Constants';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 const JobsFilter = ({navigation}: any) => {
   const [selectedServicedata, setSelectedServicedata]: any = useState([]);
   const [serviceDD, setServiceDD] = useState(false);
@@ -368,14 +368,14 @@ const JobsFilter = ({navigation}: any) => {
           }}>
           Radius
         </Text>
-        <Slider
+        {/* <Slider
           style={{width: '100%', height: 40}}
           minimumValue={0}
           maximumValue={10}
           minimumTrackTintColor={Color.mainColor}
           maximumTrackTintColor="#000000"
           onValueChange={(value: any) => setRadius(value)}
-        />
+        /> */}
         <View style={{alignSelf: 'center'}}>
           <Text style={{color: Color.mainColor}}>{selectedRadius}</Text>
         </View>
