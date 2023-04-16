@@ -19,6 +19,7 @@ import JobsFilter from '../Screens/Jobs/JobsFilter';
 import EntrepreneurProfile from '../Screens/Jobs/EntrepreneurProfile';
 import MrriageBureauHome from '../Screens/MrriageBureau/MrriageBureauHome';
 import SelectedReligion from '../Screens/MrriageBureau/SelectedReligion';
+import MBPersonDetails from '../Screens/MrriageBureau/MBPersonDetails';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -38,6 +39,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="MrriageBureauHome" component={MrriageBureauHome} />
         <Stack.Screen name="JobsHome" component={JobsHome} />
         <Stack.Screen name="SelectedReligion" component={SelectedReligion} />
+        <Stack.Screen name="MBPersonDetails" component={MBPersonDetails} />
         <Stack.Screen name="JobsFilter" component={JobsFilter} />
         <Stack.Screen
           name="EntrepreneurProfile"

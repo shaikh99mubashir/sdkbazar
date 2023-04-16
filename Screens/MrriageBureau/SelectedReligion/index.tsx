@@ -13,91 +13,41 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Color } from '../../../Constants';
+import {Color} from '../../../Constants';
 import Header from '../../../Components/Header';
 
 const SelectedReligion = ({navigation, route}: any) => {
-  const { data, category } = route.params;
-  console.log('category',category);
-  
+  const {data, category} = route.params;
+  console.log('category', category);
+
   const filteredData = JSON.parse(data);
-  console.log('filteredData',filteredData);
-  
-  
+
   const [user, setUser] = useState(true);
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const handleFilterPress = () => {
-    setModalVisible(true);
-  };
-
-  const [creators, setCreators] = useState([
-    {
-      id: 1,
-      name: 'asd',
-      image: require('../../../Images/p1.png'),
-      category:''
-    },
-    {
-      id: 2,
-      name: 'qqq',
-      image: require('../../../Images/p1.png'),
-    },
-    {
-      id: 3,
-      name: 'www',
-      image: require('../../../Images/p1.png'),
-    },
-    {
-      id: 4,
-      name: 'anchors',
-      image: require('../../../Images/p1.png'),
-    },
-    {
-      id: 5,
-      name: 'www',
-      image: require('../../../Images/p1.png'),
-    },
-    {
-      id: 6,
-      name: 'sd',
-      image: require('../../../Images/p1.png'),
-    },
-    {
-      id: 7,
-      name: 'sdd',
-      image: require('../../../Images/p1.png'),
-    },
-  ]);
-
-  const handleCloseModal = () => {
-    setModalVisible(false);
-  };
-
-  const filterByAtoZ = () => {
-    setCreators([...creators].sort((a, b) => a.name.localeCompare(b.name)));
-    setModalVisible(false);
-  };
-  const filterByRevelance = () => {
-    setCreators([...creators].sort(() => Math.random() - 0.5));
-    setModalVisible(false);
-  };
+  const [selectedSubCategory, setSelectedSubCategory] = useState<any>(null);
 
   const searchName = (e: any) => {
     setSearchText(e);
-    let filteredItems: any = creators.filter(x =>
+    let filteredItems: any = filteredData.filter((x: any) =>
       x.name.toLowerCase().includes(e.toLowerCase()),
     );
     setFoundName(filteredItems);
   };
+ const [filterSubCategory, setFilterSubCategory] = useState([])
+  const handleCategoryClick = (e:any) => {
+    console.log('category',e);
+    setSelectedSubCategory(e.subCategory);
+    const subdata = filteredData.filter((data:any) => data.subCategory === e.subCategory);
+    setFilterSubCategory(subdata);
+  };
+
+  console.log('filterSubCategory',filterSubCategory);
+  
   return (
     <>
       <View
         style={{
-          backgroundColor: Color.white,
-          height: Dimensions.get('window').height,
           paddingHorizontal: 10,
         }}>
         <Header navigation={navigation} title={category} backBtn />
@@ -120,9 +70,57 @@ const SelectedReligion = ({navigation, route}: any) => {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={{marginBottom: 10}}></View>
 
+        {/* SubCategory */}
         
-
+        <ScrollView horizontal>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              gap: 5,
+              padding: 0,
+              margin: 0,
+            }}>
+            {filteredData &&
+              filteredData
+                .filter(
+                  (e: any, i: number, arr: any[]) =>
+                    arr.findIndex(
+                      (f: any) => f.subCategory === e.subCategory,
+                    ) === i,
+                )
+                .map((e: any, i: number) => {
+                  console.log('e',e);
+                  
+                  const isSelected = e.subCategory === selectedSubCategory;
+                  return (
+                    <TouchableOpacity
+                    onPress={() => handleCategoryClick(e)}
+                      style={{
+                        backgroundColor: isSelected ? Color.mainColor : 'white',
+                        paddingHorizontal: 25,
+                        paddingVertical: 10,
+                        borderRadius: 20,
+                        borderWidth: 1,
+                      }}>
+                      <Text
+                        style={[
+                          styles.cancleButtonText,
+                          {
+                            color: isSelected ? 'white' : Color.mainColor,
+                            marginTop: 0,
+                          },
+                        ]}>
+                        {e.subCategory}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+          </View>
+        </ScrollView>
+       
         {/* CARDS */}
         <View style={{marginBottom: 10}}></View>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -189,8 +187,11 @@ const SelectedReligion = ({navigation, route}: any) => {
                   Search Data Not Found
                 </Text>
               </View>
-            ) : (
-              filteredData.map((e:any, i:number):any => {
+            ) :
+            filterSubCategory && filterSubCategory.length>0?
+            
+            (
+              filterSubCategory.map((e: any, i: number): any => {
                 return (
                   <TouchableOpacity
                     activeOpacity={0.8}
@@ -222,10 +223,9 @@ const SelectedReligion = ({navigation, route}: any) => {
                         fontFamily: 'Poppins-Regular',
                         fontSize: 18,
                         color: Color.textColor,
-                        alignSelf:'flex-start',
-                        marginLeft:10,
-                        fontWeight:'bold'
-                        
+                        alignSelf: 'flex-start',
+                        marginLeft: 10,
+                        fontWeight: 'bold',
                       }}>
                       {e.name}
                     </Text>
@@ -234,15 +234,71 @@ const SelectedReligion = ({navigation, route}: any) => {
                         fontFamily: 'Poppins-Regular',
                         fontSize: 14,
                         color: Color.textColor,
-                        alignSelf:'flex-start',
-                        marginLeft:10
+                        alignSelf: 'flex-start',
+                        marginLeft: 10,
                       }}>
                       {e.profession}
                     </Text>
                   </TouchableOpacity>
                 );
               })
-            )}
+            )
+            :
+            (
+              filteredData.map((e: any, i: number): any => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => navigation.navigate('MBPersonDetails', e)}
+                    key={i}
+                    style={{
+                      borderWidth: 0,
+                      paddingVertical: 1,
+                      alignItems: 'center',
+                      borderRadius: 10,
+                      marginTop: 10,
+                      width: '50%',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Image
+                      source={require('../../../Images/p1.png')}
+                      resizeMode="cover"
+                      style={{
+                        width: Dimensions.get('window').width / 2 - 25,
+                        height: 180,
+                        borderRadius: 10,
+                        shadowOffset: {width: 0, height: 3},
+                        shadowOpacity: 0.4,
+                        shadowRadius: 2,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 18,
+                        color: Color.textColor,
+                        alignSelf: 'flex-start',
+                        marginLeft: 10,
+                        fontWeight: 'bold',
+                      }}>
+                      {e.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 14,
+                        color: Color.textColor,
+                        alignSelf: 'flex-start',
+                        marginLeft: 10,
+                      }}>
+                      {e.profession}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })
+            )
+            
+            }
           </View>
         </ScrollView>
       </View>
@@ -256,8 +312,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 9,
+    // backgroundColor: '#fff',
+    // paddingHorizontal: 9,
     paddingVertical: 5,
     width: '100%',
   },
@@ -272,7 +328,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 6,
@@ -314,5 +370,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'right',
     paddingHorizontal: 10,
+  },
+  cancleButtonText: {
+    color: Color.mainColor,
+    // fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
