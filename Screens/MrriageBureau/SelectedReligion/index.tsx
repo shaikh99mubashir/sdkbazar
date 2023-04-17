@@ -18,7 +18,7 @@ import Header from '../../../Components/Header';
 
 const SelectedReligion = ({navigation, route}: any) => {
   const {data, category} = route.params;
-  console.log('category', category);
+  // console.log('category', category);
 
   const filteredData = JSON.parse(data);
 
@@ -34,16 +34,18 @@ const SelectedReligion = ({navigation, route}: any) => {
     );
     setFoundName(filteredItems);
   };
- const [filterSubCategory, setFilterSubCategory] = useState([])
-  const handleCategoryClick = (e:any) => {
-    console.log('category',e);
+  const [filterSubCategory, setFilterSubCategory] = useState([]);
+  const handleCategoryClick = (e: any) => {
+    console.log('category', e);
     setSelectedSubCategory(e.subCategory);
-    const subdata = filteredData.filter((data:any) => data.subCategory === e.subCategory);
+    const subdata = filteredData.filter(
+      (data: any) => data.subCategory === e.subCategory,
+    );
     setFilterSubCategory(subdata);
   };
 
-  console.log('filterSubCategory',filterSubCategory);
-  
+  console.log('filterSubCategory', filterSubCategory);
+
   return (
     <>
       <View
@@ -73,7 +75,7 @@ const SelectedReligion = ({navigation, route}: any) => {
         <View style={{marginBottom: 10}}></View>
 
         {/* SubCategory */}
-        
+
         <ScrollView horizontal>
           <View
             style={{
@@ -92,12 +94,12 @@ const SelectedReligion = ({navigation, route}: any) => {
                     ) === i,
                 )
                 .map((e: any, i: number) => {
-                  console.log('e',e);
-                  
+                  console.log('e', e);
+
                   const isSelected = e.subCategory === selectedSubCategory;
                   return (
                     <TouchableOpacity
-                    onPress={() => handleCategoryClick(e)}
+                      onPress={() => handleCategoryClick(e)}
                       style={{
                         backgroundColor: isSelected ? Color.mainColor : 'white',
                         paddingHorizontal: 25,
@@ -120,7 +122,7 @@ const SelectedReligion = ({navigation, route}: any) => {
                 })}
           </View>
         </ScrollView>
-       
+
         {/* CARDS */}
         <View style={{marginBottom: 10}}></View>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -187,10 +189,7 @@ const SelectedReligion = ({navigation, route}: any) => {
                   Search Data Not Found
                 </Text>
               </View>
-            ) :
-            filterSubCategory && filterSubCategory.length>0?
-            
-            (
+            ) : filterSubCategory && filterSubCategory.length > 0 ? (
               filterSubCategory.map((e: any, i: number): any => {
                 return (
                   <TouchableOpacity
@@ -242,9 +241,7 @@ const SelectedReligion = ({navigation, route}: any) => {
                   </TouchableOpacity>
                 );
               })
-            )
-            :
-            (
+            ) : (
               filteredData.map((e: any, i: number): any => {
                 return (
                   <TouchableOpacity
@@ -296,9 +293,7 @@ const SelectedReligion = ({navigation, route}: any) => {
                   </TouchableOpacity>
                 );
               })
-            )
-            
-            }
+            )}
           </View>
         </ScrollView>
       </View>

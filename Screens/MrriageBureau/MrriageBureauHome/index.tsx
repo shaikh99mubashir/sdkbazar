@@ -14,8 +14,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Header from '../../../Components/Header';
 import {Color} from '../../../Constants';
 import CarouselSlider from '../../../Components/CarouselSlider';
-import CustomTabView from '../../../Components/CustomTabView';
-
+import Video from 'react-native-video';
+const {width, height} = Dimensions.get('window');
 const MrriageBureauHome = ({navigation}: any) => {
   const HomePageBanner = [
     {
@@ -136,6 +136,9 @@ const MrriageBureauHome = ({navigation}: any) => {
     const filteredDataJSON = JSON.stringify(filteredData);
     navigation.navigate('SelectedReligion', {data: filteredDataJSON, category});
   };
+  const videoSource = {
+    uri: 'file:///D:/sdkbazar/Videos/MarriageBureau.mp4',
+  };
   return (
     <>
       <View
@@ -180,8 +183,31 @@ const MrriageBureauHome = ({navigation}: any) => {
       {/* CarouselSlider */}
       <View
         style={{paddingTop: 20, backgroundColor: Color.mainColor, height: 110}}>
-        <View>
+        {/* <View style={styles.container}>
           <CarouselSlider carouselItems={HomePageBanner} dots />
+          <Video source={videoSource} style={styles.video} />
+          {
+              uri: 'https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/Sample-MP4-Video-File-for-Testing.mp4',
+            }
+        </View> */}
+        <View style={{alignItems: 'center'}}>
+          <Video
+            source={{
+              uri: 'https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/Sample-MP4-Video-File-for-Testing.mp4',
+            }}
+            ref={ref => {}}
+            controls={true}
+            posterResizeMode={'cover'}
+            // repeat
+            resizeMode={'stretch'}
+            style={{
+              ...styles.backgroundVideo,
+              height: height / 4,
+              width: width / 1.11,
+              borderRadius: 25,
+            }}
+            onError={error => console.log(error, 'error')}
+          />
         </View>
       </View>
       <View style={{top: 100}}>
@@ -194,37 +220,7 @@ const MrriageBureauHome = ({navigation}: any) => {
           }}>
           Religion
         </Text>
-        {/* <View style={{marginHorizontal:20, flexDirection:"row", flexWrap:'wrap', width:'100%',gap:5}}>
-            {religionCategory && religionCategory.map((e,i)=>{
-                return(
-                    <TouchableOpacity
-                    onPressIn={() => setApply(true)}
-                    onPressOut={() => setApply(false)}
-                      onPress={()=> navigation.navigate('SelectedReligion', e.catggory)}
-                    activeOpacity={0.8}
-                    style={{
-                        borderWidth: 1,
-                        paddingVertical: 10,
-                        paddingHorizontal:5,
-                        borderRadius: 5,
-                        borderColor: Color.textColor,
-                        alignItems: 'center',
-                        width: 160,
-                        backgroundColor: apply ? Color.mainColor : 'white',
-                    }}>
-                  <Text
-                    style={{
-                        color: apply ? 'white' : Color.mainColor,
-                        
-                        fontSize: 16,
-                        fontFamily: 'Poppins-SemiBold',
-                    }}>
-                    {e.catggory}
-                  </Text>
-                </TouchableOpacity>
-                    )
-                })}
-          </View> */}
+        {/* Category Map */}
         <View
           style={{
             marginHorizontal: 20,
@@ -283,5 +279,18 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     marginHorizontal: 5,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  video: {
+    width,
+    height: height / 3,
+  },
+  backgroundVideo: {
+    width: '100%',
   },
 });

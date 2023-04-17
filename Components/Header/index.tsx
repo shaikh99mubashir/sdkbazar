@@ -24,6 +24,8 @@ const Header = (Props: any) => {
     myStyle,
     filter,
     close,
+    logoStyle,
+    headerStyle,
   } = Props;
 
   return (
@@ -35,6 +37,7 @@ const Header = (Props: any) => {
         width: '100%',
         alignItems: 'center',
         marginTop: 10,
+        ...headerStyle,
       }}>
       {Drawer ? (
         <TouchableOpacity
@@ -67,7 +70,7 @@ const Header = (Props: any) => {
       )}
 
       {title ? (
-        <View style={{flex: 2, alignItems: 'center'}}>
+        <View style={{flex: 2, alignItems: 'center', ...logoStyle}}>
           <Text
             style={{
               fontFamily: 'Poppins-Regular',
@@ -80,9 +83,9 @@ const Header = (Props: any) => {
           </Text>
         </View>
       ) : noLogo ? (
-        <View style={{flex: 2}}></View>
+        <View style={{flex: 2, ...logoStyle}}></View>
       ) : (
-        <View style={{flex: 2}}>
+        <View style={{flex: 2, ...logoStyle}}>
           <Image
             source={require('../../Images/LogoIcon.png')}
             resizeMode="contain"
