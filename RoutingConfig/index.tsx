@@ -20,12 +20,14 @@ import EntrepreneurProfile from '../Screens/Jobs/EntrepreneurProfile';
 import MrriageBureauHome from '../Screens/MrriageBureau/MrriageBureauHome';
 import SelectedReligion from '../Screens/MrriageBureau/SelectedReligion';
 import MBPersonDetails from '../Screens/MrriageBureau/MBPersonDetails';
+import OnBoarding from '../Screens/OnBoarding';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="OnBoarding" component={OnBoarding} />
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="LoginAccount" component={LoginAccount} />
         <Stack.Screen name="RegisterAccount" component={RegisterAccount} />

@@ -1,0 +1,112 @@
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import Video from 'react-native-video';
+import {} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Splash from '../Splash';
+
+const height = Dimensions.get('screen').height;
+const width = Dimensions.get('screen').width;
+const OnBoarding = ({navigation}: any) => {
+  const videoSources = [
+    require('../../Videos/Areyouhungry.mp4'),
+    require('../../Videos/BeAnEntrepreneur.mp4'),
+    require('../../Videos/HereisYourSoulmate.mp4'),
+  ];
+
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [onboardingCompleted, setOnboardingCompleted] = useState(false);
+
+  const videoSource = videoSources[currentVideoIndex];
+  const ONBOARDING_COMPLETED_KEY = 'onboarding_completed';
+  const onNextVideo = () => {
+    if (currentVideoIndex === videoSources.length - 1) {
+      // If this is the last video, mark the onboarding process as completed
+      AsyncStorage.setItem(ONBOARDING_COMPLETED_KEY, 'true');
+      setOnboardingCompleted(true);
+    } else {
+      // If there are more videos, increment the index
+      setCurrentVideoIndex(currentVideoIndex + 1);
+    }
+  };
+
+  useEffect(() => {
+    // Check if the onboarding process has already been completed
+    AsyncStorage.getItem(ONBOARDING_COMPLETED_KEY).then(value => {
+      if (value === 'true') {
+        setOnboardingCompleted(true);
+      }
+    });
+  }, []);
+
+  if (onboardingCompleted) {
+    // Return a different component (e.g. the app's main screen) if the onboarding process has already been completed
+    return <Splash navigation={navigation} />;
+  }
+
+  return (
+    <View style={styles.container}>
+      <Video source={videoSource} style={styles.video} resizeMode="cover" />
+      <View style={styles.navigationButtonsContainer}>
+        {currentVideoIndex > 0 && (
+          <TouchableOpacity
+            style={styles.navigationButton}
+            onPress={() => setCurrentVideoIndex(currentVideoIndex - 1)}>
+            <Text style={styles.navigationButtonText}>Previous</Text>
+          </TouchableOpacity>
+        )}
+        {currentVideoIndex < videoSources.length - 1 ? (
+          <TouchableOpacity
+            style={styles.navigationButton}
+            onPress={onNextVideo}>
+            <Text style={styles.navigationButtonText}>Next</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.navigationButton}
+            onPress={onNextVideo}>
+            <Text style={styles.navigationButtonText}>Finish</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
+  );
+};
+
+export default OnBoarding;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  video: {
+    width: width,
+    height: height,
+  },
+  navigationButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    position: 'absolute',
+    bottom: 20,
+  },
+  navigationButton: {
+    backgroundColor: '#2e78b7',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  navigationButtonText: {
+    color: '#fff',
+  },
+});
