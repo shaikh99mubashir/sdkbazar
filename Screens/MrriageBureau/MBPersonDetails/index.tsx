@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import React from 'react';
 import {Color} from '../../../Constants';
-import Header from '../../../Components/Header';
 
 const MBPersonDetails = ({route}: any) => {
   const data = route.params;

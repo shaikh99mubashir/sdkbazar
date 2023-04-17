@@ -18,7 +18,6 @@ import Header from '../../../Components/Header';
 
 const SelectedReligion = ({navigation, route}: any) => {
   const {data, category} = route.params;
-  // console.log('category', category);
 
   const filteredData = JSON.parse(data);
 
@@ -43,8 +42,6 @@ const SelectedReligion = ({navigation, route}: any) => {
     );
     setFilterSubCategory(subdata);
   };
-
-  console.log('filterSubCategory', filterSubCategory);
 
   return (
     <>
