@@ -173,7 +173,7 @@ const MrriageBureauHome = ({navigation}: any) => {
               color: 'white',
             }}
           />
-          <TouchableOpacity onPress={() => navigation}>
+          <TouchableOpacity onPress={() => {}}>
             <Text>
               <Icon name="search" size={25} color={Color.mainColor} />
             </Text>
@@ -183,22 +183,13 @@ const MrriageBureauHome = ({navigation}: any) => {
       {/* CarouselSlider */}
       <View
         style={{paddingTop: 20, backgroundColor: Color.mainColor, height: 110}}>
-        {/* <View style={styles.container}>
-          <CarouselSlider carouselItems={HomePageBanner} dots />
-          <Video source={videoSource} style={styles.video} />
-          {
-              uri: 'https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/Sample-MP4-Video-File-for-Testing.mp4',
-            }
-        </View> */}
         <View style={{alignItems: 'center'}}>
           <Video
-            source={{
-              uri: 'https://jsoncompare.org/LearningContainer/SampleFiles/Video/MP4/Sample-MP4-Video-File-for-Testing.mp4',
-            }}
+            source={require('../../../Videos/MarriageBureau.mp4')}
             ref={ref => {}}
-            controls={true}
+            // controls={true}
             posterResizeMode={'cover'}
-            // repeat
+            repeat
             resizeMode={'stretch'}
             style={{
               ...styles.backgroundVideo,
@@ -227,6 +218,7 @@ const MrriageBureauHome = ({navigation}: any) => {
             flexDirection: 'row',
             flexWrap: 'wrap',
             width: '100%',
+            alignItems: 'center',
             gap: 5,
           }}>
           {religionCategory &&
@@ -244,7 +236,7 @@ const MrriageBureauHome = ({navigation}: any) => {
                     borderRadius: 5,
                     borderColor: Color.textColor,
                     alignItems: 'center',
-                    width: 160,
+                    width: 170,
                     backgroundColor: isSelected ? Color.mainColor : 'white',
                   }}>
                   <Text
@@ -268,18 +260,6 @@ const MrriageBureauHome = ({navigation}: any) => {
 export default MrriageBureauHome;
 
 const styles = StyleSheet.create({
-  dotContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 5,
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
