@@ -29,8 +29,8 @@ const CustomTabView = (Props: any): any => {
   };
 
   return (
-    <View>
-      <View style={{marginBottom: 40, alignItems: 'center'}}>
+    <View style={{flex: 1}}>
+      <View style={{marginBottom: 100, alignItems: 'center'}}>
         <View
           style={{
             width: Dimensions.get('window').width / 1.1,

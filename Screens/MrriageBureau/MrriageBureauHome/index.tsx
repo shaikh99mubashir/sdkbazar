@@ -17,21 +17,6 @@ import CarouselSlider from '../../../Components/CarouselSlider';
 import Video from 'react-native-video';
 const {width, height} = Dimensions.get('window');
 const MrriageBureauHome = ({navigation}: any) => {
-  const HomePageBanner = [
-    {
-      id: 1,
-      image: require('../../../Images/HomePageBanner.png'),
-    },
-    {
-      id: 2,
-      image: require('../../../Images/HomePageBanner.png'),
-    },
-    {
-      id: 3,
-      image: require('../../../Images/HomePageBanner.png'),
-    },
-  ];
-
   const religionCategory = [
     {
       id: 1,
@@ -122,17 +107,14 @@ const MrriageBureauHome = ({navigation}: any) => {
     },
   ]);
 
-  const [apply, setApply] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
 
   const handleCategoryClick = (e: any) => {
     setSelectedCategory(e.category);
-    // console.log('ee',e.category);
     const category = e.category;
     const filteredData = categoryData.filter(
       data => data.category === e.category,
     );
-    // console.log('filteredData',filteredData);
     const filteredDataJSON = JSON.stringify(filteredData);
     navigation.navigate('SelectedReligion', {data: filteredDataJSON, category});
   };

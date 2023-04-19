@@ -35,7 +35,6 @@ const SelectedReligion = ({navigation, route}: any) => {
   };
   const [filterSubCategory, setFilterSubCategory] = useState([]);
   const handleCategoryClick = (e: any) => {
-    console.log('category', e);
     setSelectedSubCategory(e.subCategory);
     const subdata = filteredData.filter(
       (data: any) => data.subCategory === e.subCategory,
