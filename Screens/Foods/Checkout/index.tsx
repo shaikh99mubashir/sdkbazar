@@ -163,7 +163,7 @@ const Checkout = ({navigation, route}: any) => {
             borderRadius: 10,
             flexDirection: 'row',
             alignItems: 'center',
-            gap: 10,
+            gap: 11,
             justifyContent: 'space-between',
           }}>
           <Text
