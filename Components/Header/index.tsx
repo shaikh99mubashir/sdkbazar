@@ -8,12 +8,27 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Color from '../../Constants/Color';
-export type Props = {
-  navigation: any;
-};
 
-const Header = (Props: any) => {
+interface Props {
+  navigation?: any;
+  Drawer?: boolean;
+  backBtn?: boolean;
+  Notification?: boolean;
+  title?: string;
+  noLogo?: boolean;
+  myStyle?: any;
+  filter?: any;
+  close?: any;
+  logoStyle?: any;
+  headerStyle?: any;
+  onFilterPress?: any;
+  cart?: boolean;
+  cartStyle?: string;
+}
+
+const Header = (Props: Props) => {
   let {
     navigation,
     Drawer,
@@ -27,6 +42,8 @@ const Header = (Props: any) => {
     logoStyle,
     headerStyle,
     onFilterPress,
+    cart,
+    cartStyle,
   } = Props;
 
   return (
@@ -125,6 +142,12 @@ const Header = (Props: any) => {
             resizeMode="contain"
             style={[styles.icon, {marginRight: 8}]}
           />
+        </TouchableOpacity>
+      ) : cart ? (
+        <TouchableOpacity
+          style={{flex: 1, alignItems: 'flex-end', ...myStyle}}
+          activeOpacity={0.8}>
+          <AntDesign name="shoppingcart" size={30} color={cartStyle} />
         </TouchableOpacity>
       ) : (
         <View style={{flex: 1}}>
