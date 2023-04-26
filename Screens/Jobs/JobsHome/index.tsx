@@ -24,6 +24,7 @@ const JobsHome = ({navigation}: any) => {
   const [serviceDD, setServiceDD] = useState(false);
   const [specialized, setSpecialized]: any = useState([]);
   const [specializedDD, setspecializedDD] = useState(false);
+
   // Entrepreneur
   const SelectService = [
     {
@@ -116,6 +117,17 @@ const JobsHome = ({navigation}: any) => {
     navigation.navigate('AvailablePersonDetails', {filteredData});
     setspecializedDD(!specializedDD);
   };
+  const SelectedBusinessSpecialized = (item: any) => {
+    setSpecialized(item);
+    const filteredData = SelectService.filter(
+      service =>
+        service.type === selectedServicedata.type &&
+        service.profession === item.profession,
+    );
+
+    navigation.navigate('BusinessPersonDetails', {filteredData});
+    setspecializedDD(!specializedDD);
+  };
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -135,6 +147,8 @@ const JobsHome = ({navigation}: any) => {
         currentTab.length > 0 &&
         currentTab.map((e: any, i: any) => {
           if (e.index == index) {
+            setSelectedServicedata();
+            setSpecialized();
             return {
               ...e,
               selected: true,
@@ -565,7 +579,7 @@ const JobsHome = ({navigation}: any) => {
                   }, [])
                   .map((item: any, index: any) => (
                     <TouchableOpacity
-                      onPress={() => SelectedSpecialized(item)}
+                      onPress={() => SelectedBusinessSpecialized(item)}
                       key={index}
                       style={{
                         flexDirection: 'row',

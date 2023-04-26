@@ -21,6 +21,8 @@ import MrriageBureauHome from '../Screens/MrriageBureau/MrriageBureauHome';
 import SelectedReligion from '../Screens/MrriageBureau/SelectedReligion';
 import MBPersonDetails from '../Screens/MrriageBureau/MBPersonDetails';
 import OnBoarding from '../Screens/OnBoarding';
+import BusinessPersonDetails from '../Screens/Jobs/BusinessPersonDetails';
+import BusinessProfile from '../Screens/Jobs/BusinessProfile';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -43,6 +45,11 @@ const RoutingConfig = () => {
         <Stack.Screen name="SelectedReligion" component={SelectedReligion} />
         <Stack.Screen name="MBPersonDetails" component={MBPersonDetails} />
         <Stack.Screen name="JobsFilter" component={JobsFilter} />
+        <Stack.Screen name="BusinessProfile" component={BusinessProfile} />
+        <Stack.Screen
+          name="BusinessPersonDetails"
+          component={BusinessPersonDetails}
+        />
         <Stack.Screen
           name="EntrepreneurProfile"
           component={EntrepreneurProfile}
