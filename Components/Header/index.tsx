@@ -26,6 +26,7 @@ const Header = (Props: any) => {
     close,
     logoStyle,
     headerStyle,
+    onFilterPress,
   } = Props;
 
   return (
@@ -108,7 +109,7 @@ const Header = (Props: any) => {
         <TouchableOpacity
           style={{flex: 1, alignItems: 'flex-end', ...myStyle}}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('JobsFilter')}>
+          onPress={onFilterPress}>
           <Image
             source={require('../../Images/filter.png')}
             resizeMode="contain"

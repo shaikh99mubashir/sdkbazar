@@ -12,112 +12,14 @@ import React, {useState} from 'react';
 import Header from '../../../Components/Header';
 import {Color} from '../../../Constants';
 
-const AvailablePersonDetails = ({navigation}: any) => {
+const AvailablePersonDetails = ({navigation, route}: any) => {
+  const data = route.params;
+  console.log('data===>', data);
+
   const [showAll, setShowAll] = useState(false);
   const [sliceAmount, setSliceAmount] = useState(5);
 
-  const dummyData = [
-    {
-      id: 1,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 1',
-      profession: 'plumber',
-      exp: '5 year',
-    },
-    {
-      id: 2,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 2',
-      profession: 'plumber',
-      exp: '3 year',
-    },
-    {
-      id: 3,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 3',
-      profession: 'plumber',
-      exp: '7 year',
-    },
-    {
-      id: 4,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 4',
-      profession: 'plumber',
-      exp: '2 year',
-    },
-    {
-      id: 5,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 5',
-      profession: 'plumber',
-      exp: '4 year',
-    },
-    {
-      id: 6,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-    {
-      id: 7,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-    {
-      id: 8,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-    {
-      id: 9,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-    {
-      id: 10,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-    {
-      id: 11,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-    {
-      id: 12,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-    {
-      id: 13,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-    {
-      id: 14,
-      image: require('../../../Images/p1.png'),
-      name: 'Name 6',
-      profession: 'plumber',
-      exp: '6 year',
-    },
-  ];
-
-  const slicedData = dummyData.slice(0, sliceAmount);
+  const slicedData = data.filteredData.slice(0, sliceAmount);
 
   const handleViewAll = () => {
     setSliceAmount(sliceAmount + 5);
@@ -215,7 +117,13 @@ const AvailablePersonDetails = ({navigation}: any) => {
       <ScrollView
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}>
-        <Header navigation={navigation} backBtn title="Plumber" filter />
+        <Header
+          navigation={navigation}
+          backBtn
+          title={data.filteredData[0].profession}
+          filter
+          onFilterPress={() => navigation.navigate('JobsFilter', data)}
+        />
         {/* Book Now */}
         <View
           style={{
@@ -237,7 +145,7 @@ const AvailablePersonDetails = ({navigation}: any) => {
         </View>
         {/* Cards */}
         <FlatList
-          data={showAll ? dummyData : slicedData}
+          data={showAll ? data && data.filteredData : slicedData}
           renderItem={renderItem}
           nestedScrollEnabled={true}
           keyExtractor={item => item.id.toString()}

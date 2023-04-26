@@ -22,112 +22,98 @@ const {width, height} = Dimensions.get('window');
 const JobsHome = ({navigation}: any) => {
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
   const [serviceDD, setServiceDD] = useState(false);
+  const [specialized, setSpecialized]: any = useState([]);
+  const [specializedDD, setspecializedDD] = useState(false);
+  // Entrepreneur
   const SelectService = [
     {
       id: 1,
       type: 'Labour',
       service: 'Plumber',
+      name: 'Name 1',
+      profession: 'plumber',
+      exp: '5 year',
     },
     {
       id: 2,
       type: 'Labour',
       service: 'Plumber',
+      name: 'Name 2',
+      profession: 'plumber',
+      exp: '5 year',
     },
     {
       id: 3,
       type: 'Labour',
       service: 'Carpenter',
+      name: 'Name 3',
+      profession: 'Carpenter',
+      exp: '5 year',
     },
     {
       id: 4,
       type: 'Developer',
       service: 'Web Developer',
+      name: 'Name 4',
+      profession: 'Web Developer',
+      exp: '5 year',
     },
     {
       id: 5,
       type: 'Developer',
       service: 'Mobile Developer',
+      name: 'Name 5',
+      profession: 'Mobile Developer',
+      exp: '5 year',
     },
     {
       id: 6,
       type: 'Developer',
       service: 'Ful Stack Developer',
+      name: 'Name 6',
+      profession: 'Ful Stack Developer',
+      exp: '5 year',
     },
     {
       id: 7,
       type: 'Designer',
       service: 'Logo',
+      name: 'Name 7',
+      profession: 'Logo',
+      exp: '5 year',
     },
     {
       id: 8,
       type: 'Designer',
       service: 'Social Media Post',
+      name: 'Name 8',
+      profession: 'Social Media Post',
+      exp: '5 year',
     },
     {
       id: 9,
       type: 'Designer',
       service: '3D',
+      name: 'Name 9',
+      profession: '3D',
+      exp: '5 year',
     },
   ];
-
-  console.log('selectedServicedata', selectedServicedata);
 
   const SelectedServices = (item: any) => {
     setSelectedServicedata(item);
     setServiceDD(!serviceDD);
   };
-  const [specialized, setSpecialized]: any = useState([]);
-  const [specializedDD, setspecializedDD] = useState(false);
-  const Selectspecialized = [
-    {
-      id: 1,
-      type: 'Labour',
-      service: 'Plumber',
-    },
-    {
-      id: 2,
-      type: 'Labour',
-      service: 'Plumber',
-    },
-    {
-      id: 3,
-      type: 'Labour',
-      service: 'Carpenter',
-    },
-    {
-      id: 4,
-      type: 'Developer',
-      service: 'Web Developer',
-    },
-    {
-      id: 5,
-      type: 'Developer',
-      service: 'Mobile Developer',
-    },
-    {
-      id: 6,
-      type: 'Developer',
-      service: 'Ful Stack Developer',
-    },
-    {
-      id: 7,
-      type: 'Designer',
-      service: 'Logo',
-    },
-    {
-      id: 8,
-      type: 'Social Media Post',
-    },
-    {
-      id: 5,
-      type: 'Designer',
-      service: '3D',
-    },
-  ];
 
   const SelectedSpecialized = (item: any) => {
-    console.log(item);
     setSpecialized(item);
+    const filteredData = SelectService.filter(
+      service =>
+        service.type === selectedServicedata.type &&
+        service.profession === item.profession,
+    );
+
+    navigation.navigate('AvailablePersonDetails', {filteredData});
     setspecializedDD(!specializedDD);
   };
 
@@ -179,7 +165,6 @@ const JobsHome = ({navigation}: any) => {
             marginHorizontal: 20,
             flexDirection: 'row',
             gap: 10,
-            // flex: 1,
           }}>
           <View style={{width: '50%'}}>
             <View>
@@ -350,15 +335,80 @@ const JobsHome = ({navigation}: any) => {
                 borderBottomStartRadius: 8,
               }}>
               {specializedDD == true &&
-                Selectspecialized.map((item, index) => (
-                  <TouchableOpacity
-                    onPress={() => SelectedSpecialized(item)}
-                    key={index}
+                SelectService.filter(
+                  item => item.type === selectedServicedata.type,
+                )
+                  .reduce((unique: any, item: any) => {
+                    return unique.some((i: any) => i.service === item.service)
+                      ? unique
+                      : [...unique, item];
+                  }, [])
+                  .map((item: any, index: any) => (
+                    <TouchableOpacity
+                      onPress={() => SelectedSpecialized(item)}
+                      key={index}
+                      style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: 20,
+                        marginVertical: 5,
+                        gap: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: Color.textColor,
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 16,
+                        }}>
+                        {item.service}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+            </View>
+          </View>
+        </View>
+      </>
+    );
+  }, [
+    specializedDD,
+    specialized,
+    selectedServicedata,
+    serviceDD,
+    SelectService,
+  ]);
+
+  const secondRoute = useCallback(() => {
+    return (
+      <>
+        <View
+          style={{
+            marginVertical: 0,
+            marginHorizontal: 20,
+            flexDirection: 'row',
+            gap: 10,
+          }}>
+          <View style={{width: '50%'}}>
+            <View>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setServiceDD(!serviceDD)}
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  borderWidth: 1,
+                  marginTop: 20,
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  borderRadius: 5,
+                  borderColor: Color.textColor,
+                  alignItems: 'center',
+                }}>
+                {selectedServicedata &&
+                Object.keys(selectedServicedata).length > 0 ? (
+                  <View
                     style={{
                       flexDirection: 'row',
-                      paddingHorizontal: 20,
-                      marginVertical: 5,
-                      gap: 10,
+                      justifyContent: 'space-between',
+                      width: '100%',
                     }}>
                     <Text
                       style={{
@@ -366,35 +416,189 @@ const JobsHome = ({navigation}: any) => {
                         fontFamily: 'Poppins-SemiBold',
                         fontSize: 16,
                       }}>
-                      {item.service}
+                      {selectedServicedata.type &&
+                      selectedServicedata.type.length > 10
+                        ? selectedServicedata.type.slice(0, 10)
+                        : selectedServicedata.type}
                     </Text>
-                  </TouchableOpacity>
-                ))}
+                    {serviceDD ? (
+                      <Icon name="chevron-up-sharp" size={20} color="black" />
+                    ) : (
+                      <Icon name="chevron-down-sharp" size={20} color="black" />
+                    )}
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                    }}>
+                    <Text
+                      style={{
+                        color: Color.textColor,
+                        fontFamily: 'Poppins-SemiBold',
+                        fontSize: 16,
+                      }}>
+                      Profession
+                    </Text>
+                    {serviceDD ? (
+                      <Icon name="chevron-up-sharp" size={20} color="black" />
+                    ) : (
+                      <Icon name="chevron-down-sharp" size={20} color="black" />
+                    )}
+                  </View>
+                )}
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                borderBottomEndRadius: 8,
+                borderBottomStartRadius: 8,
+              }}>
+              {serviceDD == true &&
+                Array.from(new Set(SelectService.map(item => item.type))).map(
+                  (type, index) => (
+                    <TouchableOpacity
+                      onPress={() =>
+                        SelectedServices(
+                          SelectService.find(item => item.type === type),
+                        )
+                      }
+                      key={index}
+                      style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: 20,
+                        marginVertical: 5,
+                        gap: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: Color.textColor,
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 16,
+                        }}>
+                        {type}
+                      </Text>
+                    </TouchableOpacity>
+                  ),
+                )}
+            </View>
+          </View>
+          <View style={{width: '50%'}}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                OnPressSpecialization();
+              }}
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                borderWidth: 1,
+                marginTop: 20,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 5,
+                borderColor: Color.textColor,
+                alignItems: 'center',
+              }}>
+              {specialized && Object.keys(specialized).length > 0 ? (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontFamily: 'Poppins-SemiBold',
+                      fontSize: 16,
+                    }}>
+                    {specialized.service && specialized.service.length > 10
+                      ? specialized.service.slice(0, 10)
+                      : specialized.service}
+                  </Text>
+                  {specializedDD ? (
+                    <Icon name="chevron-up-sharp" size={20} color="black" />
+                  ) : (
+                    <Icon name="chevron-down-sharp" size={20} color="black" />
+                  )}
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontFamily: 'Poppins-SemiBold',
+                      fontSize: 16,
+                    }}>
+                    Specialized
+                  </Text>
+                  {specializedDD ? (
+                    <Icon name="chevron-up-sharp" size={20} color="black" />
+                  ) : (
+                    <Icon name="chevron-down-sharp" size={20} color="black" />
+                  )}
+                </View>
+              )}
+            </TouchableOpacity>
+
+            <View
+              style={{
+                borderBottomEndRadius: 8,
+                borderBottomStartRadius: 8,
+              }}>
+              {specializedDD == true &&
+                SelectService.filter(
+                  item => item.type === selectedServicedata.type,
+                )
+                  .reduce((unique: any, item: any) => {
+                    return unique.some((i: any) => i.service === item.service)
+                      ? unique
+                      : [...unique, item];
+                  }, [])
+                  .map((item: any, index: any) => (
+                    <TouchableOpacity
+                      onPress={() => SelectedSpecialized(item)}
+                      key={index}
+                      style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: 20,
+                        marginVertical: 5,
+                        gap: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: Color.textColor,
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 16,
+                        }}>
+                        {item.service}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
             </View>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AvailablePersonDetails')}>
-          <Text style={{color: 'black'}}>Move to Details</Text>
-        </TouchableOpacity>
       </>
     );
   }, [
     specializedDD,
     specialized,
-    Selectspecialized,
     selectedServicedata,
     serviceDD,
     SelectService,
   ]);
 
-  const secondRoute = useCallback(() => {
-    return <View style={{marginVertical: 0}}></View>;
-  }, []);
-
   return (
     <>
-      <ScrollView style={{flex: 1, borderWidth: 1, borderColor: 'red'}}>
+      <ScrollView style={{flex: 1}}>
         <View
           style={{
             backgroundColor: Color.mainColor,
