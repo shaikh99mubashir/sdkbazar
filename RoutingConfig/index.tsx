@@ -12,7 +12,6 @@ import OtpScreen from '../Screens/OtpScreen';
 import ForgotPassword from '../Screens/ForgotPassword';
 import NewPassword from '../Screens/NewPassword';
 import Notification from '../Screens/Notification';
-import Food from '../Screens/Food';
 import JobsHome from '../Screens/Jobs/JobsHome';
 import AvailablePersonDetails from '../Screens/Jobs/AvailablePersonDetails';
 import JobsFilter from '../Screens/Jobs/JobsFilter';
@@ -23,6 +22,7 @@ import MBPersonDetails from '../Screens/MrriageBureau/MBPersonDetails';
 import OnBoarding from '../Screens/OnBoarding';
 import BusinessPersonDetails from '../Screens/Jobs/BusinessPersonDetails';
 import BusinessProfile from '../Screens/Jobs/BusinessProfile';
+import Food from '../Screens/Foods/Food';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
