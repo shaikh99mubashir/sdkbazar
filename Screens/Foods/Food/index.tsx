@@ -20,13 +20,7 @@ import CustomTabView from '../../../Components/CustomTabView';
 import Video from 'react-native-video';
 const {width, height} = Dimensions.get('window');
 const Food = ({navigation}: any) => {
-  const [selectedServicedata, setSelectedServicedata]: any = useState({});
-  const [serviceDD, setServiceDD] = useState(false);
-  const [specialized, setSpecialized]: any = useState([]);
-  const [specializedDD, setspecializedDD] = useState(false);
-
-  // Entrepreneur
-  const SelectService = [
+  const [selectService, setSelectService] = useState([
     {
       id: 1,
       type: 'DeliveryService',
@@ -81,7 +75,7 @@ const Food = ({navigation}: any) => {
       exp: '5 year',
       rating: 4.2,
     },
-  ];
+  ]);
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -101,8 +95,6 @@ const Food = ({navigation}: any) => {
         currentTab.length > 0 &&
         currentTab.map((e: any, i: any) => {
           if (e.index == index) {
-            setSelectedServicedata();
-            setSpecialized();
             return {
               ...e,
               selected: true,
@@ -115,6 +107,13 @@ const Food = ({navigation}: any) => {
           }
         }),
     );
+  };
+
+  const DeliveryService = (item: string) => {
+    console.log(item);
+    const filterItem = selectService.filter((x: any) => x.type == item);
+    console.log('filterItem', filterItem);
+    navigation.navigate('NearByRestaurant', filterItem);
   };
 
   const firstRoute = useCallback(() => {
@@ -130,8 +129,8 @@ const Food = ({navigation}: any) => {
           <View style={{width: '50%'}}>
             <View>
               <TouchableOpacity
+                onPress={() => DeliveryService('DeliveryService')}
                 activeOpacity={0.8}
-                onPress={() => setServiceDD(!serviceDD)}
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -169,7 +168,6 @@ const Food = ({navigation}: any) => {
             <View>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => setServiceDD(!serviceDD)}
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -206,13 +204,7 @@ const Food = ({navigation}: any) => {
         </View>
       </>
     );
-  }, [
-    specializedDD,
-    specialized,
-    selectedServicedata,
-    serviceDD,
-    SelectService,
-  ]);
+  }, []);
 
   const secondRoute = useCallback(() => {
     return (
@@ -228,7 +220,6 @@ const Food = ({navigation}: any) => {
             <View>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => setServiceDD(!serviceDD)}
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -266,7 +257,6 @@ const Food = ({navigation}: any) => {
             <View>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => setServiceDD(!serviceDD)}
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -303,13 +293,7 @@ const Food = ({navigation}: any) => {
         </View>
       </>
     );
-  }, [
-    specializedDD,
-    specialized,
-    selectedServicedata,
-    serviceDD,
-    SelectService,
-  ]);
+  }, []);
 
   return (
     <>

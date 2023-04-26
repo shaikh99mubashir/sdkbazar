@@ -23,6 +23,7 @@ import OnBoarding from '../Screens/OnBoarding';
 import BusinessPersonDetails from '../Screens/Jobs/BusinessPersonDetails';
 import BusinessProfile from '../Screens/Jobs/BusinessProfile';
 import Food from '../Screens/Foods/Food';
+import NearByRestaurant from '../Screens/Foods/NearByRestaurant';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -40,6 +41,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="HomeScreen" component={DrawerNavigation} />
         <Stack.Screen name="Food" component={Food} />
+        <Stack.Screen name="NearByRestaurant" component={NearByRestaurant} />
         <Stack.Screen name="MrriageBureauHome" component={MrriageBureauHome} />
         <Stack.Screen name="JobsHome" component={JobsHome} />
         <Stack.Screen name="SelectedReligion" component={SelectedReligion} />

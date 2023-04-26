@@ -26,6 +26,7 @@ interface Props {
   onFilterPress?: any;
   cart?: boolean;
   cartStyle?: string;
+  backBtnColor?: string;
 }
 
 const Header = (Props: Props) => {
@@ -44,6 +45,7 @@ const Header = (Props: Props) => {
     onFilterPress,
     cart,
     cartStyle,
+    backBtnColor,
   } = Props;
 
   return (
@@ -77,7 +79,11 @@ const Header = (Props: Props) => {
           }}
           onPress={() => navigation.goBack()}>
           <Text>
-            <Icon name="md-chevron-back" size={30} color="black" />
+            <Icon
+              name="md-chevron-back"
+              size={30}
+              color={backBtnColor ? backBtnColor : 'black'}
+            />
           </Text>
         </TouchableOpacity>
       ) : (
