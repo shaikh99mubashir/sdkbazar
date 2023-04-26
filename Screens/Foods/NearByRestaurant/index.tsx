@@ -4,7 +4,9 @@ import {
   View,
   ScrollView,
   TextInput,
+  Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import React from 'react';
 import {Color} from '../../../Constants';
@@ -75,6 +77,19 @@ const NearByRestaurant = ({navigation, route}: any) => {
           }}>
           Near By Restaurants
         </Text>
+      </View>
+      <View style={{alignItems: 'center'}}>
+        <Image
+          source={require('../../../Images/rbg.png')}
+          resizeMode="stretch"
+          style={{
+            width: Dimensions.get('screen').width / 1.05,
+            height: 180,
+            paddingHorizontal: 10,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+          }}
+        />
       </View>
     </ScrollView>
   );
