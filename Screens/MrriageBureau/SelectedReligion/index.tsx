@@ -301,8 +301,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    // backgroundColor: '#fff',
-    // paddingHorizontal: 9,
     paddingVertical: 5,
     width: '100%',
   },
@@ -317,7 +315,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    // backgroundColor: 'white',
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 6,
@@ -332,9 +329,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   modalContainer: {
-    // flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
     backgroundColor: '#fff',
     borderColor: Color.textColor,
     borderRadius: 10,
