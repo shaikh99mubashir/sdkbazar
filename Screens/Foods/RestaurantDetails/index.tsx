@@ -145,7 +145,6 @@ const RestaurantDetails = ({navigation, route}: any) => {
       </View>
 
       {/* food category */}
-
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View
           style={{
@@ -557,7 +556,9 @@ const RestaurantDetails = ({navigation, route}: any) => {
                     }}>
                     Rs: 5454
                   </Text>
-                  <TouchableOpacity activeOpacity={0.8}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => navigation.navigate('AddToCart', e)}>
                     <AntDesign name="shoppingcart" size={25} color="purple" />
                   </TouchableOpacity>
                 </View>
@@ -574,7 +575,6 @@ export default RestaurantDetails;
 const styles = StyleSheet.create({
   cancleButtonText: {
     color: Color.mainColor,
-    // fontSize: 16,
     textAlign: 'center',
     fontWeight: 'bold',
   },

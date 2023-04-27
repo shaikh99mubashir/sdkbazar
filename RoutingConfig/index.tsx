@@ -26,6 +26,7 @@ import Food from '../Screens/Foods/Food';
 import NearByRestaurant from '../Screens/Foods/NearByRestaurant';
 import FoodDetails from '../Screens/Foods/FoodDetails';
 import RestaurantDetails from '../Screens/Foods/RestaurantDetails';
+import AddToCart from '../Screens/Foods/AddToCart';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -46,6 +47,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="NearByRestaurant" component={NearByRestaurant} />
         <Stack.Screen name="RestaurantDetails" component={RestaurantDetails} />
         <Stack.Screen name="FoodDetails" component={FoodDetails} />
+        <Stack.Screen name="AddToCart" component={AddToCart} />
         <Stack.Screen name="MrriageBureauHome" component={MrriageBureauHome} />
         <Stack.Screen name="JobsHome" component={JobsHome} />
         <Stack.Screen name="SelectedReligion" component={SelectedReligion} />
