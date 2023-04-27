@@ -27,6 +27,7 @@ interface Props {
   cart?: boolean;
   cartStyle?: string;
   backBtnColor?: string;
+  titleColor?: any;
 }
 
 const Header = (Props: Props) => {
@@ -46,6 +47,7 @@ const Header = (Props: Props) => {
     cart,
     cartStyle,
     backBtnColor,
+    titleColor,
   } = Props;
 
   return (
@@ -99,7 +101,7 @@ const Header = (Props: Props) => {
             style={{
               fontFamily: 'Poppins-Regular',
               fontSize: 20,
-              color: Color.mainColor,
+              color: titleColor ? titleColor : Color.mainColor,
               marginVertical: 15,
               fontWeight: 'bold',
             }}>

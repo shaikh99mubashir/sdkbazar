@@ -24,7 +24,7 @@ const Food = ({navigation}: any) => {
     {
       id: 1,
       type: 'DeliveryService',
-      resturantName: 'abc',
+      resturantName: 'Chef Art Resturant',
       name: 'Name 1',
       location: '2.8 mile',
       exp: '5 year',
@@ -33,7 +33,7 @@ const Food = ({navigation}: any) => {
     {
       id: 2,
       type: 'DeliveryService',
-      resturantName: 'qazx',
+      resturantName: 'ABC Resturant',
       name: 'Name 2',
       location: '2.8 mile',
       exp: '5 year',
@@ -51,7 +51,7 @@ const Food = ({navigation}: any) => {
     {
       id: 4,
       type: 'Self Service',
-      resturantName: 'dfsf regf',
+      resturantName: 'Chef Art Resturant',
       name: 'Name 4',
       location: '2.8 mile',
       exp: '5 year',

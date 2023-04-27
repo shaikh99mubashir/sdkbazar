@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Color} from '../../../Constants';
 import Header from '../../../Components/Header';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -65,6 +65,7 @@ const NearByRestaurant = ({navigation, route}: any) => {
           </TouchableOpacity>
         </View>
       </View>
+      {/* Near By Restaurants */}
       <View
         style={{
           paddingHorizontal: 15,
@@ -80,102 +81,119 @@ const NearByRestaurant = ({navigation, route}: any) => {
         </Text>
       </View>
       {/* Card */}
-      <View
-        style={{
-          backgroundColor: Color.lightgrey,
-          height: 200,
-          width: Dimensions.get('screen').width / 1.1,
-          borderRadius: 20,
-          shadowOpacity: 1,
-          shadowRadius: 20,
-          elevation: 13,
-          alignSelf: 'center',
-          marginBottom: 15,
-        }}>
-        <Image
-          source={require('../../../Images/rbg.png')}
-          resizeMode="stretch"
-          style={{
-            width: Dimensions.get('screen').width / 1.1,
-            height: 130,
-            paddingHorizontal: 10,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-          }}
-        />
-        <View
-          style={{
-            width: '90%',
-            alignItems: 'flex-start',
-            justifyContent: 'space-around',
-            padding: 10,
-            marginTop: 5,
-          }}>
-          <View style={{borderRadius: 20}}>
-            <Text
+      {data &&
+        data.length > 0 &&
+        data.map((e: any, i: number) => {
+          return (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('RestaurantDetails', e)}
+              activeOpacity={0.8}
               style={{
-                fontSize: 16,
-                color: Color.mainColor,
-                fontFamily: 'Poppins-SemiBold',
+                backgroundColor: Color.lightgrey,
+                height: 210,
+                width: Dimensions.get('screen').width / 1.1,
+                borderRadius: 20,
+                shadowRadius: 20,
+                elevation: 6,
+                alignSelf: 'center',
+                marginBottom: 15,
               }}>
-              Chef Art Resturant
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '100%',
-              }}>
+              <Image
+                source={require('../../../Images/rbg.png')}
+                resizeMode="stretch"
+                style={{
+                  width: Dimensions.get('screen').width / 1.1,
+                  height: 130,
+                  paddingHorizontal: 10,
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                }}
+              />
               <View
-                style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
-                <FontAwesome
-                  name="map-marker"
-                  size={20}
-                  color={Color.mainColor}
+                style={{
+                  width: '90%',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-around',
+                  padding: 10,
+                  marginTop: 5,
+                }}>
+                <View style={{borderRadius: 20}}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: Color.mainColor,
+                      fontFamily: 'Poppins-SemiBold',
+                    }}>
+                    {e.resturantName}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        gap: 5,
+                        alignItems: 'center',
+                      }}>
+                      <FontAwesome
+                        name="map-marker"
+                        size={20}
+                        color={Color.mainColor}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: Color.mainColor,
+                          fontFamily: 'Poppins-SemiBold',
+                        }}>
+                        1.5 miles away
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        gap: 5,
+                        alignItems: 'center',
+                      }}>
+                      <FontAwesome name="star" size={15} color="gold" />
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: Color.mainColor,
+                          fontFamily: 'Poppins-SemiBold',
+                        }}>
+                        4.2
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              {/* Restaurant Logo */}
+              <View
+                style={{
+                  position: 'absolute',
+                  right: 30,
+                  top: 90,
+                  flex: 1,
+                  zIndex: 100,
+                  backgroundColor: 'white',
+                  padding: 5,
+                  borderRadius: 50,
+                  shadowRadius: 50,
+                  elevation: 8,
+                }}>
+                <Image
+                  source={require('../../../Images/reslogo.png')}
+                  style={{width: 50, height: 50}}
+                  resizeMode="contain"
                 />
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: Color.mainColor,
-                    fontFamily: 'Poppins-SemiBold',
-                  }}>
-                  1.5 miles away
-                </Text>
               </View>
-              <View
-                style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
-                <FontAwesome name="star" size={15} color="gold" />
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: Color.mainColor,
-                    fontFamily: 'Poppins-SemiBold',
-                  }}>
-                  4.2
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        {/* Restaurant Logo */}
-        <View
-          style={{
-            position: 'absolute',
-            right: 30,
-            top: 90,
-            flex: 1,
-            zIndex: 100,
-            backgroundColor: 'white',
-            padding: 5,
-            borderRadius: 50,
-          }}>
-          <Image
-            source={require('../../../Images/reslogo.png')}
-            style={{width: 50, height: 50}}
-            resizeMode="contain"
-          />
-        </View>
-      </View>
+            </TouchableOpacity>
+          );
+        })}
     </ScrollView>
   );
 };
