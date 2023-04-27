@@ -24,8 +24,8 @@ import BusinessPersonDetails from '../Screens/Jobs/BusinessPersonDetails';
 import BusinessProfile from '../Screens/Jobs/BusinessProfile';
 import Food from '../Screens/Foods/Food';
 import NearByRestaurant from '../Screens/Foods/NearByRestaurant';
+import FoodDetails from '../Screens/Foods/FoodDetails';
 import RestaurantDetails from '../Screens/Foods/RestaurantDetails';
-import FoodDetails from '../Screens/Foods/Food/FoodDetails';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {

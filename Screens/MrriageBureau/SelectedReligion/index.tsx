@@ -90,8 +90,6 @@ const SelectedReligion = ({navigation, route}: any) => {
                     ) === i,
                 )
                 .map((e: any, i: number) => {
-                  console.log('e', e);
-
                   const isSelected = e.subCategory === selectedSubCategory;
                   return (
                     <TouchableOpacity
