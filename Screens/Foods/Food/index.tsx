@@ -110,9 +110,7 @@ const Food = ({navigation}: any) => {
   };
 
   const DeliveryService = (item: string) => {
-    console.log(item);
     const filterItem = selectService.filter((x: any) => x.type == item);
-    console.log('filterItem', filterItem);
     navigation.navigate('NearByRestaurant', filterItem);
   };
 
@@ -363,7 +361,7 @@ const Food = ({navigation}: any) => {
                 width: width / 1.11,
                 borderRadius: 25,
               }}
-              onError={error => console.log(error, 'error')}
+              // onError={error => console.log(error, 'error')}
             />
           </View>
         </View>

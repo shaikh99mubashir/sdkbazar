@@ -7,14 +7,53 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Color} from '../../../Constants';
 import Header from '../../../Components/Header';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useDispatch, useSelector} from 'react-redux';
+import {AddToCart, EditToCart} from '../../../Redux/Reducers/Reducers';
 const RestaurantDetails = ({navigation, route}: any) => {
   const data = route.params;
+
+  const [cartData, setCartData] = useState<any>([]);
+  const [isCartData, setIsCartData]: any = useState([]);
+
+  const dispatch = useDispatch();
+
+  const cart: any = useSelector(a => a);
+
+  // console.log(cartData?.user?.cart, '<================= cart Data');
+
+  useEffect(() => {
+    // console.log(cart?.user.cart, '<================= cart Data');
+    setIsCartData(cart?.user?.cart);
+  }, [cart]);
+
+  const addCartData = (e: any) => {
+    const newData = [...cartData, e];
+    const dataToDispatch: any = isCartData.length
+      ? [...isCartData, e]
+      : newData;
+    dispatch(AddToCart(dataToDispatch));
+    setCartData(newData);
+  };
+
+  // const addCartData = (e: any) => {
+  //   // console.log('working');
+  //   setCartData([...cartData, e]);
+  //   console.log(isCartData, '<======== check Data');
+  //   if (isCartData && isCartData.length > 0) {
+  //     dispatch(AddToCart([...isCartData, e]));
+  //   } else {
+  //     if (cartData && cartData.length > 0) {
+  //       // console.log(cartData, 'cartData');
+  //       dispatch(AddToCart(cartData));
+  //     }
+  //   }
+  // };
 
   const [searchText, setSearchText] = useState('');
   const [selectService, setSelectService] = useState([
@@ -558,7 +597,7 @@ const RestaurantDetails = ({navigation, route}: any) => {
                   </Text>
                   <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => navigation.navigate('AddToCart', e)}>
+                    onPress={() => addCartData(e)}>
                     <AntDesign name="shoppingcart" size={25} color="purple" />
                   </TouchableOpacity>
                 </View>

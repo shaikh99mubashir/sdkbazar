@@ -153,6 +153,7 @@ const Header = (Props: Props) => {
         </TouchableOpacity>
       ) : cart ? (
         <TouchableOpacity
+          onPress={() => navigation.navigate('AddToCart')}
           style={{flex: 1, alignItems: 'flex-end', ...myStyle}}
           activeOpacity={0.8}>
           <AntDesign name="shoppingcart" size={30} color={cartStyle} />
