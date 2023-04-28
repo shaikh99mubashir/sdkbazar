@@ -12,14 +12,14 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    AddToCart: (state, action: PayloadAction<any[]>) => {
+    addToCart: (state, action: PayloadAction<any[]>) => {
       state.cart = action.payload;
       console.log(action.payload, ' : Cart Data Updated in Redux');
     },
   },
 });
 
-export const {AddToCart} = userSlice.actions;
+export const {addToCart} = userSlice.actions;
 
 export const selectUser = (state: {user: UserState}) => state.user.cart;
 

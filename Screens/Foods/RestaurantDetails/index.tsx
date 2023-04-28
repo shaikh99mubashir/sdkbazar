@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
-import {AddToCart} from '../../../Redux/Reducers/Reducers';
+import {addToCart} from '../../../Redux/Reducers/Reducers';
 const RestaurantDetails = ({navigation, route}: any) => {
   const data = route.params;
   const [cartData, setCartData] = useState<any>([]);
@@ -77,13 +77,41 @@ const RestaurantDetails = ({navigation, route}: any) => {
   }, [cart]);
 
   const addCartData = (e: any) => {
-    const newData = [...cartData, e];
-    const dataToDispatch: any = isCartData.length
-      ? [...isCartData, e]
-      : newData;
-    dispatch(AddToCart(dataToDispatch));
-    setCartData(newData);
+    const existingItem = cartData.find((item: any) => item.id === e.id);
+    if (existingItem) {
+      // If item already exists in cart, update its quantity
+      const updatedItem = {
+        ...existingItem,
+        quantity: existingItem.quantity + 1,
+      };
+      const newData = cartData.map((item: any) =>
+        item.id === e.id ? updatedItem : item,
+      );
+      const dataToDispatch = isCartData.length
+        ? [...isCartData, updatedItem]
+        : [updatedItem];
+      dispatch(addToCart(dataToDispatch));
+      setCartData(newData);
+    } else {
+      // If item doesn't exist in cart, add it as a new item
+      const newItem = {...e, quantity: 1};
+      const newData = [...cartData, newItem];
+      const dataToDispatch = isCartData.length
+        ? [...isCartData, newItem]
+        : [newItem];
+      dispatch(addToCart(dataToDispatch));
+      setCartData(newData);
+    }
   };
+
+  // const addCartData = (e: any) => {
+  //   const newData = [...cartData, e];
+  //   const dataToDispatch: any = isCartData.length
+  //     ? [...isCartData, e]
+  //     : newData;
+  //   dispatch(addToCart(dataToDispatch));
+  //   setCartData(newData);
+  // };
 
   const handleCategoryClick = (e: any) => {
     setSelectedSubCategory(e.Foodtype);
