@@ -89,7 +89,7 @@ const JobsFilter = ({navigation}: any) => {
     },
   ];
 
-  console.log('selectedServicedata', selectedServicedata);
+  // console.log('selectedServicedata', selectedServicedata);
 
   const SelectedServices = (item: any) => {
     setSelectedServicedata(item);
