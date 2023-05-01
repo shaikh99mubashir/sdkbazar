@@ -30,7 +30,6 @@ const FoodDetails = ({navigation, route}: any) => {
 
   const NavigateToCheckout = () => {
     navigation.navigate('Checkout', {cartData: data, quantity: quantity});
-    // console.log('running');
   };
 
   return (
