@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
+import MapView, {PROVIDER_DEFAULT} from 'react-native-maps';
 import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -127,7 +128,9 @@ const HomeScreen = ({navigation}: any) => {
               Jobs
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('MrriageBureauHome')}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('MrriageBureauHome')}>
             <Image
               source={require('../../Images/Marriage.png')}
               style={{width: 110, height: 110, borderRadius: 5}}
@@ -152,6 +155,39 @@ const HomeScreen = ({navigation}: any) => {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style={{flex: 1}}></View>
+        <MapView
+          provider={PROVIDER_DEFAULT}
+          style={styles.map}
+          mapType="standard"
+          region={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121,
+          }}
+          customMapStyle={[
+            {
+              featureType: 'all',
+              elementType: 'geometry',
+              stylers: [
+                {
+                  color: '#333333',
+                },
+              ],
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry.stroke',
+              stylers: [
+                {
+                  color: '#ffffff',
+                },
+              ],
+            },
+          ]}
+          pitchEnabled={false}
+        />
       </View>
     </>
   );
@@ -171,5 +207,8 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     marginHorizontal: 5,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
