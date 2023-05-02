@@ -5,15 +5,38 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Color} from '../../../Constants';
 import Header from '../../../Components/Header';
-
+import {useDispatch, useSelector} from 'react-redux';
 const Checkout = ({navigation, route}: any) => {
   const data = route.params;
-  console.log('data', data);
+  const [isCartData, setIsCartData]: any = useState([]);
+  // console.log('data', data);
+  const cart: any = useSelector(data => data);
+
+  useEffect(() => {
+    setIsCartData(cart?.user?.cart);
+  }, [cart]);
+
+  // console.log('isCartData', isCartData);
+
   const [editNumber, setEditNumber] = useState<boolean>(false);
+  const subTotal = isCartData.map((item: any) => {
+    let total = item.price * item.quantity;
+    return Number(total);
+  });
+
+  const subTotalAmount =
+    subTotal &&
+    subTotal.length > 0 &&
+    subTotal.reduce((total: number, current: number) => {
+      return total + current;
+    }, 0);
+
+  const TotalAmount = subTotalAmount + 3 + 99;
 
   return (
     <View
@@ -155,27 +178,165 @@ const Checkout = ({navigation, route}: any) => {
           }}>
           Order Summary
         </Text>
+
         <View
           style={{
             backgroundColor: Color.white,
             elevation: 10,
             padding: 10,
             borderRadius: 10,
+          }}>
+          <ScrollView style={{height: 80}} showsVerticalScrollIndicator={false}>
+            {isCartData &&
+              isCartData.map((e: any, i: number) => {
+                return (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        gap: 10,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color: Color.mainColor,
+                          fontFamily: 'Poppins-SemiBold',
+                        }}>
+                        {e.quantity}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color: Color.mainColor,
+                          fontFamily: 'Poppins-SemiBold',
+                        }}>
+                        {e.foodName}
+                      </Text>
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: Color.mainColor,
+                        fontFamily: 'Poppins-SemiBold',
+                      }}>
+                      Rs.{e.price}
+                    </Text>
+                  </View>
+                );
+              })}
+          </ScrollView>
+          <View
+            style={{
+              borderTopWidth: 1,
+              borderTopColor: Color.textColor,
+              marginTop: 10,
+            }}></View>
+          {/* subtotal */}
+          <View
+            style={{
+              marginTop: 10,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.textColor,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              SubTotal
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.textColor,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Rs. {subTotalAmount}
+            </Text>
+          </View>
+          {/* Delivery Fee */}
+          <View
+            style={{
+              marginTop: 5,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.textColor,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Delivery Fee
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.textColor,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Rs. 99.00
+            </Text>
+          </View>
+          {/* Platform Fee */}
+          <View
+            style={{
+              marginTop: 5,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.textColor,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Platform Fee
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.textColor,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Rs. 3.00
+            </Text>
+          </View>
+        </View>
+        {/* Total */}
+        <View
+          style={{
+            marginHorizontal: 5,
             flexDirection: 'row',
-            alignItems: 'center',
-            gap: 10,
             justifyContent: 'space-between',
+            marginTop: 30,
           }}>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 20,
               color: Color.mainColor,
               fontFamily: 'Poppins-SemiBold',
             }}>
-            {data.cartData.foodName}
+            Total
           </Text>
-          <Text>{data.cartData.price}</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              color: Color.mainColor,
+              fontFamily: 'Poppins-SemiBold',
+            }}>
+            Rs. {TotalAmount}
+          </Text>
         </View>
+        {/* confirm button */}
+        <TouchableOpacity style={styles.button}>
+          <Text style={{color: Color.white, fontSize: 18}}>Confirm</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -183,4 +344,15 @@ const Checkout = ({navigation, route}: any) => {
 
 export default Checkout;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    alignItems: 'center',
+    width: '90%',
+    borderRadius: 14,
+    marginTop: 20,
+    paddingVertical: 10,
+    backgroundColor: '#5E20F4',
+  },
+});

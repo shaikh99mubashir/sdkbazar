@@ -11,11 +11,12 @@ import Header from '../../../Components/Header';
 import {Color} from '../../../Constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart} from '../../../Redux/Reducers/Reducers';
 const FoodDetails = ({navigation, route}: any) => {
   const [quantity, setQuantity] = useState<number>(1);
   const data = route.params;
-  // console.log('data', data);
+  console.log('data', data);
 
   const minusQty = () => {
     if (quantity > 1) {
@@ -28,14 +29,48 @@ const FoodDetails = ({navigation, route}: any) => {
     setQuantity(quantity + 1);
   };
 
-  const NavigateToCheckout = () => {
-    navigation.navigate('Checkout', {cartData: data, quantity: quantity});
+  const [cartData, setCartData] = useState<any>([]);
+  const [isCartData, setIsCartData]: any = useState([]);
+  const dispatch = useDispatch();
+  const cart: any = useSelector(data => data);
+  const addCartData = () => {
+    const existingItem = cartData.find((item: any) => item.id === data.id);
+    // console.log('existingItem', existingItem);
+
+    // console.log(existingItem, 'existingItem');
+
+    if (existingItem) {
+      // If item already exists in cart, update its quantity
+      const updatedItem = {
+        ...existingItem,
+        quantity: quantity,
+      };
+      // const newData = cartData.map((item: any) =>
+      //   item.id === data.id ? updatedItem : item,
+      // );
+
+      let data = [...isCartData];
+      data = data.filter((e, i) => e.id !== updatedItem.id);
+
+      data = [...data, updatedItem];
+      dispatch(addToCart(data));
+      setCartData(data);
+    } else {
+      // If item doesn't exist in cart, add it as a new item
+      const newItem = {...data, quantity: 1};
+      const newData = [...cartData, newItem];
+      const dataToDispatch = isCartData.length
+        ? [...isCartData, newItem]
+        : [newItem];
+      dispatch(addToCart(dataToDispatch));
+      setCartData(newData);
+    }
   };
 
   return (
     <View style={{backgroundColor: Color.white, height: '100%'}}>
-      <View style={{height: '40%'}}>
-        <Header title="Food Detail" navigation={navigation} backBtn />
+      <View style={{height: '40%', marginHorizontal: 10}}>
+        <Header title="Food Detail" navigation={navigation} backBtn cart />
         <Image
           source={require('../../../Images/pizza.png')}
           style={{width: 300, height: 250, alignSelf: 'center'}}
@@ -178,10 +213,8 @@ const FoodDetails = ({navigation, route}: any) => {
             </View>
           </View>
           <View>
-            <TouchableOpacity
-              onPress={NavigateToCheckout}
-              style={styles.button}>
-              <Text style={{color: 'white', fontSize: 18}}>Order Now</Text>
+            <TouchableOpacity onPress={addCartData} style={styles.button}>
+              <Text style={{color: 'white', fontSize: 18}}>Add To Cart</Text>
             </TouchableOpacity>
           </View>
         </View>

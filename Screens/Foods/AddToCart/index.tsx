@@ -26,6 +26,8 @@ const AddToCart = ({navigation, route}: any) => {
     dispatch(addToCart(isCartData));
   }, [isCartData]);
 
+  console.log('data', isCartData);
+
   const minusQty = (item: any, index: number) => {
     setIsCartData(
       isCartData
@@ -71,7 +73,7 @@ const AddToCart = ({navigation, route}: any) => {
       return total + current;
     }, 0);
 
-  const TotalAmount = subTotalAmount + 99 + 99;
+  const TotalAmount = subTotalAmount + 3 + 99;
 
   const NavigateToCheckout = () => {
     let data = {
@@ -89,7 +91,6 @@ const AddToCart = ({navigation, route}: any) => {
         <View
           style={{
             width: '90%',
-            height: 100,
             backgroundColor: Color.white,
             elevation: 3,
             borderRadius: 10,
@@ -171,13 +172,13 @@ const AddToCart = ({navigation, route}: any) => {
   };
 
   return (
-    <>
-      <Header navigation={navigation} backBtn={true} title="My Cart" />
+    <View style={{height: '100%'}}>
       <View
         style={{
           height: (Dimensions.get('screen').width * 110) / 100,
           // marginBottom: 20,
         }}>
+        <Header navigation={navigation} backBtn={true} title="My Cart" />
         {isCartData && isCartData.length > 0 ? (
           <FlatList
             showsVerticalScrollIndicator={true}
@@ -315,7 +316,7 @@ const AddToCart = ({navigation, route}: any) => {
       ) : (
         ''
       )}
-    </>
+    </View>
   );
 };
 

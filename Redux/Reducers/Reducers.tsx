@@ -14,7 +14,7 @@ export const userSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<any[]>) => {
       state.cart = action.payload;
-      console.log(action.payload, ' : Cart Data Updated in Redux');
+      // console.log(action.payload, ' : Cart Data Updated in Redux');
     },
   },
 });

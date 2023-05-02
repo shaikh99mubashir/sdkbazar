@@ -78,6 +78,7 @@ const RestaurantDetails = ({navigation, route}: any) => {
 
   const addCartData = (e: any) => {
     const existingItem = cartData.find((item: any) => item.id === e.id);
+
     if (existingItem) {
       // If item already exists in cart, update its quantity
       const updatedItem = {
@@ -87,11 +88,13 @@ const RestaurantDetails = ({navigation, route}: any) => {
       const newData = cartData.map((item: any) =>
         item.id === e.id ? updatedItem : item,
       );
-      const dataToDispatch = isCartData.length
-        ? [...isCartData, updatedItem]
-        : [updatedItem];
-      dispatch(addToCart(dataToDispatch));
-      setCartData(newData);
+
+      let data = [...isCartData];
+      data = data.filter((e, i) => e.id !== updatedItem.id);
+
+      data = [...data, updatedItem];
+      dispatch(addToCart(data));
+      setCartData(data);
     } else {
       // If item doesn't exist in cart, add it as a new item
       const newItem = {...e, quantity: 1};
@@ -103,15 +106,6 @@ const RestaurantDetails = ({navigation, route}: any) => {
       setCartData(newData);
     }
   };
-
-  // const addCartData = (e: any) => {
-  //   const newData = [...cartData, e];
-  //   const dataToDispatch: any = isCartData.length
-  //     ? [...isCartData, e]
-  //     : newData;
-  //   dispatch(addToCart(dataToDispatch));
-  //   setCartData(newData);
-  // };
 
   const handleCategoryClick = (e: any) => {
     setSelectedSubCategory(e.Foodtype);
