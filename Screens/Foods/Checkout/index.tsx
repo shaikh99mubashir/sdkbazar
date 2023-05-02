@@ -3,7 +3,7 @@ import React from 'react';
 
 const Checkout = ({navigation, route}: any) => {
   const data = route.params;
-  console.log('data', data);
+  // console.log('data', data);
 
   return (
     <View>

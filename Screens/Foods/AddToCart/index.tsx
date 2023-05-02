@@ -79,10 +79,10 @@ const AddToCart = ({navigation, route}: any) => {
       subTotalAmount: subTotalAmount,
     };
     navigation.navigate('Checkout', {cartData: isCartData, checkoutData: data});
-    console.log('running');
+    // console.log('running');
   };
 
-  console.log('cartData?.user.cart==>', isCartData);
+  // console.log('cartData?.user.cart==>', isCartData);
   const renderCartItem = ({item, index}: any) => {
     return (
       <>
@@ -207,7 +207,6 @@ const AddToCart = ({navigation, route}: any) => {
             borderTopEndRadius: 50,
             borderTopStartRadius: 50,
             paddingVertical: 40,
-            // height: (Dimensions.get('screen').width * 60) / 100,
           }}>
           <View
             style={{
@@ -280,7 +279,8 @@ const AddToCart = ({navigation, route}: any) => {
               Rs. 99.00
             </Text>
           </View>
-          <View
+          <TouchableOpacity
+            activeOpacity={0.8}
             style={{
               marginHorizontal: 25,
               flexDirection: 'row',
@@ -303,7 +303,7 @@ const AddToCart = ({navigation, route}: any) => {
               }}>
               Rs. {TotalAmount}
             </Text>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text
               style={{color: 'white', fontSize: 18}}

@@ -527,6 +527,7 @@ const RestaurantDetails = ({navigation, route}: any) => {
           selectService.map((e: any, i: number) => {
             return (
               <TouchableOpacity
+                onPress={() => navigation.navigate('FoodDetails', e)}
                 activeOpacity={0.8}
                 key={i}
                 style={{
