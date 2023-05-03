@@ -28,6 +28,10 @@ import FoodDetails from '../Screens/Foods/FoodDetails';
 import RestaurantDetails from '../Screens/Foods/RestaurantDetails';
 import AddToCart from '../Screens/Foods/AddToCart';
 import Checkout from '../Screens/Foods/Checkout';
+import AddressDetail from '../Screens/Foods/AddressDetail';
+import PaymentMethod from '../Screens/Foods/PaymentMethod';
+import CardDetail from '../Screens/Foods/CardDetail';
+import OrderSucess from '../Screens/Foods/OrderSucess';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -50,6 +54,10 @@ const RoutingConfig = () => {
         <Stack.Screen name="FoodDetails" component={FoodDetails} />
         <Stack.Screen name="AddToCart" component={AddToCart} />
         <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="AddressDetail" component={AddressDetail} />
+        <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
+        <Stack.Screen name="CardDetail" component={CardDetail} />
+        <Stack.Screen name="OrderSucess" component={OrderSucess} />
         <Stack.Screen name="MrriageBureauHome" component={MrriageBureauHome} />
         <Stack.Screen name="JobsHome" component={JobsHome} />
         <Stack.Screen name="SelectedReligion" component={SelectedReligion} />

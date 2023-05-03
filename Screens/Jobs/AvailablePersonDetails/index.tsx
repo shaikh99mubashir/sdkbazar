@@ -14,7 +14,7 @@ import {Color} from '../../../Constants';
 
 const AvailablePersonDetails = ({navigation, route}: any) => {
   const data = route.params;
-  console.log('data===>', data);
+  // console.log('data===>', data);
 
   const [showAll, setShowAll] = useState(false);
   const [sliceAmount, setSliceAmount] = useState(5);

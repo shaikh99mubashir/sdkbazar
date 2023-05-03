@@ -61,7 +61,7 @@ const Checkout = ({navigation, route}: any) => {
           }}>
           Delivery Address
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AddressDetail')}>
           <Image
             source={require('../../../Images/editIcon.png')}
             style={{width: 20, height: 20}}
@@ -72,7 +72,7 @@ const Checkout = ({navigation, route}: any) => {
       <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
         <Image
           source={require('../../../Images/location.png')}
-          style={{width: 20, height: 20}}
+          style={{width: 20, height: 20, resizeMode: 'contain'}}
         />
         <Text
           style={{
@@ -143,6 +143,7 @@ const Checkout = ({navigation, route}: any) => {
           Payment Method
         </Text>
         <TouchableOpacity
+          onPress={() => navigation.navigate('PaymentMethod')}
           activeOpacity={0.8}
           style={{
             backgroundColor: Color.white,
@@ -186,7 +187,9 @@ const Checkout = ({navigation, route}: any) => {
             padding: 10,
             borderRadius: 10,
           }}>
-          <ScrollView style={{height: 80}} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            style={{height: isCartData.length > 2 ? 80 : 40}}
+            showsVerticalScrollIndicator={false}>
             {isCartData &&
               isCartData.map((e: any, i: number) => {
                 return (
@@ -334,7 +337,10 @@ const Checkout = ({navigation, route}: any) => {
           </Text>
         </View>
         {/* confirm button */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('OrderSucess')}
+          style={styles.button}>
           <Text style={{color: Color.white, fontSize: 18}}>Confirm</Text>
         </TouchableOpacity>
       </View>

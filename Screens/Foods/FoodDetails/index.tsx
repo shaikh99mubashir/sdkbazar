@@ -16,7 +16,7 @@ import {addToCart} from '../../../Redux/Reducers/Reducers';
 const FoodDetails = ({navigation, route}: any) => {
   const [quantity, setQuantity] = useState<number>(1);
   const data = route.params;
-  console.log('data', data);
+  // console.log('data', data);
 
   const minusQty = () => {
     if (quantity > 1) {

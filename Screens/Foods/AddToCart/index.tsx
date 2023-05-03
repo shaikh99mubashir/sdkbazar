@@ -26,7 +26,7 @@ const AddToCart = ({navigation, route}: any) => {
     dispatch(addToCart(isCartData));
   }, [isCartData]);
 
-  console.log('data', isCartData);
+  // console.log('data', isCartData);
 
   const minusQty = (item: any, index: number) => {
     setIsCartData(
