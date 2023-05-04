@@ -56,7 +56,7 @@ const HomeScreen = ({navigation}: any) => {
   }, [currentIndex]);
 
   return (
-    <>
+    <View style={{flex: 1, height: '100%'}}>
       <View
         style={{
           backgroundColor: Color.mainColor,
@@ -170,7 +170,7 @@ const HomeScreen = ({navigation}: any) => {
         })}
       </View>
 
-      <ScrollView style={{top: -110}}>
+      <ScrollView style={{top: -110, height: '100%'}}>
         <View>
           <Text
             style={{
@@ -245,34 +245,43 @@ const HomeScreen = ({navigation}: any) => {
             </TouchableOpacity>
           </View>
         </View>
-        {/* <MapView
-          provider={PROVIDER_DEFAULT}
-          style={{width: '100%', height: '48%'}}
-          mapType="standard"
-          customMapStyle={[
-            {
-              featureType: 'all',
-              elementType: 'geometry',
-              stylers: [
-                {
-                  color: '#333333',
-                },
-              ],
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry.stroke',
-              stylers: [
-                {
-                  color: '#ffffff',
-                },
-              ],
-            },
-          ]}
-          pitchEnabled={false}
-        /> */}
+        <>
+          {/* <MapView
+            provider={PROVIDER_DEFAULT}
+            style={{
+              width: '90%',
+              height: '100%',
+              position: 'absolute',
+              bottom: 0,
+              alignSelf: 'center',
+              borderRadius: 10,
+            }}
+            mapType="standard"
+            customMapStyle={[
+              {
+                featureType: 'all',
+                elementType: 'geometry',
+                stylers: [
+                  {
+                    color: '#333333',
+                  },
+                ],
+              },
+              {
+                featureType: 'road',
+                elementType: 'geometry.stroke',
+                stylers: [
+                  {
+                    color: '#ffffff',
+                  },
+                ],
+              },
+            ]}
+            pitchEnabled={false}
+          /> */}
+        </>
       </ScrollView>
-    </>
+    </View>
   );
 };
 

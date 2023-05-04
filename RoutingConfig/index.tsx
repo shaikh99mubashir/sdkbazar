@@ -32,6 +32,8 @@ import AddressDetail from '../Screens/Foods/AddressDetail';
 import PaymentMethod from '../Screens/Foods/PaymentMethod';
 import CardDetail from '../Screens/Foods/CardDetail';
 import OrderSucess from '../Screens/Foods/OrderSucess';
+import ApplyForJob from '../Screens/ApplyForJob';
+import Settings from '../Screens/Setting';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -46,6 +48,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="OtpScreen" component={OtpScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="NewPassword" component={NewPassword} />
+        <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="HomeScreen" component={DrawerNavigation} />
         <Stack.Screen name="Food" component={Food} />
@@ -64,6 +67,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="MBPersonDetails" component={MBPersonDetails} />
         <Stack.Screen name="JobsFilter" component={JobsFilter} />
         <Stack.Screen name="BusinessProfile" component={BusinessProfile} />
+        <Stack.Screen name="ApplyForJob" component={ApplyForJob} />
         <Stack.Screen
           name="BusinessPersonDetails"
           component={BusinessPersonDetails}
