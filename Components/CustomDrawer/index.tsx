@@ -20,7 +20,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Share from 'react-native-share';
-
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 const CustomDrawer = (props: any) => {
   const height = Dimensions.get('window').height;
   const width = Dimensions.get('window').width;
@@ -59,6 +59,9 @@ const CustomDrawer = (props: any) => {
   const CancelButton = () => {
     handleCloseModal();
   };
+
+  const navigation = useNavigation();
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView
@@ -130,19 +133,19 @@ const CustomDrawer = (props: any) => {
           {openDD ? (
             <View style={{marginLeft: 40, marginTop: 5, gap: 8}}>
               <TouchableOpacity
-                onPress={() => props.navigation.navigate('Food')}
+                onPress={() => props.navigation.navigate('HomeScreen')}
                 style={{flexDirection: 'row'}}>
                 <Entypo name="dot-single" size={20} color="white" />
                 <Text style={{color: Color.white}}>Food</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => props.navigation.navigate('JobsHome')}
+                onPress={() => props.navigation.navigate('HomeScreen')}
                 style={{flexDirection: 'row'}}>
                 <Entypo name="dot-single" size={20} color="white" />
                 <Text style={{color: Color.white}}>Job</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => props.navigation.navigate('MrriageBureauHome')}
+                onPress={() => props.navigation.navigate('HomeScreen')}
                 style={{flexDirection: 'row'}}>
                 <Entypo name="dot-single" size={20} color="white" />
                 <Text style={{color: Color.white}}>Marriage Bureau</Text>

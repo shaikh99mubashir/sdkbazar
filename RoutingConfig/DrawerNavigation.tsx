@@ -8,6 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomDrawer from '../Components/CustomDrawer';
 import HomeScreen from '../Screens/HomeScreen';
 import Profile from '../Screens/Profile';
+import Food from '../Screens/Foods/Food';
 // import Share from '../Screens/Share';
 
 const Drawer = createDrawerNavigator();
@@ -39,6 +40,15 @@ function DrawerNavigation() {
       <Drawer.Screen
         name="Profile"
         component={Profile}
+        options={{
+          drawerIcon: ({color}) => (
+            <FontAwesome name="user" size={22} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Food Screen"
+        component={Food}
         options={{
           drawerIcon: ({color}) => (
             <FontAwesome name="user" size={22} color={color} />

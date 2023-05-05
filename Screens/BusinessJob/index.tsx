@@ -8,11 +8,11 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-const ApplyForJob = ({navigation}: any) => {
+const BusinessJob = ({navigation}: any) => {
   return (
     <View style={styles.container}>
       <View style={styles.view}>
-        <Text style={styles.text}>Who Are You</Text>
+        <Text style={styles.text}>Business/Job</Text>
         <Text style={styles.para}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry.
@@ -20,15 +20,15 @@ const ApplyForJob = ({navigation}: any) => {
       </View>
 
       {/* Business start */}
-      <TouchableOpacity onPress={() => navigation.navigate('BusinessJob')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Step1')}>
         <View style={styles.view}>
           <View style={styles.box}>
             <View style={styles.card}>
               <Image
-                source={require('../../Images/business.png')}
+                source={require('../../Images/owner.png')}
                 style={styles.img}
               />
-              <Text style={styles.boxText}>Business/Job</Text>
+              <Text style={styles.boxText}>Business</Text>
             </View>
             <View>
               <Image
@@ -41,15 +41,12 @@ const ApplyForJob = ({navigation}: any) => {
       </TouchableOpacity>
       {/* Business End */}
 
-      {/* food start */}
+      {/* Job start */}
       <View style={styles.view}>
         <View style={styles.box}>
           <View style={styles.card}>
-            <Image
-              source={require('../../Images/foodeat.png')}
-              style={styles.img}
-            />
-            <Text style={styles.boxText}>Food</Text>
+            <Image source={require('../../Images/CV.png')} style={styles.img} />
+            <Text style={styles.boxText}>Job Seeker</Text>
           </View>
           <View>
             <Image
@@ -59,32 +56,13 @@ const ApplyForJob = ({navigation}: any) => {
           </View>
         </View>
       </View>
-      {/* food End */}
-
-      {/* Marriage start */}
-      <View style={styles.view}>
-        <View style={styles.box}>
-          <View style={styles.card}>
-            <Image
-              source={require('../../Images/marriagemain.png')}
-              style={styles.img}
-            />
-            <Text style={styles.boxText}>Marriage Bureau</Text>
-          </View>
-          <View>
-            <Image
-              source={require('../../Images/redright.png')}
-              style={styles.arrowimg}
-            />
-          </View>
-        </View>
-      </View>
-      {/* Marriage End */}
+      {/* Job End */}
     </View>
   );
 };
 
-export default ApplyForJob;
+export default BusinessJob;
+
 const styles = StyleSheet.create({
   arrowimg: {
     width: 35,

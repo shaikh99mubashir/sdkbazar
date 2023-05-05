@@ -5,7 +5,7 @@ import {Color} from '../../Constants';
 const Splash = ({navigation}: any) => {
   const navigateToHomeScreen = () => {
     setTimeout(() => {
-      navigation.navigate('LoginAccount');
+      navigation.replace('LoginAccount');
     }, 3000);
   };
   useEffect(() => {

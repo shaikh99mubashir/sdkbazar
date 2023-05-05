@@ -16,7 +16,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 import CarouselSlider from '../../Components/CarouselSlider';
+import Geolocation from '@react-native-community/geolocation';
+import {locationPermission} from '../../Components/locationPermission';
+import LinearGradient from 'react-native-linear-gradient';
 const {height, width} = Dimensions.get('screen');
+
 const HomeScreen = ({navigation}: any) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const dotColors = ['#FFC107', '#3F51B5', '#009688'];
@@ -54,21 +58,108 @@ const HomeScreen = ({navigation}: any) => {
     // Cleanup function to clear interval on unmount
     return () => clearInterval(intervalId);
   }, [currentIndex]);
+  const [currentLocation, setCurrentLocation]: any = useState({});
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCurrentLocation({latitude, longitude});
+      },
+      error => console.log(error),
+    );
+  };
+
+  const screen = Dimensions.get('window');
+  const ASPECT_RATIO = screen.width / screen.height;
+  const LATITUDE_DELTA = 0.06;
+  const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+  useEffect(() => {
+    getCurrentLocation();
+    // getLocationUpdates();
+  }, []);
+  const [state, setState]: any = useState({
+    pickupCords: null,
+    dropLocationCords: {},
+  });
+
+  const customStyle = [
+    {
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'administrative',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'administrative.land_parcel',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+  ];
 
   return (
-    <View style={{flex: 1, height: '100%'}}>
+    <ScrollView>
       <View
         style={{
           backgroundColor: Color.mainColor,
           paddingHorizontal: 10,
-          paddingBottom: 120,
         }}>
         <Header navigation={navigation} Drawer={true} Notification />
-        {/* Search */}
+        {/* search */}
         <View
           style={{
             width: '98%',
-            borderWidth: 1,
             borderColor: Color.white,
             borderRadius: 10,
             display: 'flex',
@@ -79,7 +170,7 @@ const HomeScreen = ({navigation}: any) => {
             paddingHorizontal: 10,
             alignSelf: 'center',
             backgroundColor: Color.white,
-            marginTop: 15,
+            marginVertical: 15,
           }}>
           <TextInput
             placeholder="Search"
@@ -97,28 +188,16 @@ const HomeScreen = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* CarouselSlider */}
-      {/* <View
-        style={{paddingTop: 20, backgroundColor: Color.mainColor, height: 110}}>
-        <View>
-          <CarouselSlider carouselItems={HomePageBanner} dots />
-        </View>
-      </View> */}
-      {/* Custom Slider top -100 is use because paddingBottom  */}
+      {/* Custom Slider is use because paddingBottom  */}
+      <View style={{height: 100, backgroundColor: Color.mainColor}}></View>
       <View
-        style={{
-          height: '30%',
-          width: width,
-          // justifyContent: 'center',
-          // alignItems: 'center',
-          // borderWidth: 1,
-          top: -100,
-        }}>
+        // colors={[Color.mainColor, Color.white]}
+        style={{marginTop: -90, zIndex: 2}}>
         <FlatList
           ref={flatListRef}
           data={HomePageBanner}
           showsHorizontalScrollIndicator={false}
-          pagingEnabled
+          // pagingEnabled
           onScroll={e => {
             const x = e.nativeEvent.contentOffset.x;
             setCurrentIndex((x / (width - 50)).toFixed(0));
@@ -129,17 +208,14 @@ const HomeScreen = ({navigation}: any) => {
               <View
                 style={{
                   width: width,
-                  // height: '100%',
                   alignItems: 'center',
-                  // borderWidth: 1,
-                  // borderColor: 'red',
                   padding: 0,
                   margin: 0,
                 }}>
                 <Image
                   source={item.image}
-                  style={{width: '93%', height: '93%'}}
-                  resizeMode="contain"
+                  style={{width: '93%', height: 160}}
+                  resizeMode="center"
                 />
               </View>
             );
@@ -153,7 +229,7 @@ const HomeScreen = ({navigation}: any) => {
           width: width,
           justifyContent: 'center',
           alignItems: 'center',
-          top: -120,
+          marginVertical: 5,
         }}>
         {HomePageBanner.map((item, index) => {
           return (
@@ -170,7 +246,11 @@ const HomeScreen = ({navigation}: any) => {
         })}
       </View>
 
-      <ScrollView style={{top: -110, height: '100%'}}>
+      <View
+        style={{
+          height: '100%',
+          marginBottom: 20,
+        }}>
         <View>
           <Text
             style={{
@@ -245,43 +325,58 @@ const HomeScreen = ({navigation}: any) => {
             </TouchableOpacity>
           </View>
         </View>
-        <>
-          {/* <MapView
-            provider={PROVIDER_DEFAULT}
+        <View
+          style={{
+            alignItems: 'center',
+          }}>
+          <View
             style={{
+              alignItems: 'center',
               width: '90%',
-              height: '100%',
-              position: 'absolute',
-              bottom: 0,
-              alignSelf: 'center',
-              borderRadius: 10,
-            }}
-            mapType="standard"
-            customMapStyle={[
-              {
-                featureType: 'all',
-                elementType: 'geometry',
-                stylers: [
+              height: 200,
+              borderWidth: 1,
+              borderRadius: 20,
+              overflow: 'hidden',
+            }}>
+            {Object.keys(currentLocation).length > 0 && (
+              <MapView
+                style={[
+                  StyleSheet.absoluteFill,
                   {
-                    color: '#333333',
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: 20,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
                   },
-                ],
-              },
-              {
-                featureType: 'road',
-                elementType: 'geometry.stroke',
-                stylers: [
-                  {
-                    color: '#ffffff',
-                  },
-                ],
-              },
-            ]}
-            pitchEnabled={false}
-          /> */}
-        </>
-      </ScrollView>
-    </View>
+                ]}
+                initialRegion={{
+                  latitude: currentLocation
+                    ? currentLocation.latitude
+                    : 37.78825,
+                  longitude: currentLocation
+                    ? currentLocation.longitude
+                    : -122.4324,
+                  latitudeDelta: 0.9,
+                  longitudeDelta: 0.9,
+                }}
+                customMapStyle={customStyle}>
+                {currentLocation && (
+                  <Marker
+                    draggable={true}
+                    coordinate={{
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                    }}
+                    title="You are here"
+                  />
+                )}
+              </MapView>
+            )}
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 

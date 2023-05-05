@@ -34,6 +34,7 @@ import CardDetail from '../Screens/Foods/CardDetail';
 import OrderSucess from '../Screens/Foods/OrderSucess';
 import ApplyForJob from '../Screens/ApplyForJob';
 import Settings from '../Screens/Setting';
+import BusinessJob from '../Screens/BusinessJob';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -68,6 +69,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="JobsFilter" component={JobsFilter} />
         <Stack.Screen name="BusinessProfile" component={BusinessProfile} />
         <Stack.Screen name="ApplyForJob" component={ApplyForJob} />
+        <Stack.Screen name="BusinessJob" component={BusinessJob} />
         <Stack.Screen
           name="BusinessPersonDetails"
           component={BusinessPersonDetails}

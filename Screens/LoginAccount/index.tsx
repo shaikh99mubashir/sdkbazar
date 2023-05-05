@@ -125,7 +125,7 @@ const LoginAccount = ({navigation}: any) => {
             {/* Login Button */}
             <View style={{alignItems: 'center', marginVertical: 15}}>
               <TouchableOpacity
-                onPress={() => navigation.navigate('HomeScreen')}
+                onPress={() => navigation.replace('HomeScreen')}
                 activeOpacity={0.8}
                 style={{
                   backgroundColor: Color.red,
