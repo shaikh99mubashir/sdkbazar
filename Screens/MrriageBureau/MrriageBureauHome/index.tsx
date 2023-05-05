@@ -7,6 +7,7 @@ import {
   TextInput,
   Dimensions,
   Image,
+  ScrollView,
 } from 'react-native';
 import React, {useState, useEffect, useCallback} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,6 +16,9 @@ import Header from '../../../Components/Header';
 import {Color} from '../../../Constants';
 import CarouselSlider from '../../../Components/CarouselSlider';
 import Video from 'react-native-video';
+import MapView, {Marker} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
+
 const {width, height} = Dimensions.get('window');
 const MrriageBureauHome = ({navigation}: any) => {
   const religionCategory = [
@@ -121,8 +125,87 @@ const MrriageBureauHome = ({navigation}: any) => {
   const videoSource = {
     uri: 'file:///D:/sdkbazar/Videos/MarriageBureau.mp4',
   };
+
+  const [currentLocation, setCurrentLocation]: any = useState({});
+
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCurrentLocation({latitude, longitude});
+      },
+      error => console.log(error),
+    );
+  };
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+  const customStyle = [
+    {
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'administrative',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'administrative.land_parcel',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+  ];
   return (
-    <>
+    <ScrollView>
       <View
         style={{
           backgroundColor: Color.mainColor,
@@ -163,27 +246,25 @@ const MrriageBureauHome = ({navigation}: any) => {
         </View>
       </View>
       {/* CarouselSlider */}
-      <View
-        style={{paddingTop: 20, backgroundColor: Color.mainColor, height: 110}}>
-        <View style={{alignItems: 'center'}}>
-          <Video
-            source={require('../../../Videos/MarriageBureau.mp4')}
-            ref={ref => {}}
-            // controls={true}
-            posterResizeMode={'cover'}
-            repeat
-            resizeMode={'stretch'}
-            style={{
-              ...styles.backgroundVideo,
-              height: height / 4,
-              width: width / 1.11,
-              borderRadius: 25,
-            }}
-            onError={error => console.log(error, 'error')}
-          />
-        </View>
+      <View style={{height: 100, backgroundColor: Color.mainColor}}></View>
+      <View style={{alignItems: 'center', marginTop: -90}}>
+        <Video
+          source={require('../../../Videos/MarriageBureau.mp4')}
+          ref={ref => {}}
+          // controls={true}
+          posterResizeMode={'cover'}
+          repeat
+          resizeMode={'stretch'}
+          style={{
+            ...styles.backgroundVideo,
+            height: height / 4,
+            width: width / 1.11,
+            borderRadius: 25,
+          }}
+          onError={error => console.log(error, 'error')}
+        />
       </View>
-      <View style={{top: 100}}>
+      <View>
         <Text
           style={{
             textAlign: 'center',
@@ -235,7 +316,57 @@ const MrriageBureauHome = ({navigation}: any) => {
             })}
         </View>
       </View>
-    </>
+      <View
+        style={{
+          alignItems: 'center',
+          // marginVertical: 15,
+          // top: 80,
+        }}>
+        <View
+          style={{
+            alignItems: 'center',
+            width: '90%',
+            height: 200,
+            marginVertical: 10,
+            borderRadius: 20,
+            overflow: 'hidden',
+          }}>
+          {Object.keys(currentLocation).length > 0 && (
+            <MapView
+              style={[
+                StyleSheet.absoluteFill,
+                {
+                  height: '100%',
+                  width: '100%',
+                  borderRadius: 20,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                },
+              ]}
+              initialRegion={{
+                latitude: currentLocation ? currentLocation.latitude : 37.78825,
+                longitude: currentLocation
+                  ? currentLocation.longitude
+                  : -122.4324,
+                latitudeDelta: 0.9,
+                longitudeDelta: 0.9,
+              }}
+              customMapStyle={customStyle}>
+              {currentLocation && (
+                <Marker
+                  draggable={true}
+                  coordinate={{
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  }}
+                  title="You are here"
+                />
+              )}
+            </MapView>
+          )}
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
