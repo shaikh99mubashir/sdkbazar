@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Modal,
@@ -10,11 +10,163 @@ import {
   Image,
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
+import {GooggleMapKey} from '../../../GoogleMapKey';
+import {Color} from '../../../Constants';
+import MapView, {Marker} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
 
 function AddressDetail({navigation}: any) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [currentLocation, setCurrentLocation]: any = useState({});
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCurrentLocation({latitude, longitude});
+      },
+      error => console.log(error),
+    );
+  };
+
+  useEffect(() => {
+    getCurrentLocation();
+    // getLocationUpdates();
+  }, []);
+  const [state, setState]: any = useState({
+    pickupCords: null,
+    dropLocationCords: {},
+  });
+
+  const customStyle = [
+    {
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'administrative',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'administrative.land_parcel',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+  ];
+  const [currentAddress, setCurrentAddress] = useState('');
+  useEffect(() => {
+    Object.keys(currentLocation).length > 0 && Geocoder.init(GooggleMapKey); // use a valid API key
+    // With more options
+    // Geocoder.init("xxxxxxxxxxxxxxxxxxxxxxxxx", {language : "en"}); // set the language
+
+    // Search by address
+    Geocoder.from(currentLocation)
+      .then(json => {
+        var Address = json.results[0].formatted_address;
+        setCurrentAddress(Address);
+      })
+      .catch(error => {
+        console.warn('error', error);
+      });
+  }, [currentLocation]);
   return (
     <View>
+      <View
+        style={{
+          alignItems: 'center',
+        }}>
+        <View
+          style={{
+            alignItems: 'center',
+            width: '100%',
+            height: 250,
+            borderWidth: 1,
+            overflow: 'hidden',
+          }}>
+          {Object.keys(currentLocation).length > 0 && (
+            <MapView
+              style={[
+                StyleSheet.absoluteFill,
+                {
+                  height: '100%',
+                  width: '100%',
+                  borderRadius: 20,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                },
+              ]}
+              initialRegion={{
+                latitude: currentLocation ? currentLocation.latitude : 37.78825,
+                longitude: currentLocation
+                  ? currentLocation.longitude
+                  : -122.4324,
+                latitudeDelta: 0.9,
+                longitudeDelta: 0.9,
+              }}
+              customMapStyle={customStyle}>
+              {currentLocation && (
+                <Marker
+                  draggable={true}
+                  coordinate={{
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  }}
+                  title="You are here"
+                />
+              )}
+            </MapView>
+          )}
+        </View>
+      </View>
       <View style={styles.box}>
         <View style={{marginTop: 20}}>
           <Text style={styles.text}>Delivery Details</Text>
@@ -25,7 +177,7 @@ function AddressDetail({navigation}: any) {
               resizeMode="contain"
             />
             <Text style={styles.para}>
-              RJ Mall,Near Rashid Minhas Rd. Karachi
+              {currentAddress ? currentAddress : ''}
             </Text>
             <Modal
               animationType="slide"
@@ -46,13 +198,6 @@ function AddressDetail({navigation}: any) {
                 </View>
               </View>
             </Modal>
-            <Pressable onPress={() => setModalVisible(true)}>
-              {/* <Image
-                source={require('../../../Images/editIcon.png')}
-                style={{width: 25, height: 25}}
-                resizeMode="contain"
-              /> */}
-            </Pressable>
           </View>
 
           <View style={styles.fields}>

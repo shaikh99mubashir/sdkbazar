@@ -302,7 +302,7 @@ const Food = ({navigation}: any) => {
         const {latitude, longitude} = position.coords;
         setCurrentLocation({latitude, longitude});
       },
-      error => console.log(error),
+      // error => console.log(error),
     );
   };
   useEffect(() => {

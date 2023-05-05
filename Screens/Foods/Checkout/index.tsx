@@ -11,6 +11,10 @@ import React, {useEffect, useState} from 'react';
 import {Color} from '../../../Constants';
 import Header from '../../../Components/Header';
 import {useDispatch, useSelector} from 'react-redux';
+import Geolocation from '@react-native-community/geolocation';
+import MapView, {Marker} from 'react-native-maps';
+import Geocoder from 'react-native-geocoding';
+import {GooggleMapKey} from '../../../GoogleMapKey';
 const Checkout = ({navigation, route}: any) => {
   const data = route.params;
   const [isCartData, setIsCartData]: any = useState([]);
@@ -37,6 +41,107 @@ const Checkout = ({navigation, route}: any) => {
     }, 0);
 
   const TotalAmount = subTotalAmount + 3 + 99;
+
+  const [currentLocation, setCurrentLocation]: any = useState({});
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCurrentLocation({latitude, longitude});
+      },
+      error => console.log(error),
+    );
+  };
+
+  useEffect(() => {
+    getCurrentLocation();
+    // getLocationUpdates();
+  }, []);
+  const [state, setState]: any = useState({
+    pickupCords: null,
+    dropLocationCords: {},
+  });
+
+  const customStyle = [
+    {
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'administrative',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'administrative.land_parcel',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+  ];
+  const [currentAddress, setCurrentAddress] = useState('');
+  useEffect(() => {
+    Object.keys(currentLocation).length > 0 && Geocoder.init(GooggleMapKey); // use a valid API key
+    // With more options
+    // Geocoder.init("xxxxxxxxxxxxxxxxxxxxxxxxx", {language : "en"}); // set the language
+
+    // Search by address
+    Geocoder.from(currentLocation)
+      .then(json => {
+        var Address = json.results[0].formatted_address;
+        setCurrentAddress(Address);
+      })
+      .catch(error => {
+        console.warn('error', error);
+      });
+  }, [currentLocation]);
 
   return (
     <View
@@ -68,11 +173,60 @@ const Checkout = ({navigation, route}: any) => {
           />
         </TouchableOpacity>
       </View>
+      {/* MAp */}
+      <View
+        style={{
+          alignItems: 'center',
+        }}>
+        <View
+          style={{
+            alignItems: 'center',
+            width: '100%',
+            height: 200,
+            borderWidth: 1,
+            borderRadius: 20,
+            overflow: 'hidden',
+          }}>
+          {Object.keys(currentLocation).length > 0 && (
+            <MapView
+              style={[
+                StyleSheet.absoluteFill,
+                {
+                  height: '100%',
+                  width: '100%',
+                  borderRadius: 20,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                },
+              ]}
+              initialRegion={{
+                latitude: currentLocation ? currentLocation.latitude : 37.78825,
+                longitude: currentLocation
+                  ? currentLocation.longitude
+                  : -122.4324,
+                latitudeDelta: 0.9,
+                longitudeDelta: 0.9,
+              }}
+              customMapStyle={customStyle}>
+              {currentLocation && (
+                <Marker
+                  draggable={true}
+                  coordinate={{
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  }}
+                  title="You are here"
+                />
+              )}
+            </MapView>
+          )}
+        </View>
+      </View>
       {/* location Image and text */}
       <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
         <Image
           source={require('../../../Images/location.png')}
-          style={{width: 20, height: 20, resizeMode: 'contain'}}
+          style={{width: 25, height: 25, resizeMode: 'contain'}}
         />
         <Text
           style={{
@@ -80,7 +234,7 @@ const Checkout = ({navigation, route}: any) => {
             color: Color.mainColor,
             fontFamily: 'Poppins-SemiBold',
           }}>
-          RJ mal cd jksdbjkdsb
+          {currentAddress ? currentAddress : ''}
         </Text>
       </View>
 

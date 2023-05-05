@@ -69,11 +69,6 @@ const HomeScreen = ({navigation}: any) => {
     );
   };
 
-  const screen = Dimensions.get('window');
-  const ASPECT_RATIO = screen.width / screen.height;
-  const LATITUDE_DELTA = 0.06;
-  const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
   useEffect(() => {
     getCurrentLocation();
     // getLocationUpdates();
@@ -208,6 +203,7 @@ const HomeScreen = ({navigation}: any) => {
               <View
                 style={{
                   width: width,
+                  // height: '100%',
                   alignItems: 'center',
                   padding: 0,
                   margin: 0,
