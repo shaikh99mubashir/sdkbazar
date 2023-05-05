@@ -474,7 +474,6 @@ const Food = ({navigation}: any) => {
               alignItems: 'center',
               width: '90%',
               height: 200,
-              borderWidth: 1,
               borderRadius: 20,
               overflow: 'hidden',
             }}>
@@ -488,7 +487,6 @@ const Food = ({navigation}: any) => {
                     borderRadius: 20,
                     alignSelf: 'center',
                     justifyContent: 'center',
-                    backgroundColor: 'pink',
                   },
                 ]}
                 initialRegion={{

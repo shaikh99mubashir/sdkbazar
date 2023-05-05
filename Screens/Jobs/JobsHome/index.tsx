@@ -18,6 +18,8 @@ import {Color} from '../../../Constants';
 import CarouselSlider from '../../../Components/CarouselSlider';
 import CustomTabView from '../../../Components/CustomTabView';
 import Video from 'react-native-video';
+import MapView, {Marker} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 const {width, height} = Dimensions.get('window');
 const JobsHome = ({navigation}: any) => {
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
@@ -610,6 +612,84 @@ const JobsHome = ({navigation}: any) => {
     SelectService,
   ]);
 
+  const [currentLocation, setCurrentLocation]: any = useState({});
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCurrentLocation({latitude, longitude});
+      },
+      error => console.log(error),
+    );
+  };
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+  const customStyle = [
+    {
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'administrative',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'administrative.land_parcel',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#FFFFFF'}, {weight: 1}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: Color.mainColor}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#FFFFFF'}],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: Color.mainColor}, {weight: 2}],
+    },
+  ];
+
   return (
     <>
       <ScrollView style={{flex: 1}}>
@@ -695,6 +775,56 @@ const JobsHome = ({navigation}: any) => {
             firstRouteTitle="Entrepreneur"
             secondRouteTitle="Business"
           />
+        </View>
+        <View
+          style={{
+            alignItems: 'center',
+            marginVertical: 15,
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              width: '90%',
+              height: 200,
+              borderRadius: 20,
+              overflow: 'hidden',
+            }}>
+            {Object.keys(currentLocation).length > 0 && (
+              <MapView
+                style={[
+                  StyleSheet.absoluteFill,
+                  {
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: 20,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                  },
+                ]}
+                initialRegion={{
+                  latitude: currentLocation
+                    ? currentLocation.latitude
+                    : 37.78825,
+                  longitude: currentLocation
+                    ? currentLocation.longitude
+                    : -122.4324,
+                  latitudeDelta: 0.9,
+                  longitudeDelta: 0.9,
+                }}
+                customMapStyle={customStyle}>
+                {currentLocation && (
+                  <Marker
+                    draggable={true}
+                    coordinate={{
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                    }}
+                    title="You are here"
+                  />
+                )}
+              </MapView>
+            )}
+          </View>
         </View>
       </ScrollView>
     </>
