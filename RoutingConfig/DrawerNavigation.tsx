@@ -1,62 +1,95 @@
-import {StyleSheet, Text, View} from 'react-native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import Icon from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Octicons from 'react-native-vector-icons/Octicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import CustomDrawer from '../Components/CustomDrawer';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+} from '@react-navigation/drawer';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ToastAndroid,
+  Image,
+} from 'react-native';
 import HomeScreen from '../Screens/HomeScreen';
-import Profile from '../Screens/Profile';
+import CustomDrawerContent from '../Components/CustomDrawer';
 import Food from '../Screens/Foods/Food';
-// import Share from '../Screens/Share';
-
+import ApplyForJob from '../Screens/ApplyForJob';
+import Settings from '../Screens/Setting';
+import Profile from '../Screens/Profile';
+import FAQs from '../Screens/FAQs';
+import Support from '../Screens/Support';
 const Drawer = createDrawerNavigator();
 
-function DrawerNavigation() {
+function MyDrawer() {
   return (
     <Drawer.Navigator
-      drawerContent={props => <CustomDrawer {...props} />}
+      drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
-        // drawerActiveBackgroundColor: '#aa18ea',
         drawerActiveTintColor: '#fff',
         drawerInactiveTintColor: '#fff',
         drawerLabelStyle: {
-          marginLeft: -25,
+          marginLeft: 0,
           fontFamily: 'Poppins-Regular',
           fontSize: 15,
         },
       }}>
-      <Drawer.Screen
-        name="Home Screen"
-        component={HomeScreen}
-        options={{
-          drawerIcon: ({color}) => (
-            <Icon name="home-outline" size={22} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          drawerIcon: ({color}) => (
-            <FontAwesome name="user" size={22} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Food Screen"
-        component={Food}
-        options={{
-          drawerIcon: ({color}) => (
-            <FontAwesome name="user" size={22} color={color} />
-          ),
-        }}
-      />
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Food" component={Food} />
+      <Drawer.Screen name="ApplyForJob" component={ApplyForJob} />
+      <Drawer.Screen name="Settings" component={Settings} />
+      <Drawer.Screen name="Profile" component={Profile} />
+      <Drawer.Screen name="FAQs" component={FAQs} />
+      <Drawer.Screen name="Support" component={Support} />
     </Drawer.Navigator>
   );
 }
 
-export default DrawerNavigation;
+const styles = StyleSheet.create({
+  drawerContent: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  closeButtonContainer: {
+    alignSelf: 'flex-end',
+    marginRight: 10,
+    marginTop: 10,
+  },
+  closeButton: {
+    color: '#fff',
+    fontSize: 16,
+  },
+});
+export default MyDrawer;
+
+// import { createDrawerNavigator } from '@react-navigation/drawer';
+// import Home from '../../Screens/Home';
+// import MyTabs from '../MyTabs';
+// import CustomDrawer from '../../Components/CustomDrawer';
+// import Payment from '../../Screens/Payment';
+// import Complaint from '../../Screens/Complaint';
+// import Notification from '../../Screens/Notification';
+
+// const Drawer = createDrawerNavigator();
+
+// function MyDrawer() {
+//   return (
+//     <Drawer.Navigator
+//     drawerContent={props => <CustomDrawer {...props} />}
+//     screenOptions={{
+//       headerShown: false,
+//       // drawerActiveBackgroundColor: '#aa18ea',
+//       drawerActiveTintColor: '#fff',
+//       drawerInactiveTintColor: '#fff',
+//       drawerLabelStyle: {
+//         marginLeft: 0,
+//         fontFamily: 'Poppins-Regular',
+//         fontSize: 15,
+//       },
+//     }}>
+//       <Drawer.Screen name="HomeScreen" component={MyTabs} />
+//     </Drawer.Navigator>
+//   );
+// }
+// export default MyDrawer

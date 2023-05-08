@@ -330,7 +330,6 @@ const HomeScreen = ({navigation}: any) => {
               alignItems: 'center',
               width: '90%',
               height: 200,
-              borderWidth: 1,
               borderRadius: 20,
               overflow: 'hidden',
             }}>

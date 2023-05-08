@@ -1,35 +1,34 @@
+import React, {useState} from 'react';
 import {
-  StyleSheet,
-  Text,
   View,
-  ImageBackground,
-  Image,
-  Dimensions,
+  Text,
   TouchableOpacity,
+  StyleSheet,
+  ToastAndroid,
+  Image,
   Modal,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {
   DrawerContentScrollView,
   DrawerItemList,
+  DrawerItem,
 } from '@react-navigation/drawer';
-import Color from '../../Constants/Color';
+import {Color} from '../../Constants';
+import Share from 'react-native-share';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Share from 'react-native-share';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
-const CustomDrawer = (props: any) => {
-  const height = Dimensions.get('window').height;
-  const width = Dimensions.get('window').width;
+function CustomDrawerContent(props: any) {
+  const navigateToScreen = (screenName: any) => {
+    props.navigation.navigate(screenName);
+  };
+
   const [openDD, setOpenDD] = useState<boolean>(false);
   const share = async () => {
     const options = {
-      message:
-        'Deserunt ea sint magna dolor incididunt sit culpa id laborum cupidatat commodo do sint.',
-      url: 'https://mubashir.co.in',
+      message: 'Ifsdfxdfsdfdfder',
+      url: 'https://mubashir.com',
       email: 'mubashir@gmail.com',
       subject: 'Eiusmod esse veniam esse.',
       recipient: '919988998899',
@@ -42,6 +41,10 @@ const CustomDrawer = (props: any) => {
       console.log(err);
     }
   };
+  const ShowMessage = () => {
+    ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
+  };
+
   const [modalVisible, setModalVisible] = useState(false);
   const handleFilterPress = () => {
     setModalVisible(true);
@@ -59,16 +62,11 @@ const CustomDrawer = (props: any) => {
   const CancelButton = () => {
     handleCloseModal();
   };
-
-  const navigation = useNavigation();
-
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: Color.white}}>
       <DrawerContentScrollView
-        contentContainerStyle={{
-          backgroundColor: Color.mainColor,
-          height: '100%',
-        }}>
+        {...props}
+        contentContainerStyle={styles.drawerContent}>
         <View
           style={{
             alignItems: 'center',
@@ -100,7 +98,30 @@ const CustomDrawer = (props: any) => {
             borderTopWidth: 1,
             borderTopColor: '#ccc',
           }}>
-          <DrawerItemList {...props} back />
+          {/* <DrawerItemList {...props} back /> */}
+          {/* Profile */}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigateToScreen('Profile')}
+            style={{
+              flexDirection: 'row',
+              gap: 10,
+              marginLeft: 15,
+              marginTop: 25,
+              paddingBottom: 10,
+            }}>
+            <FontAwesome name="user" size={22} color="#fff" />
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                fontSize: 15,
+                color: 'white',
+                marginLeft: 5,
+              }}>
+              Profile
+            </Text>
+          </TouchableOpacity>
+          {/* SDK Bazar */}
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => setOpenDD(!openDD)}
@@ -133,20 +154,18 @@ const CustomDrawer = (props: any) => {
           {openDD ? (
             <View style={{marginLeft: 40, marginTop: 5, gap: 8}}>
               <TouchableOpacity
-                onPress={() => props.navigation.navigate('HomeScreen')}
+                onPress={() => navigateToScreen('Food')}
                 style={{flexDirection: 'row'}}>
                 <Entypo name="dot-single" size={20} color="white" />
                 <Text style={{color: Color.white}}>Food</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => props.navigation.navigate('HomeScreen')}
+                onPress={() => navigateToScreen('JobsHome')}
                 style={{flexDirection: 'row'}}>
                 <Entypo name="dot-single" size={20} color="white" />
                 <Text style={{color: Color.white}}>Job</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('HomeScreen')}
-                style={{flexDirection: 'row'}}>
+              <TouchableOpacity style={{flexDirection: 'row'}}>
                 <Entypo name="dot-single" size={20} color="white" />
                 <Text style={{color: Color.white}}>Marriage Bureau</Text>
               </TouchableOpacity>
@@ -157,7 +176,6 @@ const CustomDrawer = (props: any) => {
           {/* Setting */}
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => props.navigation.navigate('Settings')}
             style={{
               flexDirection: 'row',
               gap: 10,
@@ -170,6 +188,7 @@ const CustomDrawer = (props: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 15,
                 color: 'white',
+                marginLeft: 5,
               }}>
               Setting
             </Text>
@@ -177,7 +196,7 @@ const CustomDrawer = (props: any) => {
           {/* Support */}
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => props.navigation.navigate('Support')}
+            onPress={() => navigateToScreen('Support')}
             style={{
               flexDirection: 'row',
               gap: 10,
@@ -190,6 +209,7 @@ const CustomDrawer = (props: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 15,
                 color: 'white',
+                marginLeft: 5,
               }}>
               Support
             </Text>
@@ -197,7 +217,7 @@ const CustomDrawer = (props: any) => {
           {/* FAQs */}
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => props.navigation.navigate('FAQs')}
+            onPress={() => navigateToScreen('FAQs')}
             style={{
               flexDirection: 'row',
               gap: 10,
@@ -210,11 +230,11 @@ const CustomDrawer = (props: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 15,
                 color: 'white',
+                marginLeft: 15,
               }}>
               FAQs
             </Text>
           </TouchableOpacity>
-
           {/* Share */}
           <TouchableOpacity
             activeOpacity={0.8}
@@ -231,12 +251,14 @@ const CustomDrawer = (props: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 15,
                 color: 'white',
+                marginLeft: 5,
               }}>
               Share
             </Text>
           </TouchableOpacity>
         </View>
       </DrawerContentScrollView>
+      {/* Apply for a job and logout */}
       <View
         style={{
           padding: 5,
@@ -247,9 +269,7 @@ const CustomDrawer = (props: any) => {
         }}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => {
-            props.navigation.navigate('ApplyForJob');
-          }}
+          onPress={() => navigateToScreen('ApplyForJob')}
           style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
             <Image
@@ -381,11 +401,14 @@ const CustomDrawer = (props: any) => {
       </View>
     </View>
   );
-};
-
-export default CustomDrawer;
+}
 
 const styles = StyleSheet.create({
+  drawerContent: {
+    flex: 1,
+    justifyContent: 'space-between',
+    backgroundColor: Color.mainColor,
+  },
   modalContainer: {
     // flex: 1,
     alignItems: 'center',
@@ -411,3 +434,116 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
+export default CustomDrawerContent;
+
+// import {
+//   StyleSheet,
+//   Text,
+//   View,
+//   ImageBackground,
+//   Image,
+//   Dimensions,
+//   TouchableOpacity,
+//   Modal,
+// } from 'react-native';
+// import React, {useCallback, useState} from 'react';
+// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// import {
+//   DrawerContentScrollView,
+//   DrawerItemList,
+//   DrawerItem,
+// } from '@react-navigation/drawer';
+// import Color from '../../Constants/Color';
+
+// import Share from 'react-native-share';
+// import {DrawerActions, useNavigation} from '@react-navigation/native';
+// const CustomDrawerContent = (props: any) => {
+//   const height = Dimensions.get('window').height;
+//   const width = Dimensions.get('window').width;
+//
+//   const share = async () => {
+//     const options = {
+//       message:
+//         'Deserunt ea sint magna dolor incididunt sit culpa id laborum cupidatat commodo do sint.',
+//       url: 'https://mubashir.co.in',
+//       email: 'mubashir@gmail.com',
+//       subject: 'Eiusmod esse veniam esse.',
+//       recipient: '919988998899',
+//     };
+
+//     try {
+//       const res = await Share.open(options);
+//       console.log(res);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+//   const [modalVisible, setModalVisible] = useState(false);
+//   const handleFilterPress = () => {
+//     setModalVisible(true);
+//   };
+//   const handleCloseModal = () => {
+//     setModalVisible(false);
+//   };
+
+//   const [apply, setApply] = useState(false);
+//   const [cancel, setCancel] = useState(false);
+
+//   const ApplyButton = () => {
+//     handleCloseModal();
+//   };
+//   const CancelButton = () => {
+//     handleCloseModal();
+//   };
+
+//   const navigation = useNavigation();
+
+//   return (
+//     <View style={{flex: 1}}>
+//       <DrawerContentScrollView
+//         {...props}
+//         contentContainerStyle={{
+//           backgroundColor: Color.mainColor,
+//           height: '100%',
+//         }}>
+//
+
+//
+//
+//
+//         </View>
+//       </DrawerContentScrollView>
+//       <DrawerItemList {...props} />
+//
+//     </View>
+//   );
+// };
+
+// export default CustomDrawerContent;
+
+// const styles = StyleSheet.create({
+//   modalContainer: {
+//     // flex: 1,
+//     alignItems: 'center',
+//     // justifyContent: 'center',
+//     backgroundColor: '#fff',
+//     borderColor: Color.textColor,
+//     borderRadius: 10,
+//     paddingHorizontal: 10,
+//   },
+//   modalText: {
+//     color: 'black',
+//     fontSize: 14,
+//     fontFamily: 'Poppins-Regular',
+//   },
+//   closeButton: {
+//     backgroundColor: '#fff',
+//     borderRadius: 5,
+//   },
+//   closeButtonText: {
+//     color: Color.mainColor,
+//     fontWeight: 'bold',
+//     textAlign: 'right',
+//     paddingHorizontal: 10,
+//   },
+// });
