@@ -7,10 +7,13 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Color} from '../../Constants';
 import Icon from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import {BasicUrl} from '../../Constants/BasicUrl';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
@@ -25,6 +28,27 @@ const LoginAccount = ({navigation}: any) => {
     email: '',
     password: '',
   });
+
+  const login = () => {
+    let flag = Object.values(loginFields);
+
+    let flag2 = flag.some((e, i) => e == '');
+
+    if (flag2) {
+      ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
+      return;
+    }
+
+    axios
+      .post(`${BasicUrl}login`, loginFields)
+      .then(res => {
+        console.log(res);
+        navigation.navigate('RegisterAccount');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{backgroundColor: Color.lightgrey, height: height}}>
@@ -194,9 +218,8 @@ const LoginAccount = ({navigation}: any) => {
               style={{color: Color.textColor, fontFamily: 'Poppins-Medium'}}>
               Don't Have Account
             </Text>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('RegisterAccount')}>
+            @
+            <TouchableOpacity activeOpacity={0.8} onPress={() => login()}>
               <Text style={{color: Color.red, fontFamily: 'Poppins-Medium'}}>
                 Register
               </Text>
