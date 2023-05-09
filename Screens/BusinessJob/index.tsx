@@ -20,7 +20,7 @@ const BusinessJob = ({navigation}: any) => {
       </View>
 
       {/* Business start */}
-      <TouchableOpacity onPress={() => navigation.navigate('Step1')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Step1business')}>
         <View style={styles.view}>
           <View style={styles.box}>
             <View style={styles.card}>
@@ -42,20 +42,25 @@ const BusinessJob = ({navigation}: any) => {
       {/* Business End */}
 
       {/* Job start */}
-      <View style={styles.view}>
-        <View style={styles.box}>
-          <View style={styles.card}>
-            <Image source={require('../../Images/CV.png')} style={styles.img} />
-            <Text style={styles.boxText}>Job Seeker</Text>
-          </View>
-          <View>
-            <Image
-              source={require('../../Images/redright.png')}
-              style={styles.arrowimg}
-            />
+      <TouchableOpacity onPress={() => navigation.navigate('Step1JobSeeker')}>
+        <View style={styles.view}>
+          <View style={styles.box}>
+            <View style={styles.card}>
+              <Image
+                source={require('../../Images/CV.png')}
+                style={styles.img}
+              />
+              <Text style={styles.boxText}>Job Seeker</Text>
+            </View>
+            <View>
+              <Image
+                source={require('../../Images/redright.png')}
+                style={styles.arrowimg}
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
       {/* Job End */}
     </View>
   );

@@ -35,6 +35,12 @@ import OrderSucess from '../Screens/Foods/OrderSucess';
 import ApplyForJob from '../Screens/ApplyForJob';
 import Settings from '../Screens/Setting';
 import BusinessJob from '../Screens/BusinessJob';
+import Step1 from '../Screens/BusinessSteps/Step1';
+import Step2 from '../Screens/BusinessSteps/Step2';
+import Step3 from '../Screens/BusinessSteps/Step3';
+import Step1JobSeeker from '../Screens/JobSeeker/JobStep1';
+import Step2JobSeeker from '../Screens/JobSeeker/JobStep2';
+import Step3JobSeeker from '../Screens/JobSeeker/JobStep3';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -70,6 +76,12 @@ const RoutingConfig = () => {
         <Stack.Screen name="BusinessProfile" component={BusinessProfile} />
         <Stack.Screen name="ApplyForJob" component={ApplyForJob} />
         <Stack.Screen name="BusinessJob" component={BusinessJob} />
+        <Stack.Screen name="Step1business" component={Step1} />
+        <Stack.Screen name="Step2business" component={Step2} />
+        <Stack.Screen name="Step3business" component={Step3} />
+        <Stack.Screen name="Step1JobSeeker" component={Step1JobSeeker} />
+        <Stack.Screen name="Step2JobSeeker" component={Step2JobSeeker} />
+        <Stack.Screen name="Step3JobSeeker" component={Step3JobSeeker} />
         <Stack.Screen
           name="BusinessPersonDetails"
           component={BusinessPersonDetails}
