@@ -7,28 +7,52 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Color} from '../../Constants';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {BasicUrl} from '../../Constants/BasicUrl';
+import axios from 'axios';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const RegisterAccount = ({navigation}: any) => {
   interface IRegister {
-    firstName: string | undefined;
+    name: string | undefined;
     email: string | undefined;
     password: string | undefined;
-    confirmPassword: string | undefined;
+    confirmPassword?: string | undefined;
   }
+  console.log(BasicUrl, 'nasoc');
 
   const [passwordEye, setPasswordEye] = useState(true);
   const [registerFields, setRegisterFields] = useState<IRegister>({
-    firstName: '',
+    name: '',
     email: '',
     password: '',
-    confirmPassword: '',
   });
+
+  const registerData = () => {
+    let flag = Object.values(registerFields);
+
+    let flag2 = flag.some((e, i) => e == '');
+
+    if (flag2) {
+      ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
+      return;
+    }
+
+    axios
+      .post(`${BasicUrl}register`, registerFields)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{backgroundColor: Color.lightgrey, height: height}}>
@@ -72,7 +96,7 @@ const RegisterAccount = ({navigation}: any) => {
                 <TextInput
                   placeholder="First Name"
                   onChangeText={e =>
-                    setRegisterFields({...registerFields, firstName: e})
+                    setRegisterFields({...registerFields, name: e})
                   }
                   style={{
                     width: Dimensions.get('screen').width / 1.21,
@@ -175,6 +199,7 @@ const RegisterAccount = ({navigation}: any) => {
             <View style={{alignItems: 'center'}}>
               <TouchableOpacity
                 activeOpacity={0.8}
+                onPress={registerData}
                 style={{
                   backgroundColor: Color.red,
                   paddingHorizontal: 70,
