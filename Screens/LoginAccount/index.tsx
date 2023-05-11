@@ -218,7 +218,7 @@ const LoginAccount = ({navigation}: any) => {
               style={{color: Color.textColor, fontFamily: 'Poppins-Medium'}}>
               Don't Have Account
             </Text>
-            @
+
             <TouchableOpacity activeOpacity={0.8} onPress={() => login()}>
               <Text style={{color: Color.red, fontFamily: 'Poppins-Medium'}}>
                 Register

@@ -1,11 +1,69 @@
-import React from 'react';
-import {SafeAreaView, View} from 'react-native';
+import React, {useState} from 'react';
+import {SafeAreaView, View, PermissionsAndroid, Image} from 'react-native';
 import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Iconnew from 'react-native-vector-icons/Ionicons';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {BasicUrl} from '../../Constants/BasicUrl';
+import axios from 'axios';
+import {withDecay} from 'react-native-reanimated';
 const Step1 = ({navigation}: any) => {
+  const [profileImage, setProfileImage] = useState<any>('');
+  const uploadProfilePicture = async () => {
+    console.log('jello');
+
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+
+    console.log(granted, 'granted');
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      let options: any = {
+        saveToPhotos: true,
+        mediaType: 'photo',
+      };
+
+      const result: any = await launchImageLibrary(options);
+
+      console.log(result);
+
+      if (result.didCancel) {
+        // ('Cancelled image selection');
+      } else if (result.errorCode == 'permission') {
+        // setToastMsg('Permission Not Satisfied');
+      } else if (result.errorCode == 'others') {
+        // setToastMsg(result.errorMessage);
+      } else {
+        let imageUri = result.assets[0].uri;
+
+        let formData = new FormData();
+
+        formData.append('profile-file', {
+          uri: imageUri,
+          type: 'image/jpeg',
+          name: 'image.jpg',
+        });
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+        axios
+          .post(`${BasicUrl}businessprofileimage`, formData, config)
+          .then((res: any) => {
+            console.log('res', res.data);
+            setProfileImage(res.data.image);
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
+        console.log(result.assets[0].uri);
+      }
+    }
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -14,7 +72,7 @@ const Step1 = ({navigation}: any) => {
         </View>
         <View>
           <View style={styles.upload}>
-            <View
+            <TouchableOpacity
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -23,10 +81,11 @@ const Step1 = ({navigation}: any) => {
               }}>
               <Icon name="upload" size={20} color={'#666666'} />
               <Text style={styles.text}>upload</Text>
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={styles.profile}>
-            <View
+            <TouchableOpacity
+              onPress={() => uploadProfilePicture()}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -37,9 +96,15 @@ const Step1 = ({navigation}: any) => {
               <Text style={{color: 'white', fontSize: 15}}>
                 profile Picture
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
+        {profileImage && (
+          <Image
+            source={{uri: `http://192.168.100.9:3000/uploads/${profileImage}`}}
+            style={{width: 199, height: 129}}
+          />
+        )}
         <View>
           <View style={styles.fields}>
             <TextInput

@@ -4,7 +4,7 @@ import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Iconnew from 'react-native-vector-icons/Ionicons';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 const JobStep1 = ({navigation}: any) => {
   return (
     <ScrollView>
