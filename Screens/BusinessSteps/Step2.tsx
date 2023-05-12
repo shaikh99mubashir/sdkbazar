@@ -5,7 +5,10 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Iconnew from 'react-native-vector-icons/Ionicons';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 
-const Step2 = ({navigation}: any) => {
+const Step2 = ({navigation, route}: any) => {
+  const data = route.params;
+  console.log('data', data);
+
   return (
     <ScrollView>
       <View style={styles.container}>

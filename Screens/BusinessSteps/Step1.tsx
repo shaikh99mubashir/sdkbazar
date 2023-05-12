@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {SafeAreaView, View, PermissionsAndroid, Image} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  PermissionsAndroid,
+  Image,
+  ToastAndroid,
+} from 'react-native';
 import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Iconnew from 'react-native-vector-icons/Ionicons';
@@ -9,14 +15,38 @@ import {BasicUrl} from '../../Constants/BasicUrl';
 import axios from 'axios';
 import {withDecay} from 'react-native-reanimated';
 const Step1 = ({navigation}: any) => {
-  const [profileImage, setProfileImage] = useState<any>('');
-  const uploadProfilePicture = async () => {
-    console.log('jello');
+  interface Istep1 {
+    company_name: string;
+    business_category: string;
+    company_registration_number: string;
+    tax_identifier: string;
+    license_Type: string;
+    company_description: string;
+    docunment1_image: any;
+    docunment2_image: any;
+    cover_image: any;
+    profile_image: any;
+  }
 
+  const [step1Fields, setStep1Fields] = useState<Istep1>({
+    company_name: '',
+    business_category: '',
+    company_registration_number: '',
+    tax_identifier: '',
+    license_Type: '',
+    company_description: '',
+    docunment1_image: '',
+    docunment2_image: '',
+    cover_image: '',
+    profile_image: '',
+  });
+
+  console.log('seep1Fields', step1Fields);
+
+  const uploadProfilePicture = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
     );
-
     console.log(granted, 'granted');
 
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -24,11 +54,7 @@ const Step1 = ({navigation}: any) => {
         saveToPhotos: true,
         mediaType: 'photo',
       };
-
       const result: any = await launchImageLibrary(options);
-
-      console.log(result);
-
       if (result.didCancel) {
         // ('Cancelled image selection');
       } else if (result.errorCode == 'permission') {
@@ -54,14 +80,193 @@ const Step1 = ({navigation}: any) => {
           .post(`${BasicUrl}businessprofileimage`, formData, config)
           .then((res: any) => {
             console.log('res', res.data);
-            setProfileImage(res.data.image);
+            setStep1Fields({
+              ...step1Fields,
+              profile_image: `profileImage/${res.data.image}`,
+            });
           })
           .catch((error: any) => {
             console.log(error);
+            ToastAndroid.show('internal server server', ToastAndroid.SHORT);
           });
         console.log(result.assets[0].uri);
       }
     }
+  };
+  const uploadCoverPicture = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+    console.log(granted, 'granted');
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      let options: any = {
+        saveToPhotos: true,
+        mediaType: 'photo',
+      };
+      const result: any = await launchImageLibrary(options);
+      if (result.didCancel) {
+        // ('Cancelled image selection');
+      } else if (result.errorCode == 'permission') {
+        // setToastMsg('Permission Not Satisfied');
+      } else if (result.errorCode == 'others') {
+        // setToastMsg(result.errorMessage);
+      } else {
+        let imageUri = result.assets[0].uri;
+
+        let formData = new FormData();
+
+        formData.append('cover-file', {
+          uri: imageUri,
+          type: 'image/jpeg',
+          name: 'image.jpg',
+        });
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+        axios
+          .post(`${BasicUrl}businesscover`, formData, config)
+          .then((res: any) => {
+            console.log('res', res.data);
+            setStep1Fields({
+              ...step1Fields,
+              cover_image: res.data.image,
+            });
+          })
+          .catch((error: any) => {
+            console.log(error);
+            ToastAndroid.show('internal server server', ToastAndroid.SHORT);
+          });
+        console.log(result.assets[0].uri);
+      }
+    }
+  };
+  const uploadDocunmentPicture = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+    console.log(granted, 'granted');
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      let options: any = {
+        saveToPhotos: true,
+        mediaType: 'photo',
+      };
+      const result: any = await launchImageLibrary(options);
+      if (result.didCancel) {
+        // ('Cancelled image selection');
+      } else if (result.errorCode == 'permission') {
+        // setToastMsg('Permission Not Satisfied');
+      } else if (result.errorCode == 'others') {
+        // setToastMsg(result.errorMessage);
+      } else {
+        let imageUri = result.assets[0].uri;
+
+        let formData = new FormData();
+
+        formData.append('docunment-file', {
+          uri: imageUri,
+          type: 'image/jpeg',
+          name: 'image.jpg',
+        });
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+        axios
+          .post(`${BasicUrl}businessdocunment`, formData, config)
+          .then((res: any) => {
+            console.log('res', res.data);
+            setStep1Fields({
+              ...step1Fields,
+              docunment1_image: res.data.image,
+            });
+          })
+          .catch((error: any) => {
+            console.log(error);
+            ToastAndroid.show('internal server server', ToastAndroid.SHORT);
+          });
+        console.log(result.assets[0].uri);
+      }
+    }
+  };
+  const uploadDocunmentPicture2 = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+    console.log(granted, 'granted');
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      let options: any = {
+        saveToPhotos: true,
+        mediaType: 'photo',
+      };
+      const result: any = await launchImageLibrary(options);
+      if (result.didCancel) {
+        // ('Cancelled image selection');
+      } else if (result.errorCode == 'permission') {
+        // setToastMsg('Permission Not Satisfied');
+      } else if (result.errorCode == 'others') {
+        // setToastMsg(result.errorMessage);
+      } else {
+        let imageUri = result.assets[0].uri;
+
+        let formData = new FormData();
+
+        formData.append('docunment-file', {
+          uri: imageUri,
+          type: 'image/jpeg',
+          name: 'image.jpg',
+        });
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+        axios
+          .post(`${BasicUrl}businessdocunment`, formData, config)
+          .then((res: any) => {
+            console.log('res', res.data);
+            setStep1Fields({
+              ...step1Fields,
+              docunment2_image: res.data.image,
+            });
+          })
+          .catch((error: any) => {
+            console.log(error);
+            ToastAndroid.show('internal server server', ToastAndroid.SHORT);
+          });
+        console.log(result.assets[0].uri);
+      }
+    }
+  };
+
+  const businessStep1Next = () => {
+    let flag = Object.values(step1Fields);
+
+    let flag2 = flag.some((e, i) => e == '');
+
+    if (flag2) {
+      ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
+      return;
+    }
+
+    axios
+      .post(`${BasicUrl}businessstep01`, step1Fields)
+      .then(res => {
+        console.log('res=====>', res.data);
+        if (res.data) {
+          navigation.navigate('Step2business');
+        } else {
+          ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
@@ -73,16 +278,30 @@ const Step1 = ({navigation}: any) => {
         <View>
           <View style={styles.upload}>
             <TouchableOpacity
+              onPress={() => uploadCoverPicture()}
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 8,
               }}>
-              <Icon name="upload" size={20} color={'#666666'} />
-              <Text style={styles.text}>upload</Text>
+              {step1Fields.cover_image ? (
+                <Image
+                  source={{
+                    uri: `http://192.168.100.9:3000/businesscoverimage/${step1Fields.cover_image}`,
+                  }}
+                  resizeMode="contain"
+                  style={{width: '100%', height: 150, borderRadius: 20}}
+                />
+              ) : (
+                <>
+                  <Icon name="upload" size={20} color={'#666666'} />
+                  <Text style={styles.text}>upload</Text>
+                </>
+              )}
             </TouchableOpacity>
           </View>
+
           <View style={styles.profile}>
             <TouchableOpacity
               onPress={() => uploadProfilePicture()}
@@ -92,25 +311,35 @@ const Step1 = ({navigation}: any) => {
                 alignItems: 'center',
                 gap: 8,
               }}>
-              <Icon name="upload" size={25} color={'white'} />
-              <Text style={{color: 'white', fontSize: 15}}>
-                profile Picture
-              </Text>
+              {step1Fields.profile_image ? (
+                <Image
+                  source={{
+                    uri: `http://192.168.100.9:3000/uploads/${step1Fields.profile_image.substring(
+                      'profileimage/'.length,
+                    )}`,
+                  }}
+                  style={{width: 140, height: 140, borderRadius: 500}}
+                />
+              ) : (
+                <>
+                  <Icon name="upload" size={25} color={'white'} />
+                  <Text style={{color: 'white', fontSize: 15}}>
+                    profile Picture
+                  </Text>
+                </>
+              )}
             </TouchableOpacity>
           </View>
         </View>
-        {profileImage && (
-          <Image
-            source={{uri: `http://192.168.100.9:3000/uploads/${profileImage}`}}
-            style={{width: 199, height: 129}}
-          />
-        )}
         <View>
           <View style={styles.fields}>
             <TextInput
               style={styles.input}
               placeholder="Company Name"
               keyboardType="default"
+              onChangeText={e =>
+                setStep1Fields({...step1Fields, company_name: e})
+              }
             />
           </View>
           <View style={styles.fields}>
@@ -118,13 +347,19 @@ const Step1 = ({navigation}: any) => {
               style={styles.input}
               placeholder="Business Category"
               keyboardType="default"
+              onChangeText={e =>
+                setStep1Fields({...step1Fields, business_category: e})
+              }
             />
           </View>
           <View style={styles.fields}>
             <TextInput
               style={styles.input}
               placeholder="Company Registration Number"
-              keyboardType="default"
+              keyboardType="numeric"
+              onChangeText={e =>
+                setStep1Fields({...step1Fields, company_registration_number: e})
+              }
             />
           </View>
           <View style={styles.fields}>
@@ -132,6 +367,9 @@ const Step1 = ({navigation}: any) => {
               style={styles.input}
               placeholder="Tax Identifier"
               keyboardType="default"
+              onChangeText={e =>
+                setStep1Fields({...step1Fields, tax_identifier: e})
+              }
             />
           </View>
           <View style={styles.fields}>
@@ -139,6 +377,9 @@ const Step1 = ({navigation}: any) => {
               style={styles.input}
               placeholder="License Type"
               keyboardType="default"
+              onChangeText={e =>
+                setStep1Fields({...step1Fields, license_Type: e})
+              }
             />
           </View>
           <View style={styles.fields}>
@@ -146,6 +387,9 @@ const Step1 = ({navigation}: any) => {
               multiline={true}
               numberOfLines={10}
               placeholder="Company Description"
+              onChangeText={e =>
+                setStep1Fields({...step1Fields, company_description: e})
+              }
               style={[styles.input, {height: 100, textAlignVertical: 'top'}]}
             />
           </View>
@@ -155,40 +399,64 @@ const Step1 = ({navigation}: any) => {
         </View>
         <View style={{display: 'flex', flexDirection: 'row', gap: 14}}>
           <View style={styles.uploadBox}>
-            <View
+            <TouchableOpacity
+              onPress={() => uploadDocunmentPicture()}
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 8,
               }}>
-              <Iconnew
-                name="cloud-upload-outline"
-                size={40}
-                color={'#666666'}
-              />
-            </View>
+              {step1Fields.docunment1_image ? (
+                <Image
+                  source={{
+                    uri: `http://192.168.100.9:3000/businessdocunment/${step1Fields.docunment1_image}`,
+                  }}
+                  style={{width: '100%', height: 100, borderRadius: 20}}
+                />
+              ) : (
+                <>
+                  <Iconnew
+                    name="cloud-upload-outline"
+                    size={40}
+                    color={'#666666'}
+                  />
+                </>
+              )}
+            </TouchableOpacity>
           </View>
           <View style={styles.uploadBox}>
-            <View
+            <TouchableOpacity
+              onPress={() => uploadDocunmentPicture2()}
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 8,
               }}>
-              <Iconnew
-                name="cloud-upload-outline"
-                size={40}
-                color={'#666666'}
-              />
-            </View>
+              {step1Fields.docunment2_image ? (
+                <Image
+                  source={{
+                    uri: `http://192.168.100.9:3000/businessdocunment/${step1Fields.docunment2_image}`,
+                  }}
+                  style={{width: '100%', height: 100, borderRadius: 20}}
+                />
+              ) : (
+                <>
+                  <Iconnew
+                    name="cloud-upload-outline"
+                    size={40}
+                    color={'#666666'}
+                  />
+                </>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
         <View>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('Step2business')}>
+            onPress={() => businessStep1Next()}>
             <Text style={{color: 'white', fontSize: 18, fontWeight: '500'}}>
               NEXT
             </Text>
