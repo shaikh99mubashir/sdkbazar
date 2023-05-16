@@ -8,7 +8,9 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 import MapView, {Marker, PROVIDER_DEFAULT} from 'react-native-maps';
 import React, {useState, useEffect, useRef} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,12 +21,10 @@ import CarouselSlider from '../../Components/CarouselSlider';
 import Geolocation from '@react-native-community/geolocation';
 import {locationPermission} from '../../Components/locationPermission';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width} = Dimensions.get('screen');
 
 const HomeScreen = ({navigation}: any) => {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const dotColors = ['#FFC107', '#3F51B5', '#009688'];
-
   const HomePageBanner = [
     {
       id: 1,
@@ -40,6 +40,30 @@ const HomeScreen = ({navigation}: any) => {
     },
   ];
 
+  const focus = useIsFocused();
+  const navigateToLogin = () => {
+    console.log('running');
+
+    AsyncStorage.getItem('tokenExpiryDate').then((val: any) => {
+      let date1 = JSON.parse(val);
+      const expiryDate: any = new Date(date1).getTime();
+      const date: any = new Date().getTime();
+
+      if (Number(expiryDate) < Number(date)) {
+        navigation.navigate('LoginAccount');
+        ToastAndroid.show('Session Expire Login Again', ToastAndroid.SHORT);
+      }
+    });
+  };
+  useEffect(() => {
+    const check = setInterval(() => {
+      if (focus) {
+        navigateToLogin();
+      }
+    }, 1000);
+    return () => clearInterval(check);
+  }, [focus]);
+  // AsyncStorage.removeItem('tokenExpiryDate');
   const [currentIndex, setCurrentIndex] = useState<any>(0);
   const flatListRef = useRef<any>(null);
   // Function to move to next image

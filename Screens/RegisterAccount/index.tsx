@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Color} from '../../Constants';
@@ -22,10 +23,9 @@ const RegisterAccount = ({navigation}: any) => {
     name: string | undefined;
     email: string | undefined;
     password: string | undefined;
-    confirmPassword?: string | undefined;
   }
-  console.log(BasicUrl, 'nasoc');
-
+  const [registerLoading, setRegisterLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [passwordEye, setPasswordEye] = useState(true);
   const [registerFields, setRegisterFields] = useState<IRegister>({
     name: '',
@@ -33,13 +33,27 @@ const RegisterAccount = ({navigation}: any) => {
     password: '',
   });
 
+  console.log('registrer fields', registerFields);
+
   const registerData = () => {
     let flag = Object.values(registerFields);
-
+    setRegisterLoading(true);
     let flag2 = flag.some((e, i) => e == '');
 
     if (flag2) {
       ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
+      return;
+    }
+    if (registerFields?.password !== confirmPassword) {
+      ToastAndroid.show('Password doesnot Match', ToastAndroid.SHORT);
+      return;
+    }
+
+    const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    const userEmail: any = registerFields?.email;
+    const result: boolean = expression.test(userEmail); // true
+    if (!result) {
+      ToastAndroid.show('Enter correct email', ToastAndroid.SHORT);
       return;
     }
 
@@ -47,9 +61,20 @@ const RegisterAccount = ({navigation}: any) => {
       .post(`${BasicUrl}register`, registerFields)
       .then(res => {
         console.log(res);
+        navigation.navigate('LoginAccount');
+        setRegisterLoading(false);
+        ToastAndroid.show('Register Successfully', ToastAndroid.SHORT);
       })
       .catch(error => {
-        console.log(error);
+        if (error == 'AxiosError: Request failed with status code 400') {
+          ToastAndroid.show(
+            'password must be at least 8 characters',
+            ToastAndroid.SHORT,
+          );
+          return;
+        }
+        // console.log('error=>', error);
+        setRegisterLoading(false);
       });
   };
 
@@ -173,9 +198,7 @@ const RegisterAccount = ({navigation}: any) => {
                 <TextInput
                   placeholder="Confirm Password"
                   secureTextEntry={passwordEye ? true : false}
-                  onChangeText={e =>
-                    setRegisterFields({...registerFields, confirmPassword: e})
-                  }
+                  onChangeText={e => setConfirmPassword(e)}
                   style={{
                     width: Dimensions.get('window').width / 1.5,
                     padding: 12,
@@ -195,7 +218,7 @@ const RegisterAccount = ({navigation}: any) => {
               </View>
             </View>
 
-            {/* Login Button */}
+            {/* register Button */}
             <View style={{alignItems: 'center'}}>
               <TouchableOpacity
                 activeOpacity={0.8}
@@ -206,13 +229,17 @@ const RegisterAccount = ({navigation}: any) => {
                   paddingVertical: 13,
                   borderRadius: 25,
                 }}>
-                <Text
-                  style={{
-                    color: Color.white,
-                    fontFamily: 'Poppins-Bold',
-                  }}>
-                  REGISTER
-                </Text>
+                {registerLoading ? (
+                  <ActivityIndicator color={'white'} size={'small'} />
+                ) : (
+                  <Text
+                    style={{
+                      color: Color.white,
+                      fontFamily: 'Poppins-Bold',
+                    }}>
+                    REGISTER
+                  </Text>
+                )}
               </TouchableOpacity>
             </View>
             {/* or Text */}
