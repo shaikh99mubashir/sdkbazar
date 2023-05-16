@@ -1,12 +1,29 @@
 import {Image, StyleSheet, Text, View, Dimensions} from 'react-native';
 import React, {useEffect} from 'react';
 import {Color} from '../../Constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Splash = ({navigation}: any) => {
+  const checkUser = () => {};
+  useEffect(() => {
+    checkUser();
+  }, []);
   const navigateToHomeScreen = () => {
-    setTimeout(() => {
-      navigation.replace('LoginAccount');
-    }, 3000);
+    AsyncStorage.getItem('tokenExpiryDate').then((val: any) => {
+      let date1 = JSON.parse(val);
+      const expiryDate: any = new Date(date1).getTime();
+      const date: any = new Date().getTime();
+
+      if (Number(expiryDate) > Number(date)) {
+        setTimeout(() => {
+          navigation.replace('HomeScreen');
+        }, 2000);
+      } else {
+        setTimeout(() => {
+          navigation.replace('LoginAccount');
+        }, 3000);
+      }
+    });
   };
   useEffect(() => {
     navigateToHomeScreen();
