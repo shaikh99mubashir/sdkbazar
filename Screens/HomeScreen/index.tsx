@@ -42,13 +42,10 @@ const HomeScreen = ({navigation}: any) => {
 
   const focus = useIsFocused();
   const navigateToLogin = () => {
-    console.log('running');
-
     AsyncStorage.getItem('tokenExpiryDate').then((val: any) => {
       let date1 = JSON.parse(val);
       const expiryDate: any = new Date(date1).getTime();
       const date: any = new Date().getTime();
-
       if (Number(expiryDate) < Number(date)) {
         navigation.navigate('LoginAccount');
         ToastAndroid.show('Session Expire Login Again', ToastAndroid.SHORT);
@@ -60,10 +57,11 @@ const HomeScreen = ({navigation}: any) => {
       if (focus) {
         navigateToLogin();
       }
-    }, 1000);
+    }, 60000 * 15);
     return () => clearInterval(check);
   }, [focus]);
   // AsyncStorage.removeItem('tokenExpiryDate');
+
   const [currentIndex, setCurrentIndex] = useState<any>(0);
   const flatListRef = useRef<any>(null);
   // Function to move to next image
