@@ -9,9 +9,9 @@ const Splash = ({navigation}: any) => {
     checkUser();
   }, []);
   const navigateToHomeScreen = () => {
-    AsyncStorage.getItem('tokenExpiryDate').then((val: any) => {
+    AsyncStorage.getItem('user').then((val: any) => {
       let date1 = JSON.parse(val);
-      const expiryDate: any = new Date(date1).getTime();
+      const expiryDate: any = new Date(date1.tokenExpiryDate).getTime();
       const date: any = new Date().getTime();
 
       if (Number(expiryDate) > Number(date)) {

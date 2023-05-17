@@ -57,7 +57,8 @@ const HomeScreen = ({navigation}: any) => {
       if (focus) {
         navigateToLogin();
       }
-    }, 60000 * 15);
+    }, 1000);
+    // 60000 * 15
     return () => clearInterval(check);
   }, [focus]);
   // AsyncStorage.removeItem('tokenExpiryDate');

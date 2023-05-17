@@ -11,11 +11,13 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Iconnew from 'react-native-vector-icons/Ionicons';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {BasicUrl} from '../../Constants/BasicUrl';
+import {BasicUrl, imageUrl} from '../../Constants/BasicUrl';
 import axios from 'axios';
 import {withDecay} from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Step1 = ({navigation}: any) => {
   interface Istep1 {
+    login_ID: string;
     company_name: string;
     business_category: string;
     company_registration_number: string;
@@ -28,7 +30,17 @@ const Step1 = ({navigation}: any) => {
     profile_image: any;
   }
 
+  const [login_ID, setLogin_ID] = useState('');
+  AsyncStorage.getItem('user').then((val: any) => {
+    let user = JSON.parse(val);
+    console.log(user.userID, 'user===>');
+    setLogin_ID(user.userID);
+  });
+
+  console.log('login_ID', login_ID);
+
   const [step1Fields, setStep1Fields] = useState<Istep1>({
+    login_ID: login_ID,
     company_name: '',
     business_category: '',
     company_registration_number: '',
@@ -245,21 +257,22 @@ const Step1 = ({navigation}: any) => {
   };
 
   const businessStep1Next = () => {
-    let flag = Object.values(step1Fields);
+    let data = {...step1Fields};
+    data.login_ID = login_ID;
+    console.log('data', data);
 
+    let flag = Object.values(data);
     let flag2 = flag.some((e, i) => e == '');
-
     if (flag2) {
       ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
       return;
     }
-
     axios
-      .post(`${BasicUrl}businessstep01`, step1Fields)
+      .post(`${BasicUrl}businessstep01`, data)
       .then(res => {
         console.log('res=====>', res.data);
         if (res.data) {
-          navigation.navigate('Step2business');
+          navigation.replace('Step2business');
         } else {
           ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
         }
@@ -314,7 +327,7 @@ const Step1 = ({navigation}: any) => {
               {step1Fields.profile_image ? (
                 <Image
                   source={{
-                    uri: `http://192.168.100.9:3000/uploads/${step1Fields.profile_image.substring(
+                    uri: `${imageUrl}/uploads/${step1Fields.profile_image.substring(
                       'profileimage/'.length,
                     )}`,
                   }}
@@ -410,7 +423,7 @@ const Step1 = ({navigation}: any) => {
               {step1Fields.docunment1_image ? (
                 <Image
                   source={{
-                    uri: `http://192.168.100.9:3000/businessdocunment/${step1Fields.docunment1_image}`,
+                    uri: `${imageUrl}/businessdocunment/${step1Fields.docunment1_image}`,
                   }}
                   style={{width: '100%', height: 100, borderRadius: 20}}
                 />
@@ -437,7 +450,7 @@ const Step1 = ({navigation}: any) => {
               {step1Fields.docunment2_image ? (
                 <Image
                   source={{
-                    uri: `http://192.168.100.9:3000/businessdocunment/${step1Fields.docunment2_image}`,
+                    uri: `${imageUrl}/businessdocunment/${step1Fields.docunment2_image}`,
                   }}
                   style={{width: '100%', height: 100, borderRadius: 20}}
                 />

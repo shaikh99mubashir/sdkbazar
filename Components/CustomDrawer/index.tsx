@@ -36,9 +36,9 @@ function CustomDrawerContent(props: any) {
 
     try {
       const res = await Share.open(options);
-      console.log(res);
+      // console.log(res);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
   const ShowMessage = () => {

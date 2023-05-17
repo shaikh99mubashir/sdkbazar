@@ -44,13 +44,17 @@ const LoginAccount = ({navigation}: any) => {
     axios
       .post(`${BasicUrl}login`, loginFields)
       .then(res => {
+        // console.log('res', res.data.user.id);
+        const userID = res.data.user.id;
         const tokenExpiryDate = res?.data?.tokens?.refresh?.expires;
-        AsyncStorage.setItem(
-          'tokenExpiryDate',
-          JSON.stringify(tokenExpiryDate),
-        );
+        let user = {
+          userID: userID,
+          tokenExpiryDate: tokenExpiryDate,
+        };
+        AsyncStorage.setItem('user', JSON.stringify(user));
         navigation.navigate('HomeScreen');
         ToastAndroid.show('Login Sucessfully', ToastAndroid.SHORT);
+        setLoginLoading(false);
       })
       .catch(error => {
         if (error == 'AxiosError: Request failed with status code 401') {
