@@ -49,7 +49,7 @@ const Step2 = ({navigation, route}: any) => {
     data.login_ID = login_ID;
     console.log('data', data);
 
-    let flag = Object.values(step2Fields);
+    let flag = Object.values(data);
     let flag1 = flag.some((e, i) => e == '');
     if (flag1) {
       ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);

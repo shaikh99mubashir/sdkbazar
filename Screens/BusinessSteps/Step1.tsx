@@ -53,8 +53,6 @@ const Step1 = ({navigation}: any) => {
     profile_image: '',
   });
 
-  console.log('seep1Fields', step1Fields);
-
   const uploadProfilePicture = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -301,7 +299,7 @@ const Step1 = ({navigation}: any) => {
               {step1Fields.cover_image ? (
                 <Image
                   source={{
-                    uri: `http://192.168.100.9:3000/businesscoverimage/${step1Fields.cover_image}`,
+                    uri: `${imageUrl}/businesscoverimage/${step1Fields.cover_image}`,
                   }}
                   resizeMode="contain"
                   style={{width: '100%', height: 150, borderRadius: 20}}

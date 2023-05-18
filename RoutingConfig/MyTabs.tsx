@@ -21,7 +21,7 @@ const MyTabs = () => {
         tabBarActiveTintColor: 'red',
       })}>
       <Tab.Screen
-        name="HomeScreen"
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: ({focused, color}) => (

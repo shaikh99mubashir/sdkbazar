@@ -19,6 +19,7 @@ import Settings from '../Screens/Setting';
 import Profile from '../Screens/Profile';
 import FAQs from '../Screens/FAQs';
 import Support from '../Screens/Support';
+import MyTabs from './MyTabs';
 const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
@@ -35,7 +36,7 @@ function MyDrawer() {
           fontSize: 15,
         },
       }}>
-      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Homes" component={MyTabs} />
       <Drawer.Screen name="Food" component={Food} />
       <Drawer.Screen name="ApplyForJob" component={ApplyForJob} />
       <Drawer.Screen name="Settings" component={Settings} />

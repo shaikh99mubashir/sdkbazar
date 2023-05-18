@@ -9,6 +9,8 @@ import {
   Image,
   ScrollView,
   ToastAndroid,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import MapView, {Marker, PROVIDER_DEFAULT} from 'react-native-maps';
@@ -166,6 +168,39 @@ const HomeScreen = ({navigation}: any) => {
     },
   ];
 
+  let backButtonPressedOnceToExit = false;
+  useEffect(() => {
+    // Add event listener for the hardware back button press
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPress);
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonPress,
+      );
+    };
+  }, []);
+
+  const handleBackButtonPress = () => {
+    if (!backButtonPressedOnceToExit) {
+      backButtonPressedOnceToExit = true;
+
+      // Show a confirmation modal
+      Alert.alert(
+        'Confirmation',
+        'Are you sure you want to go back?',
+        [
+          {text: 'No', onPress: () => (backButtonPressedOnceToExit = false)},
+          {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ],
+        {cancelable: true},
+      );
+
+      // Return `true` to prevent the default back button behavior
+      return true;
+    }
+  };
   return (
     <ScrollView>
       <View

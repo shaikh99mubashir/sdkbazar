@@ -1,11 +1,63 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, View} from 'react-native';
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity, ToastAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Iconnew from 'react-native-vector-icons/Ionicons';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {BasicUrl} from '../../Constants/BasicUrl';
 
 const JobStep2 = ({navigation}: any) => {
+  interface Istep2 {
+    login_ID: string;
+    cnic: string;
+    phone_number: string;
+    country: string;
+    city: string;
+  }
+
+  const [login_ID, setLogin_ID] = useState('');
+  AsyncStorage.getItem('user').then((val: any) => {
+    let user = JSON.parse(val);
+    console.log(user.userID, 'user===>');
+    setLogin_ID(user.userID);
+  });
+
+  console.log('login_ID', login_ID);
+
+  const [step2Fields, setStep2Fields] = useState<Istep2>({
+    login_ID: '',
+    cnic: '',
+    phone_number: '',
+    country: '',
+    city: '',
+  });
+  console.log('step2Fields', step2Fields);
+
+  const step2next = () => {
+    let data = {...step2Fields};
+    data.login_ID = login_ID;
+    console.log('data', data);
+
+    let flag = Object.values(data);
+    let flag1 = flag.some((e, i) => e == '');
+    if (flag1) {
+      ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
+      return;
+    }
+
+    axios
+      .put(`${BasicUrl}jobseekerstep02`, data)
+      .then(res => {
+        console.log(res);
+        navigation.replace('Step3JobSeeker');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -18,14 +70,18 @@ const JobStep2 = ({navigation}: any) => {
             <TextInput
               style={styles.input}
               placeholder="CNIC Number"
-              keyboardType="default"
+              keyboardType="number-pad"
+              onChangeText={e => setStep2Fields({...step2Fields, cnic: e})}
             />
           </View>
           <View style={styles.fields}>
             <TextInput
               style={styles.input}
               placeholder="Phone Number"
-              keyboardType="default"
+              keyboardType="number-pad"
+              onChangeText={e =>
+                setStep2Fields({...step2Fields, phone_number: e})
+              }
             />
           </View>
           <View style={styles.fields}>
@@ -34,19 +90,19 @@ const JobStep2 = ({navigation}: any) => {
                 style={styles.input50}
                 placeholder="Country"
                 keyboardType="default"
+                onChangeText={e => setStep2Fields({...step2Fields, country: e})}
               />
               <TextInput
                 style={styles.input50}
                 placeholder="City"
                 keyboardType="default"
+                onChangeText={e => setStep2Fields({...step2Fields, city: e})}
               />
             </View>
           </View>
         </View>
         <View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Step3JobSeeker')}>
+          <TouchableOpacity style={styles.button} onPress={step2next}>
             <Text style={{color: 'white', fontSize: 18, fontWeight: '500'}}>
               NEXT
             </Text>
