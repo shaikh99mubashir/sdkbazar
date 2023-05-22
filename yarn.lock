@@ -1655,6 +1655,11 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/geolocation/-/geolocation-3.0.6.tgz"
   "version" "3.0.6"
 
+"@react-native-community/netinfo@^9.3.10":
+  "integrity" "sha512-OwnqoJUp/4sa9e3ju+wQavAa8l0fiA3DheeLMKzKxtKeAe0CA7bNxWRM752JvRQ6A/igPnt1V0zSlu5owvQEuA=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/netinfo/-/netinfo-9.3.10.tgz"
+  "version" "9.3.10"
+
 "@react-native-community/slider@^4.4.2":
   "integrity" "sha512-D9bv+3Vd2gairAhnRPAghwccgEmoM7g562pm8i4qB3Esrms5mggF81G3UvCyc0w3jjtFHh8dpQkfEoKiP0NW/Q=="
   "resolved" "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.4.2.tgz"
@@ -3240,6 +3245,11 @@
   "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
   "version" "4.0.0"
 
+"escape-string-regexp@2.0.0":
+  "integrity" "sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w=="
+  "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
+  "version" "2.0.0"
+
 "eslint-config-prettier@^8.5.0":
   "integrity" "sha512-wLbQiFre3tdGgpDv67NQKnJuTlcUVYHas3k+DZCc2U2BadthoEY4B7hLPvAxaqdyOGCzuLfii2fqGph10va7oA=="
   "resolved" "https://registry.npmjs.org/eslint-config-prettier/-/eslint-config-prettier-8.8.0.tgz"
@@ -4097,7 +4107,7 @@
     "has" "^1.0.3"
     "side-channel" "^1.0.4"
 
-"invariant@*", "invariant@^2.2.4":
+"invariant@*", "invariant@^2.2.4", "invariant@2.2.4":
   "integrity" "sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA=="
   "resolved" "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
   "version" "2.2.4"
@@ -6318,6 +6328,14 @@
     "keymirror" "^0.1.1"
     "prop-types" "^15.7.2"
     "shaka-player" "^2.5.9"
+
+"react-native-webview@^12.0.3":
+  "integrity" "sha512-/ou+I7+Yog2fFd62EmB6xKuzVaf2t/RmJ3X9GEFEK953TBRiudZIbeFppWyyfH+TxZZO+5eSw6xAlH66pWGq3w=="
+  "resolved" "https://registry.npmjs.org/react-native-webview/-/react-native-webview-12.0.3.tgz"
+  "version" "12.0.3"
+  dependencies:
+    "escape-string-regexp" "2.0.0"
+    "invariant" "2.2.4"
 
 "react-native@0.71.6":
   "integrity" "sha512-gHrDj7qaAaiE41JwaFCh3AtvOqOLuRgZtHKzNiwxakG/wvPAYmG73ECfWHGxjxIx/QT17Hp37Da3ipCei/CayQ=="

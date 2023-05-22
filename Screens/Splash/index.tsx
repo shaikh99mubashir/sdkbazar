@@ -10,21 +10,30 @@ const Splash = ({navigation}: any) => {
   }, []);
   const navigateToHomeScreen = () => {
     AsyncStorage.getItem('user').then((val: any) => {
-      let date1 = JSON.parse(val);
-      const expiryDate: any = new Date(date1.tokenExpiryDate).getTime();
-      const date: any = new Date().getTime();
+      console.log('val', val);
+      const date1: any = JSON.parse(val);
+      console.log('date1', date1);
+      const expiryDate: any = new Date(date1?.tokenExpiryDate).getTime();
+      const currentDate: any = new Date().getTime();
 
-      if (Number(expiryDate) > Number(date)) {
-        setTimeout(() => {
-          navigation.replace('HomeScreen');
-        }, 2000);
-      } else {
+      if (!date1) {
         setTimeout(() => {
           navigation.replace('LoginAccount');
         }, 3000);
+      } else {
+        if (date1 && Number(expiryDate) > Number(currentDate)) {
+          setTimeout(() => {
+            navigation.replace('HomeScreen');
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            navigation.replace('LoginAccount');
+          }, 3000);
+        }
       }
     });
   };
+
   useEffect(() => {
     navigateToHomeScreen();
   }, []);

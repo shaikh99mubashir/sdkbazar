@@ -11,6 +11,7 @@ import {
   ToastAndroid,
   BackHandler,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import MapView, {Marker, PROVIDER_DEFAULT} from 'react-native-maps';
@@ -24,9 +25,14 @@ import Geolocation from '@react-native-community/geolocation';
 import {locationPermission} from '../../Components/locationPermission';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BottomTab from '../../RoutingConfig/MyTabs';
+import Loader from '../../Components/Loader';
+import ShowWifiStatus from '../../Components/ShowWifiStatus';
+import NetInfo from '@react-native-community/netinfo';
 const {height, width} = Dimensions.get('screen');
 
 const HomeScreen = ({navigation}: any) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const HomePageBanner = [
     {
       id: 1,
@@ -48,7 +54,7 @@ const HomeScreen = ({navigation}: any) => {
       let date1 = JSON.parse(val);
       const expiryDate: any = new Date(date1).getTime();
       const date: any = new Date().getTime();
-      if (Number(expiryDate) < Number(date)) {
+      if (Number(expiryDate) > Number(date)) {
         navigation.navigate('LoginAccount');
         ToastAndroid.show('Session Expire Login Again', ToastAndroid.SHORT);
       }
@@ -71,7 +77,7 @@ const HomeScreen = ({navigation}: any) => {
   const nextImage = () => {
     const nextIndex = (currentIndex + 1) % HomePageBanner.length;
     setCurrentIndex(nextIndex);
-    flatListRef.current.scrollToIndex({animated: true, index: nextIndex});
+    flatListRef?.current?.scrollToIndex({animated: true, index: nextIndex});
   };
 
   // Use effect to move to next image every 5 seconds
@@ -98,6 +104,7 @@ const HomeScreen = ({navigation}: any) => {
     getCurrentLocation();
     // getLocationUpdates();
   }, []);
+
   const [state, setState]: any = useState({
     pickupCords: null,
     dropLocationCords: {},
@@ -167,268 +174,264 @@ const HomeScreen = ({navigation}: any) => {
       stylers: [{color: Color.mainColor}, {weight: 2}],
     },
   ];
+  const [isConnected, setIsConnected] = useState(true);
 
-  let backButtonPressedOnceToExit = false;
   useEffect(() => {
-    // Add event listener for the hardware back button press
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonPress);
+    // Subscribe to network state changes
+    const unsubscribe = NetInfo.addEventListener((state: any) => {
+      setIsConnected(state.isConnected);
+    });
 
-    // Clean up the event listener when the component is unmounted
+    // Clean up the subscription when the component unmounts
     return () => {
-      BackHandler.removeEventListener(
-        'hardwareBackPress',
-        handleBackButtonPress,
-      );
+      unsubscribe();
     };
   }, []);
 
-  const handleBackButtonPress = () => {
-    if (!backButtonPressedOnceToExit) {
-      backButtonPressedOnceToExit = true;
-
-      // Show a confirmation modal
-      Alert.alert(
-        'Confirmation',
-        'Are you sure you want to go back?',
-        [
-          {text: 'No', onPress: () => (backButtonPressedOnceToExit = false)},
-          {text: 'Yes', onPress: () => BackHandler.exitApp()},
-        ],
-        {cancelable: true},
-      );
-
-      // Return `true` to prevent the default back button behavior
-      return true;
-    }
-  };
   return (
     <ScrollView>
-      <View
-        style={{
-          backgroundColor: Color.mainColor,
-          paddingHorizontal: 10,
-        }}>
-        <Header navigation={navigation} Drawer={true} Notification />
-        {/* search */}
-        <View
-          style={{
-            width: '98%',
-            borderColor: Color.white,
-            borderRadius: 10,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingVertical: 4,
-            paddingHorizontal: 10,
-            alignSelf: 'center',
-            backgroundColor: Color.white,
-            marginVertical: 15,
-          }}>
-          <TextInput
-            placeholder="Search"
-            placeholderTextColor={Color.mainColor}
-            style={{
-              width: '90%',
-              padding: 8,
-              color: 'white',
-            }}
-          />
-          <TouchableOpacity onPress={() => navigation}>
-            <Text>
-              <Icon name="search" size={25} color={Color.mainColor} />
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      {/* Custom Slider is use because paddingBottom  */}
-      <View style={{height: 100, backgroundColor: Color.mainColor}}></View>
-      <View
-        // colors={[Color.mainColor, Color.white]}
-        style={{marginTop: -90, zIndex: 2}}>
-        <FlatList
-          ref={flatListRef}
-          data={HomePageBanner}
-          showsHorizontalScrollIndicator={false}
-          // pagingEnabled
-          onScroll={e => {
-            const x = e.nativeEvent.contentOffset.x;
-            setCurrentIndex((x / (width - 50)).toFixed(0));
-          }}
-          horizontal
-          renderItem={({item, index}) => {
-            return (
+      <>
+        {!isConnected && <ShowWifiStatus />}
+        {loading ? (
+          <View>
+            <Loader />
+          </View>
+        ) : (
+          <>
+            <View
+              style={{
+                backgroundColor: Color.mainColor,
+                paddingHorizontal: 10,
+              }}>
+              <Header navigation={navigation} Drawer={true} Notification />
+              {/* search */}
               <View
                 style={{
-                  width: width,
-                  // height: '100%',
+                  width: '98%',
+                  borderColor: Color.white,
+                  borderRadius: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
                   alignItems: 'center',
-                  padding: 0,
-                  margin: 0,
+                  justifyContent: 'center',
+                  paddingVertical: 4,
+                  paddingHorizontal: 10,
+                  alignSelf: 'center',
+                  backgroundColor: Color.white,
+                  marginVertical: 15,
                 }}>
-                <Image
-                  source={item.image}
-                  style={{width: '93%', height: 160}}
-                  resizeMode="center"
+                <TextInput
+                  placeholder="Search"
+                  placeholderTextColor={Color.mainColor}
+                  style={{
+                    width: '90%',
+                    padding: 8,
+                    color: 'white',
+                  }}
                 />
+                <TouchableOpacity onPress={() => navigation}>
+                  <Text>
+                    <Icon name="search" size={25} color={Color.mainColor} />
+                  </Text>
+                </TouchableOpacity>
               </View>
-            );
-          }}
-        />
-      </View>
-      {/* Dots */}
-      <View
-        style={{
-          flexDirection: 'row',
-          width: width,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginVertical: 5,
-        }}>
-        {HomePageBanner.map((item, index) => {
-          return (
+            </View>
+            {/* Custom Slider is use because paddingBottom  */}
             <View
-              key={item.id}
+              style={{height: 100, backgroundColor: Color.mainColor}}></View>
+            <View
+              // colors={[Color.mainColor, Color.white]}
+              style={{marginTop: -90, zIndex: 2}}>
+              <FlatList
+                ref={flatListRef}
+                data={HomePageBanner}
+                showsHorizontalScrollIndicator={false}
+                // pagingEnabled
+                onScroll={e => {
+                  const x = e.nativeEvent.contentOffset.x;
+                  setCurrentIndex((x / (width - 50)).toFixed(0));
+                }}
+                horizontal
+                renderItem={({item, index}) => {
+                  return (
+                    <View
+                      style={{
+                        width: width,
+                        // height: '100%',
+                        alignItems: 'center',
+                        padding: 0,
+                        margin: 0,
+                      }}>
+                      <Image
+                        source={item.image}
+                        style={{width: '93%', height: 160}}
+                        resizeMode="center"
+                      />
+                    </View>
+                  );
+                }}
+              />
+            </View>
+            {/* Dots */}
+            <View
               style={{
-                width: currentIndex == index ? 10 : 8,
-                height: currentIndex == index ? 10 : 8,
-                borderRadius: currentIndex == index ? 5 : 4,
-                backgroundColor: currentIndex == index ? 'red' : 'gray',
-                marginLeft: 5,
-              }}></View>
-          );
-        })}
-      </View>
+                flexDirection: 'row',
+                width: width,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginVertical: 5,
+              }}>
+              {HomePageBanner.map((item, index) => {
+                return (
+                  <View
+                    key={item.id}
+                    style={{
+                      width: currentIndex == index ? 10 : 8,
+                      height: currentIndex == index ? 10 : 8,
+                      borderRadius: currentIndex == index ? 5 : 4,
+                      backgroundColor: currentIndex == index ? 'red' : 'gray',
+                      marginLeft: 5,
+                    }}></View>
+                );
+              })}
+            </View>
 
-      <View
-        style={{
-          height: '100%',
-          marginBottom: 20,
-        }}>
-        <View>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontFamily: 'Poppins-SemiBold',
-              fontSize: 22,
-              color: Color.heading,
-            }}>
-            Categories
-          </Text>
-          <View
-            style={{flexDirection: 'row', justifyContent: 'center', gap: 10}}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Food')}
-              activeOpacity={0.8}>
-              <Image
-                source={require('../../Images/Food.png')}
-                style={{width: 110, height: 110, borderRadius: 5}}
-              />
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontFamily: 'Poppins-Regular',
-                  fontSize: 16,
-                  color: Color.heading,
-                }}>
-                Food
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('JobsHome')}>
-              <Image
-                source={require('../../Images/Jobs.png')}
-                style={{width: 110, height: 110, borderRadius: 5}}
-              />
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontFamily: 'Poppins-Regular',
-                  fontSize: 16,
-                  color: Color.heading,
-                }}>
-                Jobs
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('MrriageBureauHome')}>
-              <Image
-                source={require('../../Images/Marriage.png')}
-                style={{width: 110, height: 110, borderRadius: 5}}
-              />
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontFamily: 'Poppins-Regular',
-                  fontSize: 16,
-                  color: Color.heading,
-                }}>
-                Marriage{'\n'}
+            <View
+              style={{
+                height: '100%',
+                marginBottom: 20,
+              }}>
+              <View>
                 <Text
                   style={{
                     textAlign: 'center',
-                    fontFamily: 'Poppins-Regular',
-                    fontSize: 16,
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 22,
                     color: Color.heading,
                   }}>
-                  Bureau
+                  Categories
                 </Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View
-          style={{
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              alignItems: 'center',
-              width: '90%',
-              height: 200,
-              borderRadius: 20,
-              overflow: 'hidden',
-            }}>
-            {Object.keys(currentLocation).length > 0 && (
-              <MapView
-                style={[
-                  StyleSheet.absoluteFill,
-                  {
-                    height: '100%',
-                    width: '100%',
-                    borderRadius: 20,
-                    alignSelf: 'center',
+                <View
+                  style={{
+                    flexDirection: 'row',
                     justifyContent: 'center',
-                  },
-                ]}
-                initialRegion={{
-                  latitude: currentLocation
-                    ? currentLocation.latitude
-                    : 37.78825,
-                  longitude: currentLocation
-                    ? currentLocation.longitude
-                    : -122.4324,
-                  latitudeDelta: 0.9,
-                  longitudeDelta: 0.9,
-                }}
-                customMapStyle={customStyle}>
-                {currentLocation && (
-                  <Marker
-                    draggable={true}
-                    coordinate={{
-                      latitude: currentLocation.latitude,
-                      longitude: currentLocation.longitude,
-                    }}
-                    title="You are here"
-                  />
-                )}
-              </MapView>
-            )}
-          </View>
-        </View>
-      </View>
+                    gap: 10,
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Food')}
+                    activeOpacity={0.8}>
+                    <Image
+                      source={require('../../Images/Food.png')}
+                      style={{width: 110, height: 110, borderRadius: 5}}
+                    />
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 16,
+                        color: Color.heading,
+                      }}>
+                      Food
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => navigation.navigate('JobsHome')}>
+                    <Image
+                      source={require('../../Images/Jobs.png')}
+                      style={{width: 110, height: 110, borderRadius: 5}}
+                    />
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 16,
+                        color: Color.heading,
+                      }}>
+                      Jobs
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => navigation.navigate('MrriageBureauHome')}>
+                    <Image
+                      source={require('../../Images/Marriage.png')}
+                      style={{width: 110, height: 110, borderRadius: 5}}
+                    />
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 16,
+                        color: Color.heading,
+                      }}>
+                      Marriage{'\n'}
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          fontFamily: 'Poppins-Regular',
+                          fontSize: 16,
+                          color: Color.heading,
+                        }}>
+                        Bureau
+                      </Text>
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View
+                style={{
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    width: '90%',
+                    height: 200,
+                    borderRadius: 20,
+                    overflow: 'hidden',
+                  }}>
+                  {Object.keys(currentLocation).length > 0 && (
+                    <MapView
+                      style={[
+                        StyleSheet.absoluteFill,
+                        {
+                          height: '100%',
+                          width: '100%',
+                          borderRadius: 20,
+                          alignSelf: 'center',
+                          justifyContent: 'center',
+                        },
+                      ]}
+                      initialRegion={{
+                        latitude: currentLocation
+                          ? currentLocation.latitude
+                          : 37.78825,
+                        longitude: currentLocation
+                          ? currentLocation.longitude
+                          : -122.4324,
+                        latitudeDelta: 0.9,
+                        longitudeDelta: 0.9,
+                      }}
+                      customMapStyle={customStyle}>
+                      {currentLocation && (
+                        <Marker
+                          draggable={true}
+                          coordinate={{
+                            latitude: currentLocation.latitude,
+                            longitude: currentLocation.longitude,
+                          }}
+                          title="You are here"
+                        />
+                      )}
+                    </MapView>
+                  )}
+                </View>
+              </View>
+            </View>
+          </>
+        )}
+      </>
     </ScrollView>
   );
 };
@@ -448,4 +451,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginHorizontal: 5,
   },
+  // loaderContainer: {
+  //   ...StyleSheet.absoluteFillObject,
+  //   backgroundColor: 'rgba(0, 0, 0, 0.5)', // Set the desired overlay color and transparency
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  // loader: {
+  //   backgroundColor: '#fff',
+  //   borderRadius: 10,
+  //   padding: 20,
+  // },
 });

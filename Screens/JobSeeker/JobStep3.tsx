@@ -15,6 +15,7 @@ import {BasicUrl, imageUrl} from '../../Constants/BasicUrl';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const JobStep3 = ({navigation}: any) => {
   interface Istep3 {
@@ -23,6 +24,7 @@ const JobStep3 = ({navigation}: any) => {
     work_experience: string;
     level_of_education: string;
     cv: string;
+    specialization: string;
   }
 
   const [login_ID, setLogin_ID] = useState('');
@@ -32,78 +34,62 @@ const JobStep3 = ({navigation}: any) => {
     setLogin_ID(user.userID);
   });
 
-  console.log('login_ID', login_ID);
-
   const [step3Fields, setStep3Fields] = useState<Istep3>({
     login_ID: '',
     profession: '',
+    specialization: '',
     work_experience: '',
     level_of_education: '',
     cv: '',
   });
-
-  // const uploadCV = async () => {
-  //   const granted = await PermissionsAndroid.request(
-  //     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-  //   );
-  //   console.log(granted, 'granted');
-
-  //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //     try {
-  //       const res = await DocumentPicker.pick({
-  //         type: [DocumentPicker.types.pdf],
-  //       });
-
-  //       let fileUri = res.uri;
-
-  //       let formData = new FormData();
-
-  //       formData.append('cv-file', {
-  //         uri: fileUri,
-  //         type: 'application/pdf',
-  //         name: 'cv.pdf',
-  //       });
-
-  //       let config = {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       };
-
-  //       axios
-  //         .post(`${BasicUrl}jobseekecv`, formData, config)
-  //         .then((res: any) => {
-  //           console.log('res', res.data);
-  //           setStep3Fields({
-  //             ...step3Fields,
-  //             cv: `cv/${res.data.filename}`,
-  //           });
-  //         })
-  //         .catch((error: any) => {
-  //           console.log(error);
-  //           ToastAndroid.show('Internal server error', ToastAndroid.SHORT);
-  //         });
-
-  //       console.log(fileUri);
-  //     } catch (error) {
-  //       if (DocumentPicker.isCancel(error)) {
-  //         // User canceled the picker
-  //       } else {
-  //         // Error occurred while picking the document
-  //         console.log(error);
-  //       }
-  //     }
-  //   }
-  // };
-
   console.log('step3Fields', step3Fields);
+
+  const uploadCV = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf], // Specify the allowed file types
+      });
+
+      const selectedFile: DocumentPickerResponse = res[0]; // Assuming you want to handle the first selected file
+      console.log('selectedFile==>', selectedFile);
+
+      // Create a FormData object to send the file
+      const formData = new FormData();
+      formData.append('cv-file', {
+        uri: selectedFile.uri,
+        type: selectedFile.type,
+        name: selectedFile.name,
+      });
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      axios
+        .post(`${BasicUrl}jobseekecv`, formData, config)
+        .then((response: any) => {
+          setStep3Fields({
+            ...step3Fields,
+            cv: `cv/${response.data.image}`,
+          });
+        })
+        .catch((error: any) => {
+          console.log(error);
+          ToastAndroid.show('Internal server error', ToastAndroid.SHORT);
+        });
+    } catch (error) {
+      console.log(error);
+      // Handle the error
+      ToastAndroid.show('Error occurred', ToastAndroid.SHORT);
+    }
+  };
 
   const submitBusinessStep = () => {
     let data = {...step3Fields};
     data.login_ID = login_ID;
-    console.log('data', data);
 
-    let flag = Object.values(step3Fields);
+    let flag = Object.values(data);
     let flag1 = flag.some((e, i) => e == '');
     if (flag1) {
       ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
@@ -113,7 +99,8 @@ const JobStep3 = ({navigation}: any) => {
     axios
       .put(`${BasicUrl}jobseekerstep03`, data)
       .then(res => {
-        console.log(res);
+        console.log('res.data', res.data);
+        console.log('res.status', res.status);
         navigation.replace('HomeScreen');
         ToastAndroid.show('Form Submit Successfully', ToastAndroid.SHORT);
       })
@@ -134,6 +121,19 @@ const JobStep3 = ({navigation}: any) => {
               style={styles.input}
               placeholder="Profession"
               keyboardType="default"
+              onChangeText={e =>
+                setStep3Fields({...step3Fields, profession: e})
+              }
+            />
+          </View>
+          <View style={styles.fields}>
+            <TextInput
+              style={styles.input}
+              placeholder="specialization"
+              keyboardType="default"
+              onChangeText={e =>
+                setStep3Fields({...step3Fields, specialization: e})
+              }
             />
           </View>
           <View style={styles.fields}>
@@ -141,6 +141,9 @@ const JobStep3 = ({navigation}: any) => {
               style={styles.input}
               placeholder="Work Experience"
               keyboardType="default"
+              onChangeText={e =>
+                setStep3Fields({...step3Fields, work_experience: e})
+              }
             />
           </View>
           <View style={styles.fields}>
@@ -148,6 +151,9 @@ const JobStep3 = ({navigation}: any) => {
               style={styles.input}
               placeholder="Level of Education"
               keyboardType="default"
+              onChangeText={e =>
+                setStep3Fields({...step3Fields, level_of_education: e})
+              }
             />
           </View>
         </View>
@@ -155,34 +161,25 @@ const JobStep3 = ({navigation}: any) => {
           <Text style={styles.textsm}>Upload CV</Text>
         </View>
 
-        {/* <TouchableOpacity onPress={uploadCV} style={styles.uploadBox}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 8,
-            }}>
-            {step3Fields.cv ? (
-              <Image
-                source={{
-                  uri: `${imageUrl}/businesscnic/${step3Fields.cv.substring(
-                    'cv/'.length,
-                  )}`,
-                }}
-                style={{width: 140, height: 140}}
+        {step3Fields.cv ? (
+          <Text style={{color: 'grey'}}>{step3Fields.cv}</Text>
+        ) : (
+          <TouchableOpacity onPress={uploadCV} style={styles.uploadBox}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 8,
+              }}>
+              <Iconnew
+                name="cloud-upload-outline"
+                size={60}
+                color={'#666666'}
               />
-            ) : (
-              <>
-                <Iconnew
-                  name="cloud-upload-outline"
-                  size={60}
-                  color={'#666666'}
-                />
-              </>
-            )}
-          </View>
-        </TouchableOpacity> */}
+            </View>
+          </TouchableOpacity>
+        )}
 
         <View>
           <TouchableOpacity style={styles.button} onPress={submitBusinessStep}>

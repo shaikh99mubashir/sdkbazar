@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {BasicUrl} from '../../Constants/BasicUrl';
 function CustomDrawerContent(props: any) {
   const navigateToScreen = (screenName: any) => {
     props.navigation.navigate(screenName);
@@ -56,8 +59,27 @@ function CustomDrawerContent(props: any) {
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
 
+  const [refreshToken, setRefreshToken] = useState('');
+  // logout
   const ApplyButton = () => {
-    handleCloseModal();
+    AsyncStorage.getItem('user').then((val: any) => {
+      console.log('val', val);
+      const userData: any = JSON.parse(val);
+      setRefreshToken(userData.token);
+    });
+    axios
+      .post(`${BasicUrl}logout`, {refreshToken: refreshToken})
+      .then(res => {
+        console.log('res====>', res);
+        AsyncStorage.removeItem('user');
+        handleCloseModal();
+        props.navigation.closeDrawer();
+        props.navigation.navigate('LoginAccount');
+        ToastAndroid.show('Logout Sucessfully !', ToastAndroid.SHORT);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
   };
   const CancelButton = () => {
     handleCloseModal();

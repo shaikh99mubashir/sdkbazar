@@ -44,12 +44,14 @@ const LoginAccount = ({navigation}: any) => {
     axios
       .post(`${BasicUrl}login`, loginFields)
       .then(res => {
-        // console.log('res', res.data.user.id);
+        console.log('res', res?.data?.tokens?.refresh?.token);
         const userID = res.data.user.id;
         const tokenExpiryDate = res?.data?.tokens?.refresh?.expires;
+        const token = res?.data?.tokens?.refresh?.token;
         let user = {
           userID: userID,
           tokenExpiryDate: tokenExpiryDate,
+          token: token,
         };
         AsyncStorage.setItem('user', JSON.stringify(user));
         navigation.navigate('HomeScreen');
