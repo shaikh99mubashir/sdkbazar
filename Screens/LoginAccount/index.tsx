@@ -38,13 +38,12 @@ const LoginAccount = ({navigation}: any) => {
     let flag2 = flag.some((e, i) => e == '');
     if (flag2) {
       ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
+      setLoginLoading(false);
       return;
     }
-
     axios
       .post(`${BasicUrl}login`, loginFields)
       .then(res => {
-        console.log('res', res?.data?.tokens?.refresh?.token);
         const userID = res.data.user.id;
         const tokenExpiryDate = res?.data?.tokens?.refresh?.expires;
         const token = res?.data?.tokens?.refresh?.token;

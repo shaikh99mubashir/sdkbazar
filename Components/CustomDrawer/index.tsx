@@ -70,7 +70,6 @@ function CustomDrawerContent(props: any) {
     axios
       .post(`${BasicUrl}logout`, {refreshToken: refreshToken})
       .then(res => {
-        console.log('res====>', res);
         AsyncStorage.removeItem('user');
         handleCloseModal();
         props.navigation.closeDrawer();

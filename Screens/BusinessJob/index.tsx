@@ -1,4 +1,5 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,10 +10,20 @@ import {
 } from 'react-native';
 
 const BusinessJob = ({navigation}: any) => {
+  const [login_ID, setLogin_ID] = useState('');
+  AsyncStorage.getItem('user').then((val: any) => {
+    let user = JSON.parse(val);
+    setLogin_ID(user.userID);
+  });
+  console.log('login_ID', login_ID);
+
+  const checkJobSeeker = () => {
+    // () => navigation.navigate('Step1JobSeeker')
+  };
   return (
     <View style={styles.container}>
       <View style={styles.view}>
-        <Text style={styles.text}>Business/Job</Text>
+        <Text style={styles.text}>Business / Job</Text>
         <Text style={styles.para}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry.
@@ -42,7 +53,7 @@ const BusinessJob = ({navigation}: any) => {
       {/* Business End */}
 
       {/* Job start */}
-      <TouchableOpacity onPress={() => navigation.navigate('Step1JobSeeker')}>
+      <TouchableOpacity onPress={checkJobSeeker}>
         <View style={styles.view}>
           <View style={styles.box}>
             <View style={styles.card}>

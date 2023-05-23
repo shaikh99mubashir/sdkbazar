@@ -8,13 +8,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {BasicUrl} from '../../Constants/BasicUrl';
 
-const JobStep2 = ({navigation}: any) => {
+const JobStep2 = ({navigation, route}: any) => {
+  const formId: any = route.params;
+
+  console.log('data', formId.id);
   interface Istep2 {
-    login_ID: string;
+    formId: string;
     cnic: string;
     phone_number: string;
     country: string;
     city: string;
+    step2: string;
   }
 
   const [login_ID, setLogin_ID] = useState('');
@@ -27,17 +31,18 @@ const JobStep2 = ({navigation}: any) => {
   console.log('login_ID', login_ID);
 
   const [step2Fields, setStep2Fields] = useState<Istep2>({
-    login_ID: '',
+    formId: '',
     cnic: '',
     phone_number: '',
     country: '',
     city: '',
+    step2: 'copmleted',
   });
   console.log('step2Fields', step2Fields);
 
   const step2next = () => {
     let data = {...step2Fields};
-    data.login_ID = login_ID;
+    data.formId = formId.id;
     console.log('data', data);
 
     let flag = Object.values(data);
@@ -50,8 +55,11 @@ const JobStep2 = ({navigation}: any) => {
     axios
       .put(`${BasicUrl}jobseekerstep02`, data)
       .then(res => {
-        console.log(res);
-        navigation.replace('Step3JobSeeker');
+        navigation.replace('Step3JobSeeker', {id: formId.id});
+        ToastAndroid.show(
+          'Congratulations STEP 2 Completed',
+          ToastAndroid.SHORT,
+        );
       })
       .catch(error => {
         console.log(error);

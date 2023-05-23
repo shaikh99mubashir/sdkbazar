@@ -23,6 +23,7 @@ const JobStep1 = ({navigation}: any) => {
     gender: string;
     date_of_birth: string;
     description: string;
+    step1: string;
   }
 
   const [login_ID, setLogin_ID] = useState('');
@@ -43,6 +44,7 @@ const JobStep1 = ({navigation}: any) => {
     gender: '',
     date_of_birth: '',
     description: '',
+    step1: 'copmleted',
   });
   console.log('step1Fields', step1Fields);
   const uploadProfilePicture = async () => {
@@ -111,8 +113,10 @@ const JobStep1 = ({navigation}: any) => {
       .post(`${BasicUrl}jobseekerstep01`, data)
       .then(res => {
         console.log('res=====>', res.data);
+        console.log('res=====>');
+        const id = res.data.data._id;
         if (res.data) {
-          navigation.replace('Step2JobSeeker');
+          navigation.replace('Step2JobSeeker', {id: id});
           ToastAndroid.show(
             'Congratulations STEP 1 Completed',
             ToastAndroid.SHORT,
