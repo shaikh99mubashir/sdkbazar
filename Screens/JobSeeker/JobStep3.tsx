@@ -125,7 +125,7 @@ const JobStep3 = ({navigation, route}: any) => {
     work_experience: '',
     level_of_education: '',
     cv: '',
-    step3: 'competed',
+    step3: 'completed',
   });
   console.log('step3Fields', step3Fields);
 

@@ -7,13 +7,21 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Header from '../../../Components/Header';
 import {Color} from '../../../Constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {imageUrl} from '../../../Constants/BasicUrl';
+import Pdf from 'react-native-pdf';
 const BusinessProfile = ({navigation, route}: any) => {
   const data = route.params;
+  const [showPDF, setShowPDF] = useState(false);
 
+  const pdfURL = `${imageUrl}/jobseekercvs/${data.cv}`; // Replace with your PDF URL
+
+  const handleViewPDF = () => {
+    setShowPDF(true);
+  };
   return (
     <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
       <View style={{marginHorizontal: 10}}>
@@ -29,7 +37,11 @@ const BusinessProfile = ({navigation, route}: any) => {
         }}>
         <View style={{alignSelf: 'center'}}>
           <Image
-            source={require('../../../Images/p1.png')}
+            source={{
+              uri: `${imageUrl}/uploads/${data.profile_picture.substring(
+                'profileimage/'.length,
+              )}`,
+            }}
             resizeMode="cover"
             style={{width: 120, height: 120, borderRadius: 100}}
           />
@@ -38,31 +50,38 @@ const BusinessProfile = ({navigation, route}: any) => {
           style={{
             color: Color.textColor,
             fontFamily: 'Poppins-Medium',
-            fontSize: 14,
+            fontSize: 16,
             textAlign: 'center',
+            marginTop: 10,
           }}>
-          {data.name}
+          {data.first_name} {data.last_name}
         </Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate()}
-          style={{
-            backgroundColor: Color.lightgrey,
-            paddingHorizontal: 15,
-            paddingVertical: 5,
-            borderRadius: 20,
-            width: 90,
-            alignSelf: 'center',
-          }}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontFamily: 'Poppins-Medium',
-              fontSize: 14,
-              color: Color.mainColor,
-            }}>
-            View CV
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.container}>
+          {!showPDF ? (
+            <TouchableOpacity
+              onPress={handleViewPDF}
+              style={{
+                backgroundColor: 'lightgrey',
+                paddingHorizontal: 15,
+                paddingVertical: 5,
+                borderRadius: 20,
+                width: 90,
+                alignSelf: 'center',
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 14,
+                  color: 'black',
+                }}>
+                View CV
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <Pdf source={{uri: pdfURL}} style={styles.pdf} />
+          )}
+        </View>
         <Text
           style={{
             color: Color.buttonBg,
@@ -71,7 +90,7 @@ const BusinessProfile = ({navigation, route}: any) => {
             textAlign: 'center',
             marginBottom: 10,
           }}>
-          Business
+          Entreprene
         </Text>
       </View>
       {/* Detailpart */}
@@ -99,7 +118,7 @@ const BusinessProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              m*********sd@gmail.com
+              {data.email}
             </Text>
           </View>
           <View>
@@ -133,7 +152,7 @@ const BusinessProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              male
+              {data.gender}
             </Text>
           </View>
           <View>
@@ -151,7 +170,7 @@ const BusinessProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              02-06-1999
+              {data.date_of_birth}
             </Text>
           </View>
         </View>
@@ -171,8 +190,7 @@ const BusinessProfile = ({navigation, route}: any) => {
               fontFamily: 'Poppins-Regular',
               fontSize: 14,
             }}>
-            male malemale malemale malemale malemale malemale malemale malemale
-            malemale malemale malemale malemale malemale
+            {data.description}
           </Text>
         </View>
         {/* CNIC */}
@@ -200,7 +218,7 @@ const BusinessProfile = ({navigation, route}: any) => {
               fontWeight: '600',
               textTransform: 'capitalize',
             }}>
-            54u645u6oy54o6yo
+            {data.cnic}
           </Text>
         </View>
         {/* phone Number */}
@@ -226,7 +244,7 @@ const BusinessProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              033********3
+              {data.phone_number}
             </Text>
           </View>
           <View>
@@ -260,7 +278,7 @@ const BusinessProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              Pakistan
+              {data.country}
             </Text>
           </View>
           <View>
@@ -278,11 +296,11 @@ const BusinessProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              Karachi
+              {data.city}
             </Text>
           </View>
         </View>
-        {/* AREA */}
+        {/* AREA
         <View>
           <Text
             style={{
@@ -300,7 +318,7 @@ const BusinessProfile = ({navigation, route}: any) => {
             }}>
             south District
           </Text>
-        </View>
+        </View> */}
         {/* Profession */}
         <View>
           <Text
@@ -317,7 +335,7 @@ const BusinessProfile = ({navigation, route}: any) => {
               fontFamily: 'Poppins-Regular',
               fontSize: 14,
             }}>
-            plumber
+            {data.profession}
           </Text>
         </View>
         {/* Work Experience */}
@@ -336,11 +354,11 @@ const BusinessProfile = ({navigation, route}: any) => {
               fontFamily: 'Poppins-Regular',
               fontSize: 14,
             }}>
-            7+
+            {data.work_experience}
           </Text>
         </View>
         {/* level of Education */}
-        <View>
+        <View style={{marginBottom: 20}}>
           <Text
             style={{
               color: Color.mainColor,
@@ -355,11 +373,11 @@ const BusinessProfile = ({navigation, route}: any) => {
               fontFamily: 'Poppins-Regular',
               fontSize: 14,
             }}>
-            Intermidate
+            {data.level_of_education}
           </Text>
         </View>
         {/* language */}
-        <View style={{marginBottom: 20}}>
+        {/* <View style={{marginBottom: 20}}>
           <Text
             style={{
               color: Color.mainColor,
@@ -376,7 +394,7 @@ const BusinessProfile = ({navigation, route}: any) => {
             }}>
             Urdu
           </Text>
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );
@@ -384,4 +402,15 @@ const BusinessProfile = ({navigation, route}: any) => {
 
 export default BusinessProfile;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 25,
+  },
+  pdf: {
+    flex: 1,
+    width: '100%',
+  },
+});

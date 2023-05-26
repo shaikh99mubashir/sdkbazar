@@ -11,15 +11,16 @@ import {
 import React, {useState} from 'react';
 import Header from '../../../Components/Header';
 import {Color} from '../../../Constants';
+import {imageUrl} from '../../../Constants/BasicUrl';
 
 const BusinessPersonDetails = ({navigation, route}: any) => {
-  const data = route.params;
-  // console.log('data===>', data);
+  const data = route.params.data;
+  console.log('data===>', data);
 
   const [showAll, setShowAll] = useState(false);
   const [sliceAmount, setSliceAmount] = useState(5);
 
-  const slicedData = data.filteredData.slice(0, sliceAmount);
+  const slicedData = data.slice(0, sliceAmount);
 
   const handleViewAll = () => {
     setSliceAmount(sliceAmount + 5);
@@ -57,7 +58,11 @@ const BusinessPersonDetails = ({navigation, route}: any) => {
             }}>
             <View>
               <Image
-                source={require('../../../Images/p1.png')}
+                source={{
+                  uri: `${imageUrl}/uploads/${item.profile_picture.substring(
+                    'profileimage/'.length,
+                  )}`,
+                }}
                 style={{width: 70, height: 70, borderRadius: 50}}
               />
             </View>
@@ -68,7 +73,7 @@ const BusinessPersonDetails = ({navigation, route}: any) => {
                   fontFamily: 'Poppins-Medium',
                   fontSize: 14,
                 }}>
-                {item.name}
+                {item.first_name} {item.last_name}
               </Text>
               <Text
                 style={{
@@ -84,13 +89,13 @@ const BusinessPersonDetails = ({navigation, route}: any) => {
                   fontFamily: 'Poppins-Medium',
                   fontSize: 14,
                 }}>
-                {item.exp} experience
+                {item.work_experience} experience
               </Text>
             </View>
           </View>
           <View style={{gap: 10}}>
             <TouchableOpacity
-              onPress={() => navigation.navigate()}
+              // onPress={}
               style={{
                 backgroundColor: Color.lightgrey,
                 paddingHorizontal: 15,
@@ -135,18 +140,15 @@ const BusinessPersonDetails = ({navigation, route}: any) => {
       <ScrollView
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}>
-        <Header
-          navigation={navigation}
-          backBtn
-          title={data.filteredData[0].profession}
-        />
+        <Header navigation={navigation} backBtn title={data[0].profession} />
 
         {/* Cards */}
         <FlatList
-          data={showAll ? data && data.filteredData : slicedData}
+          // data={showAll ? data && data.filteredData : ''}
+          data={showAll ? data && data : slicedData}
           renderItem={renderItem}
           nestedScrollEnabled={true}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item._id.toString()}
           showsVerticalScrollIndicator={false}
         />
         <View

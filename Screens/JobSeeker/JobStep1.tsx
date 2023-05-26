@@ -44,7 +44,7 @@ const JobStep1 = ({navigation}: any) => {
     gender: '',
     date_of_birth: '',
     description: '',
-    step1: 'copmleted',
+    step1: 'completed',
   });
   console.log('step1Fields', step1Fields);
   const uploadProfilePicture = async () => {

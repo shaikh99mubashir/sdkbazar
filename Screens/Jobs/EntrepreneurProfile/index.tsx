@@ -10,6 +10,7 @@ import React from 'react';
 import Header from '../../../Components/Header';
 import {Color} from '../../../Constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {imageUrl} from '../../../Constants/BasicUrl';
 const EntrepreneurProfile = ({navigation, route}: any) => {
   const data = route.params;
 
@@ -28,7 +29,11 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
         }}>
         <View style={{alignSelf: 'center'}}>
           <Image
-            source={require('../../../Images/p1.png')}
+            source={{
+              uri: `${imageUrl}/uploads/${data.profile_picture.substring(
+                'profileimage/'.length,
+              )}`,
+            }}
             resizeMode="cover"
             style={{width: 120, height: 120, borderRadius: 100}}
           />
@@ -37,10 +42,11 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
           style={{
             color: Color.textColor,
             fontFamily: 'Poppins-Medium',
-            fontSize: 14,
+            fontSize: 16,
             textAlign: 'center',
+            marginTop: 10,
           }}>
-          {data.name}
+          {data.first_name} {data.last_name}
         </Text>
         <Text
           style={{
@@ -50,7 +56,7 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
             textAlign: 'center',
             marginBottom: 10,
           }}>
-          Entrepreneur
+          Business
         </Text>
       </View>
       {/* Detailpart */}
@@ -78,7 +84,7 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              m*********sd@gmail.com
+              {data.email}
             </Text>
           </View>
           <View>
@@ -112,7 +118,7 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              male
+              {data.gender}
             </Text>
           </View>
           <View>
@@ -130,7 +136,7 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              02-06-1999
+              {data.date_of_birth}
             </Text>
           </View>
         </View>
@@ -150,8 +156,7 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
               fontFamily: 'Poppins-Regular',
               fontSize: 14,
             }}>
-            male malemale malemale malemale malemale malemale malemale malemale
-            malemale malemale malemale malemale malemale
+            {data.description}
           </Text>
         </View>
         {/* CNIC */}
@@ -179,7 +184,7 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
               fontWeight: '600',
               textTransform: 'capitalize',
             }}>
-            54u645u6oy54o6yo
+            {data.cnic}
           </Text>
         </View>
         {/* phone Number */}
@@ -205,7 +210,7 @@ const EntrepreneurProfile = ({navigation, route}: any) => {
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14,
               }}>
-              033********3
+              {data.phone_number}
             </Text>
           </View>
           <View>

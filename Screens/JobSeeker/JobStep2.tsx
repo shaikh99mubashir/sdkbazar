@@ -36,7 +36,7 @@ const JobStep2 = ({navigation, route}: any) => {
     phone_number: '',
     country: '',
     city: '',
-    step2: 'copmleted',
+    step2: 'completed',
   });
   console.log('step2Fields', step2Fields);
 
@@ -55,6 +55,8 @@ const JobStep2 = ({navigation, route}: any) => {
     axios
       .put(`${BasicUrl}jobseekerstep02`, data)
       .then(res => {
+        console.log('res', res);
+
         navigation.replace('Step3JobSeeker', {id: formId.id});
         ToastAndroid.show(
           'Congratulations STEP 2 Completed',

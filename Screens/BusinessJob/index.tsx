@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
   View,
@@ -7,7 +8,9 @@ import {
   StyleSheet,
   Image,
   SafeAreaView,
+  ToastAndroid,
 } from 'react-native';
+import {BasicUrl} from '../../Constants/BasicUrl';
 
 const BusinessJob = ({navigation}: any) => {
   const [login_ID, setLogin_ID] = useState('');
@@ -18,8 +21,27 @@ const BusinessJob = ({navigation}: any) => {
   console.log('login_ID', login_ID);
 
   const checkJobSeeker = () => {
-    // () => navigation.navigate('Step1JobSeeker')
+    axios
+      .post(`${BasicUrl}checkjobseeker`, {login_ID: login_ID})
+      .then(({data}) => {
+        let jobData = data?.data;
+        console.log('jobdata====>', jobData);
+
+        if (jobData?.step3 == 'completed') {
+          ToastAndroid.show('You have completed all steps', ToastAndroid.SHORT);
+        } else if (jobData?.step2 == 'completed') {
+          navigation.navigate('Step3JobSeeker', {id: jobData._id});
+        } else if (jobData?.step1 == 'completed') {
+          navigation.navigate('Step2JobSeeker', {id: jobData._id});
+        } else {
+          navigation.navigate('Step1JobSeeker');
+        }
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.view}>

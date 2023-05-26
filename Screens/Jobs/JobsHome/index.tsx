@@ -20,12 +20,30 @@ import CustomTabView from '../../../Components/CustomTabView';
 import Video from 'react-native-video';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import axios from 'axios';
+import {BasicUrl} from '../../../Constants/BasicUrl';
 const {width, height} = Dimensions.get('window');
 const JobsHome = ({navigation}: any) => {
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
   const [serviceDD, setServiceDD] = useState(false);
   const [specialized, setSpecialized]: any = useState([]);
   const [specializedDD, setspecializedDD] = useState(false);
+  const [jobSeekerData, setJobSeekerData] = useState([]);
+  const getJobData = () => {
+    axios
+      .get(`${BasicUrl}getjobseeker`)
+      .then(({data}) => {
+        // console.log('res', data.data);
+        setJobSeekerData(data.data);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  };
+
+  useEffect(() => {
+    getJobData();
+  }, []);
 
   // Entrepreneur
   const SelectService = [
@@ -107,18 +125,18 @@ const JobsHome = ({navigation}: any) => {
     setSelectedServicedata(item);
     setServiceDD(!serviceDD);
   };
-
   const SelectedSpecialized = (item: any) => {
     setSpecialized(item);
-    const filteredData = SelectService.filter(
-      service =>
-        service.type === selectedServicedata.type &&
+    const filteredData = jobSeekerData.filter(
+      (service: any) =>
+        service.profession === selectedServicedata.profession &&
         service.profession === item.profession,
     );
 
-    navigation.navigate('AvailablePersonDetails', {filteredData});
+    navigation.navigate('BusinessPersonDetails', {data: filteredData});
     setspecializedDD(!specializedDD);
   };
+
   const SelectedBusinessSpecialized = (item: any) => {
     setSpecialized(item);
     const filteredData = SelectService.filter(
@@ -127,7 +145,7 @@ const JobsHome = ({navigation}: any) => {
         service.profession === item.profession,
     );
 
-    navigation.navigate('BusinessPersonDetails', {filteredData});
+    navigation.navigate('AvailablePersonDetails', {filteredData});
     setspecializedDD(!specializedDD);
   };
 
@@ -166,7 +184,7 @@ const JobsHome = ({navigation}: any) => {
   };
 
   const OnPressSpecialization = () => {
-    if (selectedServicedata && selectedServicedata.type) {
+    if (selectedServicedata && selectedServicedata.profession) {
       setspecializedDD(!specializedDD);
     } else {
       ToastAndroid.show('First Select Profession', ToastAndroid.SHORT);
@@ -212,10 +230,10 @@ const JobsHome = ({navigation}: any) => {
                         fontFamily: 'Poppins-SemiBold',
                         fontSize: 16,
                       }}>
-                      {selectedServicedata.type &&
-                      selectedServicedata.type.length > 10
-                        ? selectedServicedata.type.slice(0, 10)
-                        : selectedServicedata.type}
+                      {selectedServicedata.profession &&
+                      selectedServicedata.profession.length > 10
+                        ? selectedServicedata.profession.slice(0, 10)
+                        : selectedServicedata.profession}
                     </Text>
                     {serviceDD ? (
                       <Icon name="chevron-up-sharp" size={20} color="black" />
@@ -253,34 +271,37 @@ const JobsHome = ({navigation}: any) => {
                 borderBottomStartRadius: 8,
               }}>
               {serviceDD == true &&
-                Array.from(new Set(SelectService.map(item => item.type))).map(
-                  (type, index) => (
-                    <TouchableOpacity
-                      onPress={() =>
-                        SelectedServices(
-                          SelectService.find(item => item.type === type),
-                        )
-                      }
-                      key={index}
+                Array.from(
+                  new Set(jobSeekerData.map((item: any) => item.profession)),
+                ).map((type, index) => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      SelectedServices(
+                        jobSeekerData.find(
+                          (item: any) => item.profession === type,
+                        ),
+                      )
+                    }
+                    key={index}
+                    style={{
+                      flexDirection: 'row',
+                      paddingHorizontal: 20,
+                      marginVertical: 5,
+                      gap: 10,
+                    }}>
+                    <Text
                       style={{
-                        flexDirection: 'row',
-                        paddingHorizontal: 20,
-                        marginVertical: 5,
-                        gap: 10,
+                        color: Color.textColor,
+                        fontFamily: 'Poppins-SemiBold',
+                        fontSize: 16,
                       }}>
-                      <Text
-                        style={{
-                          color: Color.textColor,
-                          fontFamily: 'Poppins-SemiBold',
-                          fontSize: 16,
-                        }}>
-                        {type}
-                      </Text>
-                    </TouchableOpacity>
-                  ),
-                )}
+                      {type}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
             </View>
           </View>
+
           <View style={{width: '50%'}}>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -311,9 +332,10 @@ const JobsHome = ({navigation}: any) => {
                       fontFamily: 'Poppins-SemiBold',
                       fontSize: 16,
                     }}>
-                    {specialized.service && specialized.service.length > 10
-                      ? specialized.service.slice(0, 10)
-                      : specialized.service}
+                    {specialized.specialization &&
+                    specialized.specialization.length > 10
+                      ? specialized.specialization.slice(0, 10)
+                      : specialized.specialization}
                   </Text>
                   {specializedDD ? (
                     <Icon name="chevron-up-sharp" size={20} color="black" />
@@ -334,7 +356,7 @@ const JobsHome = ({navigation}: any) => {
                       fontFamily: 'Poppins-SemiBold',
                       fontSize: 16,
                     }}>
-                    Specialized
+                    Specializ
                   </Text>
                   {specializedDD ? (
                     <Icon name="chevron-up-sharp" size={20} color="black" />
@@ -351,11 +373,16 @@ const JobsHome = ({navigation}: any) => {
                 borderBottomStartRadius: 8,
               }}>
               {specializedDD == true &&
-                SelectService.filter(
-                  item => item.type === selectedServicedata.type,
-                )
+                jobSeekerData
+                  .filter(
+                    (item: any) =>
+                      item.specialization ===
+                      selectedServicedata.specialization,
+                  )
                   .reduce((unique: any, item: any) => {
-                    return unique.some((i: any) => i.service === item.service)
+                    return unique.some(
+                      (i: any) => i.specialization === item.specialization,
+                    )
                       ? unique
                       : [...unique, item];
                   }, [])
@@ -375,7 +402,7 @@ const JobsHome = ({navigation}: any) => {
                           fontFamily: 'Poppins-SemiBold',
                           fontSize: 16,
                         }}>
-                        {item.service}
+                        {item.specialization}
                       </Text>
                     </TouchableOpacity>
                   ))}
@@ -390,6 +417,7 @@ const JobsHome = ({navigation}: any) => {
     selectedServicedata,
     serviceDD,
     SelectService,
+    jobSeekerData,
   ]);
 
   const secondRoute = useCallback(() => {
@@ -698,7 +726,12 @@ const JobsHome = ({navigation}: any) => {
             backgroundColor: Color.mainColor,
             paddingHorizontal: 10,
           }}>
-          <Header navigation={navigation} Drawer={true} Notification />
+          <Header
+            navigation={navigation}
+            backBtn
+            Notification
+            backBtnColor="white"
+          />
           {/* Search */}
           <View
             style={{
