@@ -22,6 +22,7 @@ import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import {BasicUrl} from '../../../Constants/BasicUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width, height} = Dimensions.get('window');
 const JobsHome = ({navigation}: any) => {
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
@@ -30,11 +31,19 @@ const JobsHome = ({navigation}: any) => {
   const [specializedDD, setspecializedDD] = useState(false);
   const [jobSeekerData, setJobSeekerData] = useState([]);
   const getJobData = () => {
+    let data1: any;
+    AsyncStorage.getItem('user').then((val: any) => {
+      data1 = JSON.parse(val);
+      console.log('date1===>', data1?.userID);
+    });
     axios
       .get(`${BasicUrl}getjobseeker`)
       .then(({data}) => {
         // console.log('res', data.data);
-        setJobSeekerData(data.data);
+        const filterData =
+          data.data &&
+          data.data.filter((e: any, i: number) => e.login_ID != data1?.userID);
+        setJobSeekerData(filterData);
       })
       .catch(error => {
         console.log('error', error);

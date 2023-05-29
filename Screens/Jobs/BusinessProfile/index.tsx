@@ -13,6 +13,7 @@ import {Color} from '../../../Constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {imageUrl} from '../../../Constants/BasicUrl';
 import Pdf from 'react-native-pdf';
+
 const BusinessProfile = ({navigation, route}: any) => {
   const data = route.params;
   const [showPDF, setShowPDF] = useState(false);
@@ -20,7 +21,7 @@ const BusinessProfile = ({navigation, route}: any) => {
   const pdfURL = `${imageUrl}/jobseekercvs/${data.cv}`; // Replace with your PDF URL
 
   const handleViewPDF = () => {
-    setShowPDF(true);
+    navigation.navigate('PdfViewer', pdfURL);
   };
   return (
     <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
@@ -57,30 +58,26 @@ const BusinessProfile = ({navigation, route}: any) => {
           {data.first_name} {data.last_name}
         </Text>
         <View style={styles.container}>
-          {!showPDF ? (
-            <TouchableOpacity
-              onPress={handleViewPDF}
+          <TouchableOpacity
+            onPress={handleViewPDF}
+            style={{
+              backgroundColor: 'lightgrey',
+              paddingHorizontal: 15,
+              paddingVertical: 5,
+              borderRadius: 20,
+              width: 90,
+              alignSelf: 'center',
+            }}>
+            <Text
               style={{
-                backgroundColor: 'lightgrey',
-                paddingHorizontal: 15,
-                paddingVertical: 5,
-                borderRadius: 20,
-                width: 90,
-                alignSelf: 'center',
+                textAlign: 'center',
+                fontFamily: 'Poppins-Medium',
+                fontSize: 14,
+                color: 'black',
               }}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontFamily: 'Poppins-Medium',
-                  fontSize: 14,
-                  color: 'black',
-                }}>
-                View CV
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <Pdf source={{uri: pdfURL}} style={styles.pdf} />
-          )}
+              View CV
+            </Text>
+          </TouchableOpacity>
         </View>
         <Text
           style={{
@@ -405,9 +402,9 @@ export default BusinessProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginTop: 25,
+    // justifyContent: 'flex-start',
+    // alignItems: 'center',
+    // marginTop: 25,
   },
   pdf: {
     flex: 1,

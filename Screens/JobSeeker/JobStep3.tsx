@@ -156,7 +156,7 @@ const JobStep3 = ({navigation, route}: any) => {
         .then((response: any) => {
           setStep3Fields({
             ...step3Fields,
-            cv: `cv/${response.data.image}`,
+            cv: `${response.data.image}`,
           });
         })
         .catch((error: any) => {

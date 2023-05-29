@@ -41,6 +41,8 @@ import Step3 from '../Screens/BusinessSteps/Step3';
 import Step1JobSeeker from '../Screens/JobSeeker/JobStep1';
 import Step2JobSeeker from '../Screens/JobSeeker/JobStep2';
 import Step3JobSeeker from '../Screens/JobSeeker/JobStep3';
+import PdfScreen from '../Screens/Jobs/PdfViewer';
+import PdfViewer from '../Screens/Jobs/PdfViewer';
 
 const Stack = createNativeStackNavigator();
 const RoutingConfig = () => {
@@ -82,6 +84,7 @@ const RoutingConfig = () => {
         <Stack.Screen name="Step1JobSeeker" component={Step1JobSeeker} />
         <Stack.Screen name="Step2JobSeeker" component={Step2JobSeeker} />
         <Stack.Screen name="Step3JobSeeker" component={Step3JobSeeker} />
+        <Stack.Screen name="PdfViewer" component={PdfViewer} />
         <Stack.Screen
           name="BusinessPersonDetails"
           component={BusinessPersonDetails}
